@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">YuQing</string>
+    <string name="news">新闻</string>
+    <string name="paper">报纸</string>
+    <string name="pic">图片</string>
+    <string name="video">视频</string>
+</resources>
