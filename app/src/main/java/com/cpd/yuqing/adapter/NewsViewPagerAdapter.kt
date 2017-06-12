@@ -1,24 +1,29 @@
 package com.cpd.yuqing.adapter
 
+import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
+import com.cpd.yuqing.data.Channel
+import com.cpd.yuqing.fragment.NewsFragment
 
 /**
  * Created by s21v on 2017/6/12.
  */
-class NewsViewPagerAdapter : FragmentStatePagerAdapter{
+class NewsViewPagerAdapter(fm: FragmentManager, channels: ArrayList<Channel>) : FragmentStatePagerAdapter(fm){
+    val channels: ArrayList<Channel> = channels
+
     override fun getItem(p0: Int): Fragment {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        var args = Bundle()
+        args.putString("channelName", channels[p0].name)
+        return NewsFragment.getInstance(args)
     }
 
     override fun getCount(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return channels.size
     }
 
-    constructor(fm: FragmentManager): super(fm)
-
     override fun getPageTitle(position: Int): CharSequence {
-        return super.getPageTitle(position)
+        return channels[position].name
     }
 }

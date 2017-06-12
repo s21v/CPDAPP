@@ -1,7 +1,8 @@
 <resources>
-    <string name="app_name">YuQing</string>
+    <string name="app_name">舆情</string>
     <string name="news">新闻</string>
     <string name="paper">报纸</string>
     <string name="pic">图片</string>
     <string name="video">视频</string>
+    <string name="search_hint">请输入关键词搜索相关新闻</string>
 </resources>
