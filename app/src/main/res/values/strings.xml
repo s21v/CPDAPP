@@ -5,4 +5,5 @@
     <string name="pic">图片</string>
     <string name="video">视频</string>
     <string name="search_hint">请输入关键词搜索相关新闻</string>
+    <string name="searchedResult">搜索历史</string>
 </resources>

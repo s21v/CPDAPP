@@ -11,20 +11,41 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:id="@+id/searchedTagFrame">
             <com.cpd.yuqing.view.AutoChangeLineLayout
-                android:background="@color/colorAccent"
+                android:focusable="false"
+                android:descendantFocusability="afterDescendants"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/searched"/>
+                android:layout_height="wrap_content"
+                android:id="@+id/tagLayout"
+                android:layout_below="@id/clearTagImageButton"
+                android:layout_alignParentLeft="true"
+                app:ItemLRMargin="4dp"
+                app:LineSpace="4dp"/>
             <ImageButton
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:src="@android:drawable/ic_menu_delete"/>
-        </LinearLayout>
-
+                android:id="@+id/clearTagImageButton"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:background="@android:drawable/ic_menu_delete"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_alignBottom="@id/clearTagImageButton"
+                android:text="@string/searchedResult"
+                android:layout_toLeftOf="@id/clearTagImageButton"
+                android:layout_alignParentTop="true"/>
+        </RelativeLayout>
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/resultRecyclerView"
+            android:visibility="gone"/>
     </FrameLayout>
 </LinearLayout>
