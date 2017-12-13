@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <import type="com.cpd.yuqing.db.vo.News"/>
+        <variable name="news" type="News"/>
+    </data>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:drawableStart="@mipmap/news_source"
+            android:text="@{news.source}"
+            android:singleLine="true"
+            android:textSize="12sp" />
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="@{news.pub_time}"
+            android:textSize="12sp"
+            android:singleLine="true"
+            android:drawableStart="@mipmap/publish_time"/>
+        <!--<TextView android:drawableLeft="@mipmap/chat_bubble"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="left"-->
+            <!--android:singleLine="true"-->
+            <!--android:text="@{news.getFormatCommentCount()}"/>-->
+    </LinearLayout>
+</layout>
+
+

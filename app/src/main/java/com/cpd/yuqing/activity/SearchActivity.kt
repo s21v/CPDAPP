@@ -161,15 +161,11 @@ class SearchActivity : AppCompatActivity() {
     inner class searchResultAdapter(var keyword: String, var resultList: List<String>) : BaseAdapter() {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-            val view: View
-            val tv: TextView
+            val view: TextView
             if (convertView == null) {
                 view = layoutInflater.inflate(android.R.layout.simple_list_item_1, null, false) as TextView
-                tv = view.findViewById(android.R.id.text1) as TextView
-                view.tag = tv
             } else {
-                view = convertView
-                tv = view.tag as TextView
+                view = convertView as TextView
             }
             //给关键词标记颜色
             val currentString = getItem(position) as String
@@ -177,7 +173,7 @@ class SearchActivity : AppCompatActivity() {
             val end = start+(keyword.length)
             val spannableString = SpannableString(currentString)
             spannableString.setSpan(ForegroundColorSpan(Color.RED), start, end, SpannableStringBuilder.SPAN_INCLUSIVE_EXCLUSIVE)
-            tv.text = spannableString
+            view.text = spannableString
             return view
         }
 
