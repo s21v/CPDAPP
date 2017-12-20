@@ -191,7 +191,6 @@ class NewsFragment : Fragment() {
                     swipeRefresh.visibility = View.VISIBLE
                 }
             } else {
-                //todo: 首次下载新闻失败
                 waitingPage.visibility = View.GONE
                 reloadPage.visibility = View.VISIBLE
             }

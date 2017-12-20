@@ -107,6 +107,7 @@ class GalleryView(context: Context, attrs: AttributeSet) : RelativeLayout(contex
             imageView.layoutParams = ViewPager.LayoutParams()
             imageView.scaleType = ImageView.ScaleType.FIT_XY
             GlideApp.with(context).load(data!![position].picUrls.split(" ")[0]).into(imageView)
+            imageView.setOnClickListener(OnNewsClickListener(context, data!![position]))
             container?.addView(imageView)
             return imageView
         }

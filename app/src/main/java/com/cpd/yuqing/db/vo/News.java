@@ -172,4 +172,8 @@ public class News implements Parcelable{
                 ", picUrls=" + picUrls +
                 '}';
     }
+
+    public static String posterMix(final String poster) {
+        return "责任编辑:"+poster;
+    }
 }

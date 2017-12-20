@@ -16,6 +16,7 @@ import com.cpd.yuqing.databinding.News0picLayoutBinding
 import com.cpd.yuqing.databinding.News1picLayoutBinding
 import com.cpd.yuqing.util.GlideApp
 import com.cpd.yuqing.view.GalleryView
+import com.cpd.yuqing.view.OnNewsClickListener
 
 
 /**
@@ -88,11 +89,13 @@ class NewsRecyclerViewAdapter(val context: Context, dataList: ArrayList<News>) :
                 is NoPicViewHolder -> {
                     holder.viewDataBinding.setVariable(BR.news, news)
                     holder.viewDataBinding.executePendingBindings()
+                    holder.viewDataBinding.root.setOnClickListener(OnNewsClickListener(context, news))
                 }
                 is HasPicViewHolder -> {
                     holder.viewDataBinding.setVariable(BR.news, news)
                     holder.viewDataBinding.executePendingBindings()
                     GlideApp.with(context).load(news.picUrls.split(" ")[0]).into(holder.viewDataBinding.image1)
+                    holder.viewDataBinding.root.setOnClickListener(OnNewsClickListener(context, news))
                 }
             }
         } else if (galleryData.isEmpty() && position<listData.size) {
@@ -101,11 +104,13 @@ class NewsRecyclerViewAdapter(val context: Context, dataList: ArrayList<News>) :
                 is NoPicViewHolder -> {
                     holder.viewDataBinding.setVariable(BR.news, news)
                     holder.viewDataBinding.executePendingBindings()
+                    holder.viewDataBinding.root.setOnClickListener(OnNewsClickListener(context, news))
                 }
                 is HasPicViewHolder -> {
                     holder.viewDataBinding.setVariable(BR.news, news)
                     holder.viewDataBinding.executePendingBindings()
                     GlideApp.with(context).load(news.picUrls.split(" ")[0]).into(holder.viewDataBinding.image1)
+                    holder.viewDataBinding.root.setOnClickListener(OnNewsClickListener(context, news))
                 }
             }
         }

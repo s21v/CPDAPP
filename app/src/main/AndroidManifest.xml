@@ -30,7 +30,7 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="Mgt5GZDWF5HfY0IG9TdMxMPyis9AiYG4"/>
-        <activity android:name=".activity.MainActivity"/>
+        <activity android:name=".activity.MainActivity" android:launchMode="singleTop"/>
 
         <activity android:name=".activity.SearchActivity" android:launchMode="singleTop">
             <intent-filter>
@@ -95,6 +95,13 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".activity.BindUserActivity"
             android:label="@string/bindUser"/>
+
+        <activity android:name=".activity.NewsContentActivity"
+            android:parentActivityName=".activity.MainActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity">
+            </meta-data>
+        </activity>
 
         <service android:name="com.baidu.location.f"
             android:enabled="true"
