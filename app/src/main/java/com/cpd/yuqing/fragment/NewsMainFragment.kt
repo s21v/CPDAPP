@@ -13,8 +13,8 @@ import com.cpd.yuqing.activity.SearchActivity
 import com.cpd.yuqing.adapter.NewsViewPagerAdapter
 import com.cpd.yuqing.db.dao.ChannelDao
 import com.cpd.yuqing.db.vo.Channel
+import com.cpd.yuqing.util.NetUtils
 import com.cpd.yuqing.util.OkHttpUtils
-import com.cpd.yuqing.util.Url_IP_Utils
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -40,7 +40,6 @@ class NewsMainFragment : Fragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         tabLayout.setupWithViewPager(viewPage, true)
-
         //检查本地的栏目是否存在（第一次使用app（本地栏目版本为0）需从服务器上下载栏目列表）
         val channelSharedPreferences = context.getSharedPreferences("channelInfo", Context.MODE_PRIVATE)
         val localChannelListVersion = channelSharedPreferences.getInt("localChannelListVersion", 0)
@@ -48,7 +47,7 @@ class NewsMainFragment : Fragment() {
         if (localChannelListVersion == 0) {
             //查询线上栏目版本
             val formBody = FormBody.Builder().add("m", "channelInfo").build()
-            val request = Request.Builder().url(Url_IP_Utils.ChannelCommonUrl).post(formBody).build()
+            val request = Request.Builder().url(NetUtils.ChannelCommonUrl).post(formBody).build()
             OkHttpUtils.getOkHttpUtilInstance(activity)!!.httpConnection(request, object : Callback {
                 override fun onFailure(call: Call?, e: IOException?) {
                     TODO("not implemented 栏目版本获取失败" + e?.message)
@@ -59,7 +58,6 @@ class NewsMainFragment : Fragment() {
                     if ("success" == status) {
                         val channelVersion = response.header("channelVersion")
                         channelList = Gson().fromJson(response.body()!!.string(), object : TypeToken<ArrayList<Channel>>() {}.type)
-                        viewPage.adapter = NewsViewPagerAdapter((activity as AppCompatActivity).supportFragmentManager, channelList!!)
                         var size = channelList!!.size
                         channelList!!.forEach { it.sortNum = size-- }
                         //将信息写入本地系统
@@ -68,6 +66,9 @@ class NewsMainFragment : Fragment() {
                                 .apply()
                         ChannelDao.getInstance(activity).insertChannelList(channelList!!)
                         ChannelDao.getInstance(activity).closeDB()
+                        activity.runOnUiThread{
+                            viewPage.adapter = NewsViewPagerAdapter((activity as AppCompatActivity).supportFragmentManager, channelList!!)
+                        }
                     } else {
                         TODO("栏目版本获取失败 version fail")
                     }
@@ -78,7 +79,7 @@ class NewsMainFragment : Fragment() {
             if (needUpdate) {
                 //从服务器端更新栏目信息
                 val fromBody = FormBody.Builder().add("m", "queryAllChannel").build()
-                val request = Request.Builder().url(Url_IP_Utils.ChannelCommonUrl).post(fromBody).build()
+                val request = Request.Builder().url(NetUtils.ChannelCommonUrl).post(fromBody).build()
                 OkHttpUtils.getOkHttpUtilInstance(activity)!!.httpConnection(request, object : Callback {
                     override fun onFailure(call: Call?, e: IOException?) {
                         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

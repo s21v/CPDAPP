@@ -39,4 +39,5 @@
     <string name="refreshMore">加载新闻</string>
     <string name="cpd_destination">警界最强音，传播零距离！</string>
     <string name="menu">菜单</string>
+    <string name="dismiss">取消</string>
 </resources>

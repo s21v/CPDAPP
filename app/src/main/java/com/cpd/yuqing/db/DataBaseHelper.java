@@ -3,12 +3,14 @@ package com.cpd.yuqing.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by s21v on 2017/4/20.
  */
 
 public class DataBaseHelper extends SQLiteOpenHelper {
+    private static final String TAG = DataBaseHelper.class.getSimpleName();
     public static final String DATABASE_NAME = "CpdNews_db";
     private static final String CREATE_USER_TABLE = "create table user" +
             "(_id integer primary key autoincrement," +

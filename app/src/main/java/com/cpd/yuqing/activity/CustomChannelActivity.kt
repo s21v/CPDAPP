@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.ClipData
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
@@ -63,7 +64,7 @@ class CustomChannelActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId) {
+        when (item?.itemId) {
             android.R.id.home -> {
                 exit()
             }
@@ -92,9 +93,15 @@ class CustomChannelActivity : AppCompatActivity() {
                 holder.view.setTextColor(resources.getColor(R.color.sign_in_button_click, null))
             } else {
                 holder.view.setOnLongClickListener {
-                    holder.view.startDragAndDrop(ClipData.newPlainText("sourcePosition",
-                            selectedChannelList.getChildAdapterPosition(holder.view).toString()),
-                            View.DragShadowBuilder(holder.view), null, 0)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        holder.view.startDragAndDrop(ClipData.newPlainText("sourcePosition",
+                                selectedChannelList.getChildAdapterPosition(holder.view).toString()),
+                                View.DragShadowBuilder(holder.view), null, 0)
+                    } else {
+                        holder.view.startDrag(ClipData.newPlainText("sourcePosition",
+                                selectedChannelList.getChildAdapterPosition(holder.view).toString()),
+                                View.DragShadowBuilder(holder.view), null, 0)
+                    }
                     true
                 }
 
@@ -111,12 +118,12 @@ class CustomChannelActivity : AppCompatActivity() {
                                 val subChannelList: ArrayList<Channel>
                                 //调整显示顺序
                                 sourceItem.sortNum = destItem.sortNum
-                                if(sourcePosition > destPosition) {
+                                if (sourcePosition > destPosition) {
                                     subChannelList = ArrayList(channelListDate.subList(destPosition, sourcePosition))
-                                    subChannelList.forEach { it.sortNum-=1 }
+                                    subChannelList.forEach { it.sortNum -= 1 }
                                 } else {
-                                    subChannelList = ArrayList(channelListDate.subList(sourcePosition+1, destPosition+1))
-                                    subChannelList.forEach { it.sortNum+=1 }
+                                    subChannelList = ArrayList(channelListDate.subList(sourcePosition + 1, destPosition + 1))
+                                    subChannelList.forEach { it.sortNum += 1 }
                                 }
                                 //在数据结构中对换两项
                                 channelListDate.removeAt(sourcePosition)
@@ -134,21 +141,21 @@ class CustomChannelActivity : AppCompatActivity() {
                 holder.view.setOnClickListener {
                     val changeChannel: Channel
                     if (isSelected) {   //已选栏目的点击操作
-                        val position = selectedChannelList.getChildAdapterPosition(it)
-                        changeChannel = selectedChannelListData!![position]
+                        val selectChannelPosition = selectedChannelList.getChildAdapterPosition(it)
+                        changeChannel = selectedChannelListData!![selectChannelPosition]
                         changeChannel.sortNum = -1
                         unselectedChannelListData!!.add(changeChannel)
-                        selectedChannelListData!!.removeAt(position)
-                        selectedChannelList!!.adapter.notifyItemRemoved(position)
-                        unSelectedChannelList!!.adapter.notifyItemInserted(unselectedChannelListData!!.size-1)
+                        selectedChannelListData!!.removeAt(selectChannelPosition)
+                        selectedChannelList!!.adapter.notifyItemRemoved(selectChannelPosition)
+                        unSelectedChannelList!!.adapter.notifyItemInserted(unselectedChannelListData!!.size - 1)
                     } else {    //未选栏目的点击操作
-                        val position = unSelectedChannelList.getChildAdapterPosition(it)
-                        changeChannel = unselectedChannelListData!![position]
+                        val unSelectedChannelPosition = unSelectedChannelList.getChildAdapterPosition(it)
+                        changeChannel = unselectedChannelListData!![unSelectedChannelPosition]
                         changeChannel.sortNum = 0
                         selectedChannelListData!!.add(changeChannel)
-                        unselectedChannelListData!!.removeAt(position)
-                        unSelectedChannelList!!.adapter.notifyItemRemoved(position)
-                        selectedChannelList!!.adapter.notifyItemInserted(selectedChannelListData!!.size-1)
+                        unselectedChannelListData!!.removeAt(unSelectedChannelPosition)
+                        unSelectedChannelList!!.adapter.notifyItemRemoved(unSelectedChannelPosition)
+                        selectedChannelList!!.adapter.notifyItemInserted(selectedChannelListData!!.size - 1)
                     }
                     //更新数据库
                     ChannelDao.getInstance(this@CustomChannelActivity).updateChannel(arrayListOf(changeChannel))
@@ -156,10 +163,10 @@ class CustomChannelActivity : AppCompatActivity() {
             }
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ChannelViewHolder{
+        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ChannelViewHolder {
             val view = TextView(this@CustomChannelActivity)
             val margin = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4f, resources.displayMetrics)
-            val marginLayoutParams = ViewGroup.MarginLayoutParams(ViewGroup.MarginLayoutParams.MATCH_PARENT,ViewGroup.MarginLayoutParams.WRAP_CONTENT)
+            val marginLayoutParams = ViewGroup.MarginLayoutParams(ViewGroup.MarginLayoutParams.MATCH_PARENT, ViewGroup.MarginLayoutParams.WRAP_CONTENT)
             marginLayoutParams.setMargins(margin.toInt(), margin.toInt(), margin.toInt(), margin.toInt())
             view.layoutParams = marginLayoutParams
             view.setLines(1)
@@ -173,10 +180,6 @@ class CustomChannelActivity : AppCompatActivity() {
         }
 
         inner class ChannelViewHolder(var view: TextView) : RecyclerView.ViewHolder(view)
-    }
-
-    companion object {
-        val TAG = CustomChannelActivity::class.java.simpleName
     }
 }
 

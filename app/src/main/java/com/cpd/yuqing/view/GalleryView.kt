@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.*
 import com.cpd.yuqing.R
 import com.cpd.yuqing.db.vo.News
+import com.cpd.yuqing.util.DensityUtils
 import com.cpd.yuqing.util.GlideApp
 
 /**

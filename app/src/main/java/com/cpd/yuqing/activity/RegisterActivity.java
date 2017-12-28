@@ -16,7 +16,7 @@ import com.cpd.yuqing.CpdnewsApplication;
 import com.cpd.yuqing.R;
 import com.cpd.yuqing.db.dao.UserDao;
 import com.cpd.yuqing.db.vo.User;
-import com.cpd.yuqing.util.Url_IP_Utils;
+import com.cpd.yuqing.util.NetUtils;
 import com.cpd.yuqing.util.OkHttpUtils;
 import com.cpd.yuqing.util.Utils;
 import org.json.JSONException;
@@ -162,7 +162,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                 }
                             }
                             Request request = new Request.Builder()
-                                    .url(Url_IP_Utils.INSTANCE.getUserCommonURL())
+                                    .url(NetUtils.UserCommonURL)
                                     .post(formEntry)
                                     .build();
                             OkHttpUtils.Companion.getOkHttpUtilInstance(getApplicationContext())

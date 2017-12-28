@@ -176,4 +176,5 @@ public class News implements Parcelable{
     public static String posterMix(final String poster) {
         return "责任编辑:"+poster;
     }
+    public static String minPubTime(final String pubTime) { return pubTime.split("\\s+")[0];}
 }

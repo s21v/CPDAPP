@@ -11,8 +11,8 @@ import android.view.View
 import com.cpd.yuqing.R
 import com.cpd.yuqing.fragment.LocationFragment
 import com.cpd.yuqing.fragment.NewsMainFragment
+import com.cpd.yuqing.util.NetUtils
 import com.cpd.yuqing.util.OkHttpUtils
-import com.cpd.yuqing.util.Url_IP_Utils
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
 import java.io.IOException
@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         val localChannelVersion = sharedPreferences.getInt("localChannelListVersion", 0)
         //获取远程栏目信息
         val formBody = FormBody.Builder().add("m", "version").build()
-        val request4Version = Request.Builder().url(Url_IP_Utils.ChannelCommonUrl).post(formBody).build()
+        val request4Version = Request.Builder().url(NetUtils.ChannelCommonUrl).post(formBody).build()
         OkHttpUtils.getOkHttpUtilInstance(this)!!.httpConnection(request4Version, object:Callback{
             override fun onFailure(call: Call?, e: IOException?) {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

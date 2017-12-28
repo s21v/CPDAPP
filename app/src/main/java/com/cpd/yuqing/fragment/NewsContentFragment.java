@@ -1,25 +1,29 @@
 package com.cpd.yuqing.fragment;
 
+import android.annotation.SuppressLint;
 import android.databinding.DataBindingUtil;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
-
+import android.widget.PopupWindow;
 import com.cpd.yuqing.R;
 import com.cpd.yuqing.databinding.FragmentNewsContentBinding;
 import com.cpd.yuqing.db.vo.News;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -33,6 +37,7 @@ import java.util.regex.Pattern;
 
 public class NewsContentFragment extends Fragment {
     private News news;
+    private PopupWindow mPopupWindow;
     private static final String TAG = NewsContentFragment.class.getSimpleName();
 
     public static NewsContentFragment getInstance(News news) {
@@ -54,6 +59,7 @@ public class NewsContentFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -61,8 +67,7 @@ public class NewsContentFragment extends Fragment {
             DataBinding在Activity中使用：DataBindingUtil.setContentView(...)
             DataBinding在Fragment中使用：DataBindingUtil.inflate(...)
         */
-        FragmentNewsContentBinding dataBinding = DataBindingUtil.inflate(inflater,
-                R.layout.fragment_news_content, container, false);
+        FragmentNewsContentBinding dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_news_content, container, false);
         dataBinding.setNews(news);
         View rootView = dataBinding.getRoot();
         WebView contentWebView = rootView.findViewById(R.id.contentWebView);
@@ -137,9 +142,31 @@ public class NewsContentFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.openMenu) {
-            Log.i(TAG, "打开菜单");
+            showPopupWindow();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void initPopupWindow() {
+        @SuppressLint("InflateParams")
+        View root = LayoutInflater.from(getContext()).inflate(R.layout.news_content_popupmenu, null);
+        Button dismissBtn = root.findViewById(R.id.dismiss);
+        dismissBtn.setOnClickListener(it -> mPopupWindow.dismiss());
+        mPopupWindow = new PopupWindow(root, ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT, true);
+        //设置背景图后setOutsideTouchable()才有效
+        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+        //点击popupwindow以外的区域是否可以点击
+        mPopupWindow.setOutsideTouchable(true);
+//        //加载动画
+////        root.findViewById(R.id.bar).startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.newscontent_menu_enter));
+//        mPopupWindow.setAnimationStyle(R.style.newsContentMenuAnim);
+    }
+
+    private void showPopupWindow() {
+        if (mPopupWindow == null)
+            initPopupWindow();
+        mPopupWindow.showAtLocation(getView(), Gravity.BOTTOM, 0 , 0);
     }
 }

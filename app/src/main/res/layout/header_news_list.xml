@@ -6,4 +6,4 @@
     android:layout_height="180dp"
     app:barBackground="#88000000"
     app:textColor="@android:color/white"
-    app:textSize="8sp" />
+    app:textSize="6sp" />

@@ -24,7 +24,7 @@ public class DensityUtils {
     }
 
     public static float px2sp(Context context, float pxVal) {
-        final float scale = context.getResources().getDisplayMetrics().density;
+        final float scale = context.getResources().getDisplayMetrics().scaledDensity;
         return pxVal/scale;
     }
 

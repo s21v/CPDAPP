@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.cpd.yuqing.CpdnewsApplication;
 import com.cpd.yuqing.R;
 import com.cpd.yuqing.db.vo.User;
-import com.cpd.yuqing.util.Url_IP_Utils;
+import com.cpd.yuqing.util.NetUtils;
 import com.cpd.yuqing.util.OkHttpUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -109,7 +109,7 @@ public class BindUserActivity extends AppCompatActivity implements View.OnClickL
                             if(requestBody != null) {
                                 Log.i(TAG, "afterEvent: platformUserID"+platformUserID);
                                 Request request = new Request.Builder()
-                                        .url(Url_IP_Utils.INSTANCE.getUserCommonURL())
+                                        .url(NetUtils.UserCommonURL)
                                         .post(requestBody)
                                         .build();
                                 OkHttpUtils.Companion.getOkHttpUtilInstance(getApplicationContext())

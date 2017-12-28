@@ -115,9 +115,8 @@ class ChannelDao private constructor(context: Context) : Dao(context) {
                         instance = ChannelDao(context)
                     }
                 }
-            } else {
-                instance!!.openDB(context)
             }
+            instance!!.openDB(context)
             return instance!!
         }
     }

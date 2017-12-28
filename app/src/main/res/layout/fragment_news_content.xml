@@ -39,18 +39,20 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="start"
-                android:text="@{news.pub_time}"
+                android:text="@{News.minPubTime(news.pub_time)}"
                 android:textSize="12sp" />
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:gravity="center"
                 android:text="@{news.source}"
                 android:textSize="12sp" />
 
             <TextView
+                android:maxLines="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

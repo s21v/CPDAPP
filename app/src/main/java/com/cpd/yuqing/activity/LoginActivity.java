@@ -33,7 +33,7 @@ import com.cpd.yuqing.R;
 import com.cpd.yuqing.contentProvider.UserContentProvider;
 import com.cpd.yuqing.db.dao.UserDao;
 import com.cpd.yuqing.db.vo.User;
-import com.cpd.yuqing.util.Url_IP_Utils;
+import com.cpd.yuqing.util.NetUtils;
 import com.cpd.yuqing.util.Utils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -172,7 +172,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         .add("p", Utils.SHAEncrypt(mPasswordView.getText().toString()))
                         .build();
                 Request request = new Request.Builder()
-                        .url(Url_IP_Utils.INSTANCE.getUserCommonURL())
+                        .url(NetUtils.UserCommonURL)
                         .post(requestBody)
                         .build();
                 OkHttpUtils.Companion.getOkHttpUtilInstance(getApplicationContext())
@@ -322,7 +322,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     .add("pName", platformName)
                     .build();
             Request request = new Request.Builder()
-                    .url(Url_IP_Utils.INSTANCE.getUserCommonURL())
+                    .url(NetUtils.UserCommonURL)
                     .post(requestBody)
                     .build();
             OkHttpUtils.Companion.getOkHttpUtilInstance(getApplicationContext())

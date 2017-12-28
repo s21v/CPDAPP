@@ -2,6 +2,7 @@ package com.cpd.yuqing.util
 
 import android.content.Context
 import android.os.Environment
+import android.util.Log
 import com.bumptech.glide.Glide
 import com.bumptech.glide.GlideBuilder
 import com.bumptech.glide.Registry
@@ -39,9 +40,9 @@ class GlideUtils : AppGlideModule() {
                 .format(DecodeFormat.PREFER_ARGB_8888))
         //如果外部存储可用使用外部磁盘缓存，否则使用内部磁盘缓存
         if (Environment.MEDIA_MOUNTED == Environment.getExternalStorageState())
-            builder.setDiskCache(ExternalCacheDiskCacheFactory(context, 50 shl 20))
+            builder.setDiskCache(ExternalCacheDiskCacheFactory(context, "glideDiskCache", 50 shl 20))
         else
-            builder.setDiskCache(InternalCacheDiskCacheFactory(context, 20 shl 20))
+            builder.setDiskCache(InternalCacheDiskCacheFactory(context, "glideDiskCache", 20 shl 20))
         //设置内存缓存大小
         val calculator = MemorySizeCalculator.Builder(context!!)
                 .setMemoryCacheScreens(3f)
