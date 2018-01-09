@@ -6,4 +6,14 @@
         <attr name="barBackground" format="color"/>
         <attr name="textColor" format="color"/>
     </declare-styleable>
+
+    <declare-styleable name="FontSizeView">
+        <attr name="fontSizeNameArray" format="reference"/>
+        <attr name="fontSizeValueArray" format="reference"/>
+        <attr name="fontTextSize" format="dimension"/>
+        <attr name="sliderBackground" format="reference"/>
+        <attr name="lineTopSpaceSize" format="dimension"/>
+        <attr name="lineHeight" format="dimension"/>
+        <attr name="lineColor" format="color"/>
+    </declare-styleable>
 </resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="FontSizeName">
+        <item>超小</item>
+        <item>小</item>
+        <item>中</item>
+        <item>大</item>
+        <item>超大</item>
+    </string-array>
+
+    <integer-array name="FontSizeValue">
+        <item>12</item>
+        <item>14</item>
+        <item>16</item>
+        <item>20</item>
+        <item>24</item>
+    </integer-array>
+</resources>

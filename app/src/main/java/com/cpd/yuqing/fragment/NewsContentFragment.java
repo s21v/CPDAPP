@@ -24,6 +24,7 @@ import android.widget.PopupWindow;
 import com.cpd.yuqing.R;
 import com.cpd.yuqing.databinding.FragmentNewsContentBinding;
 import com.cpd.yuqing.db.vo.News;
+import com.cpd.yuqing.view.FontSizeView;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -31,14 +32,17 @@ import java.nio.charset.Charset;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * Created by s21v on 2017/12/15.
  */
 
-public class NewsContentFragment extends Fragment {
+public class NewsContentFragment extends Fragment implements FontSizeView.SliderPositionChangeListener{
     private News news;
     private PopupWindow mPopupWindow;
-    private static final String TAG = NewsContentFragment.class.getSimpleName();
+    private WebView contentWebView;
+//    private static final String TAG = NewsContentFragment.class.getSimpleName();
 
     public static NewsContentFragment getInstance(News news) {
         NewsContentFragment newsContentFragment = new NewsContentFragment();
@@ -70,7 +74,7 @@ public class NewsContentFragment extends Fragment {
         FragmentNewsContentBinding dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_news_content, container, false);
         dataBinding.setNews(news);
         View rootView = dataBinding.getRoot();
-        WebView contentWebView = rootView.findViewById(R.id.contentWebView);
+        contentWebView = rootView.findViewById(R.id.contentWebView);
         //不显示滚动条
         contentWebView.setVerticalScrollBarEnabled(false);
         //设置webView,支持JavaScript
@@ -121,9 +125,20 @@ public class NewsContentFragment extends Fragment {
                 }
             }
         });
-//        Button textSizeUp = rootView.findViewById(R.id.textSizeUp);
-//        textSizeUp.setOnClickListener(it -> contentWebView.loadUrl("javascript:textSizeChange(30)"));
         return rootView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //加载用户指定的字体大小
+        int[] fontSizeValues = getResources().getIntArray(R.array.FontSizeValue);
+        int defaultFontSizeValue = fontSizeValues[fontSizeValues.length/2];
+        int fontSizeValue = getContext().getSharedPreferences("contentSetting", MODE_PRIVATE)
+                .getInt("currentFontSizeValue", defaultFontSizeValue);
+        Log.i("NewsContentFragment", "fontSizeValue:"+fontSizeValue+", middle:"+fontSizeValues[fontSizeValues.length/2]);
+        if (fontSizeValue != defaultFontSizeValue)
+            contentWebView.loadUrl(String.format("javascript:textSizeChange(%d)", fontSizeValue));
     }
 
     @Override
@@ -151,6 +166,8 @@ public class NewsContentFragment extends Fragment {
     private void initPopupWindow() {
         @SuppressLint("InflateParams")
         View root = LayoutInflater.from(getContext()).inflate(R.layout.news_content_popupmenu, null);
+        FontSizeView fontSizeView = root.findViewById(R.id.fontSizeView);
+        fontSizeView.setCallBack(this);
         Button dismissBtn = root.findViewById(R.id.dismiss);
         dismissBtn.setOnClickListener(it -> mPopupWindow.dismiss());
         mPopupWindow = new PopupWindow(root, ViewGroup.LayoutParams.MATCH_PARENT,
@@ -160,7 +177,6 @@ public class NewsContentFragment extends Fragment {
         //点击popupwindow以外的区域是否可以点击
         mPopupWindow.setOutsideTouchable(true);
 //        //加载动画
-////        root.findViewById(R.id.bar).startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.newscontent_menu_enter));
 //        mPopupWindow.setAnimationStyle(R.style.newsContentMenuAnim);
     }
 
@@ -168,5 +184,11 @@ public class NewsContentFragment extends Fragment {
         if (mPopupWindow == null)
             initPopupWindow();
         mPopupWindow.showAtLocation(getView(), Gravity.BOTTOM, 0 , 0);
+    }
+
+    @SuppressLint("DefaultLocale")
+    @Override
+    public void onSliderPositionChange(int currentSliderValue) {
+        contentWebView.loadUrl(String.format("javascript:textSizeChange(%d)", currentSliderValue));
     }
 }
