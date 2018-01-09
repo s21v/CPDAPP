@@ -26,7 +26,7 @@ public class NewsContentActivity extends AppCompatActivity{
         setSupportActionBar(findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragmentNewsContentContainer, NewsContentFragment.getInstance(mNews))
+                .replace(R.id.fragmentNewsContentContainer, NewsContentFragment.getInstance(mNews))
                 .commit();
     }
 

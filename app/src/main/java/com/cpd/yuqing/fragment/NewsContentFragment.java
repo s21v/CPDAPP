@@ -80,16 +80,16 @@ public class NewsContentFragment extends Fragment implements FontSizeView.Slider
         //设置webView,支持JavaScript
         WebSettings webSettings = contentWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        //有图片时,对文本进行缩放
-        if (!news.getPicUrls().isEmpty()) {
-            //设置可以支持缩放
-            webSettings.setSupportZoom(true);
-            //扩大比例的缩放
-            webSettings.setUseWideViewPort(true);
-            //自适应屏幕
-            webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
-            webSettings.setLoadWithOverviewMode(true);
-        }
+//        //有图片时,对文本进行缩放 效果不如设置css好 放弃
+//        if (!news.getPicUrls().isEmpty()) {
+//            //设置可以支持缩放
+//            webSettings.setSupportZoom(true);
+//            //扩大比例的缩放
+//            webSettings.setUseWideViewPort(true);
+//            //自适应屏幕
+//            webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
+//            webSettings.setLoadWithOverviewMode(true);
+//        }
         //获得baseUrl
         String baseUrl = "http://www.cpd.com.cn";
         Pattern baseUrlPattern = Pattern.compile("(http://.*?)/.*");
@@ -120,25 +120,20 @@ public class NewsContentFragment extends Fragment implements FontSizeView.Slider
                     while((line = reader.readLine()) != null)
                         sb.append(line);
                     view.loadUrl("javascript:"+sb.toString());
+                    //加载用户指定的字体大小
+                    int[] fontSizeValues = getResources().getIntArray(R.array.FontSizeValue);
+                    int defaultFontSizeValue = fontSizeValues[fontSizeValues.length/2];
+                    int fontSizeValue = getContext().getSharedPreferences("contentSetting", MODE_PRIVATE)
+                            .getInt("currentFontSizeValue", defaultFontSizeValue);
+                    Log.i("NewsContentFragment", "fontSizeValue:"+fontSizeValue+", middle:"+fontSizeValues[fontSizeValues.length/2]);
+                    if (fontSizeValue != defaultFontSizeValue)
+                        view.loadUrl(String.format("javascript:textSizeChange(%d)", fontSizeValue));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         });
         return rootView;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        //加载用户指定的字体大小
-        int[] fontSizeValues = getResources().getIntArray(R.array.FontSizeValue);
-        int defaultFontSizeValue = fontSizeValues[fontSizeValues.length/2];
-        int fontSizeValue = getContext().getSharedPreferences("contentSetting", MODE_PRIVATE)
-                .getInt("currentFontSizeValue", defaultFontSizeValue);
-        Log.i("NewsContentFragment", "fontSizeValue:"+fontSizeValue+", middle:"+fontSizeValues[fontSizeValues.length/2]);
-        if (fontSizeValue != defaultFontSizeValue)
-            contentWebView.loadUrl(String.format("javascript:textSizeChange(%d)", fontSizeValue));
     }
 
     @Override

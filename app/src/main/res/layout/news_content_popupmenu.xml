@@ -68,7 +68,7 @@
             android:id="@+id/fontSizeView"
             app:fontSizeNameArray="@array/FontSizeName"
             app:fontSizeValueArray="@array/FontSizeValue"
-            app:fontTextSize="5sp"
+            app:fontTextSize="12sp"
             app:lineTopSpaceSize="32dp"
             app:lineHeight="1dp"
             app:lineColor="@color/colorPrimary"

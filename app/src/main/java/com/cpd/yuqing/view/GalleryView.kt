@@ -65,7 +65,7 @@ class GalleryView(context: Context, attrs: AttributeSet) : RelativeLayout(contex
         //添加标题
         textView = TextView(context)
         textView?.text = data!![0].homePageTitle    //初始化
-        textView!!.textSize = textSize
+        textView!!.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
         textView!!.setTextColor(textColor)
         textView!!.paint.isFakeBoldText = true
         textView!!.setPadding(0,4,0,4)

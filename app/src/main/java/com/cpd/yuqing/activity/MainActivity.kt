@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         }
         //初始的栏目
         supportFragmentManager.beginTransaction()
-                .add(R.id.mainFragmentContent, NewsMainFragment(), "homeFragment")
+                .replace(R.id.mainFragmentContent, NewsMainFragment(), "homeFragment")
                 .commit()
     }
 

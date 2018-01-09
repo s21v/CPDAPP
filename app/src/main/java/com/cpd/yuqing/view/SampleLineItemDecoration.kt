@@ -30,10 +30,10 @@ class SampleLineItemDecoration(context: Context, colorRes: Int, orientation: Int
         paint.style = Paint.Style.FILL
         paint.color = mFillColor
         val left = parent!!.paddingLeft
-        val right = parent!!.width - parent!!.paddingRight
-        val childCount = parent!!.childCount
+        val right = parent.width - parent.paddingRight
+        val childCount = parent.childCount
         for (i in 1 until childCount-1) {
-            val childView = parent!!.getChildAt(i)
+            val childView = parent.getChildAt(i)
             val layoutParams = childView.layoutParams as RecyclerView.LayoutParams
             val top = childView.bottom + layoutParams.topMargin + layoutParams.bottomMargin
             val bottom = top + mLineSize
@@ -47,10 +47,10 @@ class SampleLineItemDecoration(context: Context, colorRes: Int, orientation: Int
         paint.style = Paint.Style.FILL
         paint.color = mFillColor
         val top = parent!!.paddingTop
-        val bottom = parent!!.height - parent!!.bottom
-        val childCount = parent!!.childCount
+        val bottom = parent.height - parent.bottom
+        val childCount = parent.childCount
         for (i in 1 until childCount-1) {
-            val childView = parent!!.getChildAt(i)
+            val childView = parent.getChildAt(i)
             val layoutParams = childView.layoutParams as RecyclerView.LayoutParams
             val left = childView.width + layoutParams.leftMargin + layoutParams.rightMargin
             val right = left + mLineSize

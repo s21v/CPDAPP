@@ -9,6 +9,7 @@ import android.support.v4.view.ViewCompat
 import android.support.v4.widget.ViewDragHelper
 import android.util.AttributeSet
 import android.util.Log
+import android.util.TypedValue
 import android.view.*
 import android.widget.TextView
 import com.cpd.yuqing.R
@@ -49,7 +50,7 @@ class FontSizeView : ViewGroup{
         for (i in 0 until fontSizeName.size) {
             val textView = TextView(context)
             textView.text = fontSizeName[i]
-            textView.textSize = textSize
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
             textView.gravity = Gravity.CENTER
             textView.setTextColor(Color.BLACK)
             fontTextView.add(textView)
