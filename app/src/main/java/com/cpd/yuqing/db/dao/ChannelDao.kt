@@ -9,7 +9,7 @@ import java.util.ArrayList
  * Created by s21v on 2017/11/10.
  */
 
-class ChannelDao private constructor(context: Context) : Dao(context) {
+class ChannelDao private constructor(context: Context) : Dao(context, 2) {
 
     //向数据库中写入
     fun insert(channel: Channel): Long {
