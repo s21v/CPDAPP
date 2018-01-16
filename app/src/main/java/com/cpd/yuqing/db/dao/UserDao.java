@@ -15,7 +15,7 @@ public class UserDao extends Dao{
     private static UserDao mInstance;
 
     private UserDao(Context context) {
-        super(context, 1);
+        super(context);
     }
 
     //单例模式

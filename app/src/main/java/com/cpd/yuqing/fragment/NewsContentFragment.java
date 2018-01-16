@@ -1,6 +1,7 @@
 package com.cpd.yuqing.fragment;
 
 import android.annotation.SuppressLint;
+import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -20,9 +21,12 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import com.cpd.yuqing.R;
 import com.cpd.yuqing.databinding.FragmentNewsContentBinding;
+import com.cpd.yuqing.db.dao.NewsDao;
 import com.cpd.yuqing.db.vo.News;
 import com.cpd.yuqing.view.FontSizeView;
 import java.io.BufferedReader;
@@ -41,6 +45,10 @@ public class NewsContentFragment extends Fragment implements FontSizeView.Slider
     private News news;
     private PopupWindow mPopupWindow;
     private WebView contentWebView;
+    private NewsDao dao;
+    private boolean isFavorite;
+    private boolean isThumbUp;
+
 //    private static final String TAG = NewsContentFragment.class.getSimpleName();
 
     public static NewsContentFragment getInstance(News news) {
@@ -124,7 +132,6 @@ public class NewsContentFragment extends Fragment implements FontSizeView.Slider
                     int defaultFontSizeValue = fontSizeValues[fontSizeValues.length/2];
                     int fontSizeValue = getContext().getSharedPreferences("contentSetting", MODE_PRIVATE)
                             .getInt("currentFontSizeValue", defaultFontSizeValue);
-                    Log.i("NewsContentFragment", "fontSizeValue:"+fontSizeValue+", middle:"+fontSizeValues[fontSizeValues.length/2]);
                     if (fontSizeValue != defaultFontSizeValue)
                         view.loadUrl(String.format("javascript:textSizeChange(%d)", fontSizeValue));
                 } catch (IOException e) {
@@ -136,10 +143,39 @@ public class NewsContentFragment extends Fragment implements FontSizeView.Slider
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        dao = new NewsDao(getContext());
+        //更新新闻数据
+        Cursor cursor = dao.selectOne(news.getNews_id());
+        if (cursor.moveToFirst()){
+            isFavorite = cursor.getInt(cursor.getColumnIndex("favorite")) == 1;
+            isThumbUp = cursor.getInt(cursor.getColumnIndex("thumbUp")) == 1;
+        } else {
+            isFavorite = false;
+            isThumbUp = false;
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        dao.openDB(getContext());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (dao.isDBOpen())
+            dao.closeDB();
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (news != null)
-        outState.putParcelable("news", news);
+        if (news != null) {
+            outState.putParcelable("news", news);
+        }
     }
 
     @Override
@@ -160,10 +196,46 @@ public class NewsContentFragment extends Fragment implements FontSizeView.Slider
     private void initPopupWindow() {
         @SuppressLint("InflateParams")
         View root = LayoutInflater.from(getContext()).inflate(R.layout.news_content_popupmenu, null);
+        root.setOnClickListener(it -> mPopupWindow.dismiss());
         FontSizeView fontSizeView = root.findViewById(R.id.fontSizeView);
         fontSizeView.setCallBack(this);
+        //取消键
         Button dismissBtn = root.findViewById(R.id.dismiss);
         dismissBtn.setOnClickListener(it -> mPopupWindow.dismiss());
+        //收藏按钮
+        ImageButton favoriteBtn = root.findViewById(R.id.favoriteBtn);
+        if (isFavorite)
+            favoriteBtn.setImageResource(R.drawable.favorite_selected);
+        favoriteBtn.setOnClickListener(it -> {
+            //更新数据库
+            int result = dao.operation(news, NewsDao.Companion.getTYPE_FAVORITE(), isFavorite?0:1);
+            if (result == 1){   //数据库写入成功
+                //更新数据
+                isFavorite = !isFavorite;
+                //更新图片
+                if (isFavorite)
+                    ((ImageView)it).setImageResource(R.drawable.favorite_selected);
+                else
+                    ((ImageView)it).setImageResource(R.drawable.favorite_unselected);
+            }
+        });
+        //点赞按钮
+        ImageButton thumbUpBtn = root.findViewById(R.id.thumbUpBtn);
+        if (isThumbUp)
+            thumbUpBtn.setImageResource(R.drawable.thumbup_selected);
+        thumbUpBtn.setOnClickListener(it -> {
+            //更新数据库
+            int result = dao.operation(news, NewsDao.Companion.getTYPE_THUMBUP(), isThumbUp?0:1);
+            if (result == 1){   //数据库写入成功
+                //更新数据
+                isThumbUp = !isThumbUp;
+                //更新图片
+                if (isThumbUp)
+                    ((ImageView)it).setImageResource(R.drawable.thumbup_selected);
+                else
+                    ((ImageView)it).setImageResource(R.drawable.thumbup_unselected);
+            }
+        });
         mPopupWindow = new PopupWindow(root, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT, true);
         //设置背景图后setOutsideTouchable()才有效
@@ -177,7 +249,6 @@ public class NewsContentFragment extends Fragment implements FontSizeView.Slider
     private void showPopupWindow() {
         if (mPopupWindow == null)
             initPopupWindow();
-        Log.i("NewsContentFragment", getView().getClass().getName());
         mPopupWindow.showAtLocation(getView(), Gravity.BOTTOM, 0 , 0);
     }
 

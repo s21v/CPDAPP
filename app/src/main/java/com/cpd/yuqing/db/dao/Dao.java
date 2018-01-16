@@ -4,17 +4,17 @@ import android.content.Context;
 
 import com.cpd.yuqing.db.DataBaseHelper;
 
+import static com.cpd.yuqing.db.DataBaseHelper.DATABASE_VERSION;
+
 /**
  * Created by s21v on 2017/11/10.
  */
 
 public class Dao {
     protected DataBaseHelper mDataBaseHelper;
-    private int dbVersion;
 
-    public Dao(Context context, int version){
-        dbVersion = version;
-        mDataBaseHelper = new DataBaseHelper(context, DataBaseHelper.DATABASE_NAME, null, dbVersion);
+    public Dao(Context context){
+        mDataBaseHelper = new DataBaseHelper(context, DataBaseHelper.DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     public void closeDB () {
@@ -26,7 +26,7 @@ public class Dao {
 
     public void openDB (Context context) {
         if (mDataBaseHelper == null) {
-            mDataBaseHelper = new DataBaseHelper(context, DataBaseHelper.DATABASE_NAME, null, dbVersion);
+            mDataBaseHelper = new DataBaseHelper(context, DataBaseHelper.DATABASE_NAME, null, DATABASE_VERSION);
         }
     }
 

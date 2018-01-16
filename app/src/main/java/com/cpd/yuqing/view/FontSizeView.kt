@@ -85,10 +85,10 @@ class FontSizeView : ViewGroup{
         }
         //测量滑块和线的大小
         val drawableBg = slider.background
-        val measureSpecWidth = MeasureSpec.makeMeasureSpec(drawableBg.intrinsicWidth*2, MeasureSpec.EXACTLY)
-        val measureSpecHeight = MeasureSpec.makeMeasureSpec(drawableBg.intrinsicHeight*2, MeasureSpec.EXACTLY)
-        val offsetWidth = fontTextView[0].measuredWidth/2 - drawableBg.intrinsicWidth
-        line.measure(MeasureSpec.makeMeasureSpec((totalWidth-offsetWidth*2), MeasureSpec.EXACTLY),
+        val measureSpecWidth = MeasureSpec.makeMeasureSpec(drawableBg.intrinsicWidth*3, MeasureSpec.EXACTLY)
+        val measureSpecHeight = MeasureSpec.makeMeasureSpec(drawableBg.intrinsicHeight*3, MeasureSpec.EXACTLY)
+        val offsetWidth = fontTextView[0].measuredWidth/2 - drawableBg.intrinsicWidth*1.5 //intrinsicWidth*1.5 为 measureSpecWidth的一半
+        line.measure(MeasureSpec.makeMeasureSpec((totalWidth-offsetWidth*2).toInt(), MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(line.layoutParams.height, MeasureSpec.EXACTLY))
         slider.measure(measureSpecWidth, measureSpecHeight)
         if (MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.AT_MOST) {
@@ -167,29 +167,23 @@ class FontSizeView : ViewGroup{
 
             override fun onViewReleased(releasedChild: View?, xvel: Float, yvel: Float) {
                 val sliderCenterPosition = releasedChild!!.left + releasedChild.measuredWidth / 2
-                if (xvel > 0) { //向右滑动
-                    for (i in fontTextViewPosition.size - 1 downTo 0) {
-                        if (sliderCenterPosition >= fontTextViewPosition[i]) {
-                            currentSliderPosition = i
-                            mSliderDragHelper.smoothSlideViewTo(releasedChild,
-                                    fontTextViewPosition[i] - releasedChild.measuredWidth / 2,
-                                    releasedChild.top)
-                            ViewCompat.postInvalidateOnAnimation(this@FontSizeView)
-                            callBack.onSliderPositionChange(fontSizeValue[currentSliderPosition])
-                            break
-                        }
-                    }
-                } else {    //向左滑动
-                    for (i in 0 until fontTextViewPosition.size) {
-                        if (sliderCenterPosition <= fontTextViewPosition[i]) {
-                            currentSliderPosition = i
-                            mSliderDragHelper.smoothSlideViewTo(releasedChild,
-                                    fontTextViewPosition[i] - releasedChild.measuredWidth / 2,
-                                    releasedChild.top)
-                            ViewCompat.postInvalidateOnAnimation(this@FontSizeView)
-                            callBack.onSliderPositionChange(fontSizeValue[currentSliderPosition])
-                            break
-                        }
+                for (i in 0 until fontTextViewPosition.size) {
+                    if (sliderCenterPosition <= fontTextViewPosition[i]) {
+                        currentSliderPosition =
+                                if (i != 0)
+                                    if (Math.abs(sliderCenterPosition - fontTextViewPosition[i])
+                                            < Math.abs(sliderCenterPosition - fontTextViewPosition[i - 1]))
+                                        i
+                                    else
+                                        (i - 1)
+                                else
+                                    0
+                        mSliderDragHelper.smoothSlideViewTo(releasedChild,
+                                fontTextViewPosition[currentSliderPosition] - releasedChild.measuredWidth / 2,
+                                releasedChild.top)
+                        ViewCompat.postInvalidateOnAnimation(this@FontSizeView)
+                        callBack.onSliderPositionChange(fontSizeValue[currentSliderPosition])
+                        break
                     }
                 }
             }
@@ -206,7 +200,7 @@ class FontSizeView : ViewGroup{
                 .apply()
     }
 
-//    companion object {
-//        val TAG: String = FontSizeView::class.java.simpleName
-//    }
+    companion object {
+        val TAG: String = FontSizeView::class.java.simpleName
+    }
 }

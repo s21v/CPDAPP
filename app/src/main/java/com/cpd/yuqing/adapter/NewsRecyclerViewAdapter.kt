@@ -43,6 +43,8 @@ class NewsRecyclerViewAdapter(val context: Context, dataList: ArrayList<News>?) 
 
     //刷新新闻
     fun refreshData(newData: ArrayList<News>) {
+        listData.clear()
+        galleryData.clear()
         var i = 0
         while (i < newData.size) {
             if (newData[i].picUrls.isNotEmpty() && galleryData.size<galleryMaxSize) {
