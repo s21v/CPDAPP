@@ -44,4 +44,8 @@
     <string name="share">分享</string>
     <string name="thumbUp">点赞</string>
     <string name="favorite">收藏</string>
+    <string name="myfavorite">收藏的新闻</string>
+    <string name="mythumbup">赞过的新闻</string>
+    <string name="open">打开菜单</string>
+    <string name="cloase">关闭菜单</string>
 </resources>

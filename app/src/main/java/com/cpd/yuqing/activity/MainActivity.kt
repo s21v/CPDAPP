@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.support.v7.app.ActionBarDrawerToggle
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
@@ -23,7 +24,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        //设置显示条件为true
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setHomeButtonEnabled(true)
+        //创建ActionBarDrawerToggle,添加监听
+        val drawerToggle = ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.cloase)
+        drawerToggle.syncState()
+        drawerLayout.addDrawerListener(drawerToggle)
+        //解决navigationView的item图标显示为灰色
+        nav_view.itemIconTintList = null
         nav_view.setNavigationItemSelectedListener { menuItem ->
             Snackbar.make(drawerLayout, menuItem.title, Snackbar.LENGTH_LONG).show()
             menuItem.isChecked = true
