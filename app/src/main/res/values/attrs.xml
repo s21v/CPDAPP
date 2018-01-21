@@ -17,8 +17,12 @@
         <attr name="lineColor" format="color"/>
     </declare-styleable>
 
-    <declare-styleable name="SinView">
-        <attr name="firstSinColor" format="color"/>
-        <attr name="secondSinColor" format="color"/>
+    <declare-styleable name="BezierView">
+        <attr name="firstColor" format="color"/>
+        <attr name="secondColor" format="color"/>
+        <attr name="firstWaveLengthRatio" format="float"/>
+        <attr name="secondWaveLengthRatio" format="float"/>
+        <attr name="firstAnimationDuration" format="integer"/>
+        <attr name="secondAnimationDuration" format="integer"/>
     </declare-styleable>
 </resources>

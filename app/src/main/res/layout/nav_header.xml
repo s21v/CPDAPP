@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:background="#99b9f4"
         android:paddingTop="24dp"
         android:paddingBottom="12dp">
         <ImageView
@@ -29,9 +29,14 @@
             android:typeface="serif"
             android:textStyle="bold"/>
     </RelativeLayout>
-    <com.cpd.yuqing.view.SinView
+    <com.cpd.yuqing.view.BezierView
+        android:id="@+id/bezierView"
         android:layout_width="match_parent"
-        android:layout_height="12dp"
-        app:firstSinColor="@color/colorPrimary"
-        app:secondSinColor="#bbdefb"/>
+        android:layout_height="24dp"
+        app:firstColor="@color/colorPrimary"
+        app:secondColor="#88bbdefb"
+        app:firstWaveLengthRatio="1.2"
+        app:secondWaveLengthRatio="1.5"
+        app:firstAnimationDuration="12"
+        app:secondAnimationDuration="3"/>
 </LinearLayout>

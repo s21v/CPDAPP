@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.app.ActionBarDrawerToggle
+import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
@@ -15,6 +16,7 @@ import com.cpd.yuqing.fragment.NewsMainFragment
 import com.cpd.yuqing.util.NetUtils
 import com.cpd.yuqing.util.OkHttpUtils
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.nav_header.*
 import okhttp3.*
 import java.io.IOException
 
@@ -28,7 +30,17 @@ class MainActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setHomeButtonEnabled(true)
         //创建ActionBarDrawerToggle,添加监听
-        val drawerToggle = ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.cloase)
+        val drawerToggle = object : ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.cloase) {
+            override fun onDrawerClosed(drawerView: View?) {
+                super.onDrawerClosed(drawerView)
+                bezierView.stopAnimator()
+            }
+
+            override fun onDrawerOpened(drawerView: View?) {
+                super.onDrawerOpened(drawerView)
+                bezierView.startAnimator()
+            }
+        }
         drawerToggle.syncState()
         drawerLayout.addDrawerListener(drawerToggle)
         //解决navigationView的item图标显示为灰色
