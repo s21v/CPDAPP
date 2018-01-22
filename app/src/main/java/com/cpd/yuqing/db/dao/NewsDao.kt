@@ -15,12 +15,12 @@ class NewsDao(context: Context) : Dao(context) {
         val TYPE_THUMBUP = 2    //点赞
     }
 
-    fun operation(news: News, type: Int, value: Int): Int {
+    fun operation(userId: Int, news: News, type: Int, value: Int): Int {
         //检查新闻是否已保存在数据库中
-        val result: Int;
+        val result: Int
         val db = mDataBaseHelper.writableDatabase
-        val cursor = db.query(TABLE_NAME, null, "_id=?", arrayOf(news.news_id), null,
-                null, null)
+        val cursor = db.query(TABLE_NAME, null, "_id=? and userId=?",
+                arrayOf(news.news_id, userId.toString()), null, null, null)
         if (cursor.moveToFirst()) {
             //数据库中存在该新闻，更新新闻字段
             val cv = ContentValues()
@@ -28,11 +28,12 @@ class NewsDao(context: Context) : Dao(context) {
                 TYPE_FAVORITE -> cv.put("favorite", value)
                 TYPE_THUMBUP -> cv.put("thumbUp", value)
             }
-            result = db.update(TABLE_NAME, cv, "_id=?", arrayOf(news.news_id))
+            result = db.update(TABLE_NAME, cv, "_id=? and userId=?", arrayOf(news.news_id, userId.toString()))
         } else {
             //数据库中不存在该新闻，添加这条新闻
             val cv = ContentValues()
             cv.put("_id", news.news_id)
+            cv.put("userId", userId)
             cv.put("channelId", news.channel_id)
             cv.put("homePageTitle", news.homePageTitle)
             cv.put("contentPageTitle", news.contentPageTitle)
@@ -53,9 +54,10 @@ class NewsDao(context: Context) : Dao(context) {
         return result
     }
 
-    fun selectOne(newsId: String): Cursor {
+    fun selectOne(userId: Int, newsId: String): Cursor {
         val db = mDataBaseHelper.writableDatabase
-        return db.query(TABLE_NAME, null, "_id=?", arrayOf(newsId), null,
+        return db.query(TABLE_NAME, null, "_id=? and userId=?",
+                arrayOf(newsId, userId.toString()), null,
                 null, null)
     }
 
@@ -70,8 +72,29 @@ class NewsDao(context: Context) : Dao(context) {
         }
     }
 
-    fun delete(newsId: String): Int {
+    fun selectAll(userId: Int, type: Int): ArrayList<News> {
+        val result = arrayListOf<News>()
         val db = mDataBaseHelper.writableDatabase
-        return db.delete(TABLE_NAME, "_id=? and favorite=0 and thumbUp=0", arrayOf(newsId))
+        val cursor = when(type) {
+            TYPE_FAVORITE -> db.query(TABLE_NAME, null, "userId=? and favorite=1", arrayOf(userId.toString()),
+                    null, null, "pubTime desc")
+            TYPE_THUMBUP -> db.query(TABLE_NAME, null, "userId=? and thumbUp=1", arrayOf(userId.toString()),
+                    null, null, "pubTime desc")
+            else -> null
+        }
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                val news = News(cursor)
+                result.add(news)
+            }
+            cursor.close()
+        }
+        return result
+    }
+
+    fun delete(userId: Int, newsId: String): Int {
+        val db = mDataBaseHelper.writableDatabase
+        return db.delete(TABLE_NAME, "_id=? and userId=? and favorite=0 and thumbUp=0",
+                arrayOf(newsId, userId.toString()))
     }
 }

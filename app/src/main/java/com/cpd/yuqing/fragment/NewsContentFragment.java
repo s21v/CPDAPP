@@ -24,6 +24,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+
+import com.cpd.yuqing.CpdnewsApplication;
 import com.cpd.yuqing.R;
 import com.cpd.yuqing.databinding.FragmentNewsContentBinding;
 import com.cpd.yuqing.db.dao.NewsDao;
@@ -147,7 +149,8 @@ public class NewsContentFragment extends Fragment implements FontSizeView.Slider
         super.onActivityCreated(savedInstanceState);
         dao = new NewsDao(getContext());
         //更新新闻数据
-        Cursor cursor = dao.selectOne(news.getNews_id());
+        int userId = CpdnewsApplication.getCurrentUser().getId();
+        Cursor cursor = dao.selectOne(userId, news.getNews_id());
         if (cursor.moveToFirst()){
             isFavorite = cursor.getInt(cursor.getColumnIndex("favorite")) == 1;
             isThumbUp = cursor.getInt(cursor.getColumnIndex("thumbUp")) == 1;
@@ -208,7 +211,8 @@ public class NewsContentFragment extends Fragment implements FontSizeView.Slider
             favoriteBtn.setImageResource(R.drawable.favorite_selected);
         favoriteBtn.setOnClickListener(it -> {
             //更新数据库
-            int result = dao.operation(news, NewsDao.Companion.getTYPE_FAVORITE(), isFavorite?0:1);
+            int userId = CpdnewsApplication.getCurrentUser().getId();
+            int result = dao.operation(userId, news, NewsDao.Companion.getTYPE_FAVORITE(), isFavorite?0:1);
             if (result == 1){   //数据库写入成功
                 //更新数据
                 isFavorite = !isFavorite;
@@ -225,7 +229,8 @@ public class NewsContentFragment extends Fragment implements FontSizeView.Slider
             thumbUpBtn.setImageResource(R.drawable.thumbup_selected);
         thumbUpBtn.setOnClickListener(it -> {
             //更新数据库
-            int result = dao.operation(news, NewsDao.Companion.getTYPE_THUMBUP(), isThumbUp?0:1);
+            int userId = CpdnewsApplication.getCurrentUser().getId();
+            int result = dao.operation(userId, news, NewsDao.Companion.getTYPE_THUMBUP(), isThumbUp?0:1);
             if (result == 1){   //数据库写入成功
                 //更新数据
                 isThumbUp = !isThumbUp;

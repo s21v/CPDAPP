@@ -12,7 +12,7 @@ import android.util.Log;
 public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String TAG = DataBaseHelper.class.getSimpleName();
     public static final String DATABASE_NAME = "CpdNews_db";
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 5;
 
     //创建用户表
     private static final String CREATE_USER_TABLE = "create table user" +
@@ -29,12 +29,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             "sortNum int)";
 
     //创建新闻表
-    private static final String CREATE_NEWS_TABLE = "create table news (_id text primary key, " +
-            "channelId text not null, homePageTitle text, contentPageTitle text, " +
+    private static final String CREATE_NEWS_TABLE = "create table news (_id text, " +
+            "userId integer not null, channelId text not null, " +
+            "homePageTitle text, contentPageTitle text, " +
             "pubTime text, source text, author text, poster text, content text, " +
             "url text not null, picUrls text, " +
             "favorite integer default 0, thumbUp integer default 0, " +
-            "FOREIGN KEY (channelId) REFERENCES channel (_id) )";
+            "foreign key (userId) references user (_id), " +
+            "FOREIGN KEY (channelId) REFERENCES channel (_id) " +
+            "primary key (_id, userId))";
 
     public DataBaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -59,6 +62,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 //添加字段表示是否点赞
                 db.execSQL("alter table news add column thumbUp integer default 0");
                 break;
+            case 5:
+                db.execSQL("drop table if exists news");
+                db.execSQL(CREATE_NEWS_TABLE);
         }
 //        db.execSQL("drop table if exists news");
 //        db.execSQL("drop table if exists channel");

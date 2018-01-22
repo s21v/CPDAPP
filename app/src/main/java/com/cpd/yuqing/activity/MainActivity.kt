@@ -10,8 +10,11 @@ import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
+import com.cpd.yuqing.CpdnewsApplication
 import com.cpd.yuqing.R
+import com.cpd.yuqing.db.dao.NewsDao
 import com.cpd.yuqing.fragment.LocationFragment
+import com.cpd.yuqing.fragment.NewsFavoriteListFragment
 import com.cpd.yuqing.fragment.NewsMainFragment
 import com.cpd.yuqing.util.NetUtils
 import com.cpd.yuqing.util.OkHttpUtils
@@ -46,7 +49,30 @@ class MainActivity : AppCompatActivity() {
         //解决navigationView的item图标显示为灰色
         nav_view.itemIconTintList = null
         nav_view.setNavigationItemSelectedListener { menuItem ->
-            Snackbar.make(drawerLayout, menuItem.title, Snackbar.LENGTH_LONG).show()
+            when(menuItem.itemId) {
+                //查看收藏
+                R.id.myfavorite -> {
+                    title = menuItem.title
+                    //获得数据库中的数据
+                    val dao = NewsDao(this)
+                    val favoriteData = dao.selectAll(CpdnewsApplication.getCurrentUser().id, NewsDao.TYPE_FAVORITE)
+                    var fragment: NewsFavoriteListFragment? = supportFragmentManager.findFragmentByTag("favorite") as NewsFavoriteListFragment?
+                    if (fragment != null){
+                        Log.i(TAG, "fragment 存在")
+                        fragment!!.data = favoriteData
+                        supportFragmentManager.beginTransaction().show(fragment)
+                    } else {
+                        Log.i(TAG, "fragment 不存在")
+                        fragment = NewsFavoriteListFragment.newInstance(favoriteData)
+                        supportFragmentManager.beginTransaction()
+                                .add(R.id.mainFragmentContent, fragment, "favorite")
+                                .addToBackStack("favorite")
+                                .commit()
+                    }
+                }
+                //查看点赞
+                R.id.mythumbUp -> {}
+            }
             menuItem.isChecked = true
             drawerLayout.closeDrawer(Gravity.START)
             true
@@ -57,6 +83,9 @@ class MainActivity : AppCompatActivity() {
                 .commit()
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+    }
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId) {
             //activity中只处理打开关闭侧边栏的主导航项

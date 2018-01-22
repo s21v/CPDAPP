@@ -1,5 +1,6 @@
 package com.cpd.yuqing.db.vo;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 public class News implements Parcelable{
     private String news_id;		//新闻ID
+    private int user_id; //用户ID
     private String channel_id;	//栏目ID
     private String homePageTitle;	//栏目页标题
     private String contentPageTitle;	//内容页标题
@@ -21,6 +23,25 @@ public class News implements Parcelable{
     private String content;		//正文内容
     private String url;			//新闻的url链接
     private String picUrls;	//新闻中的图片链接
+    private int favorite;   //是否收藏
+    private int thumbUp;    //是否点赞
+
+    public News(Cursor cursor) {
+        this.news_id = cursor.getString(cursor.getColumnIndex("_id"));
+        this.user_id = cursor.getInt(cursor.getColumnIndex("userId"));
+        this.channel_id = cursor.getString(cursor.getColumnIndex("channelId"));
+        this.homePageTitle = cursor.getString(cursor.getColumnIndex("homePageTitle"));
+        this.contentPageTitle = cursor.getString(cursor.getColumnIndex("contentPageTitle"));
+        this.pub_time = cursor.getString(cursor.getColumnIndex("pubTime"));
+        this.source = cursor.getString(cursor.getColumnIndex("source"));
+        this.author = cursor.getString(cursor.getColumnIndex("author"));
+        this.poster = cursor.getString(cursor.getColumnIndex("poster"));
+        this.content = cursor.getString(cursor.getColumnIndex("content"));
+        this.url = cursor.getString(cursor.getColumnIndex("url"));
+        this.picUrls = cursor.getString(cursor.getColumnIndex("picUrls"));
+        this.favorite = cursor.getInt(cursor.getColumnIndex("favorite"));
+        this.thumbUp = cursor.getInt(cursor.getColumnIndex("thumbUp"));
+    }
 
     protected News(Parcel in) {
         news_id = in.readString();
@@ -34,6 +55,8 @@ public class News implements Parcelable{
         content = in.readString();
         url = in.readString();
         picUrls = in.readString();
+        favorite = in.readInt();
+        thumbUp = in.readInt();
     }
 
     public static final Creator<News> CREATOR = new Creator<News>() {
@@ -52,16 +75,8 @@ public class News implements Parcelable{
         return news_id;
     }
 
-    public void setNews_id(String news_id) {
-        this.news_id = news_id;
-    }
-
     public String getChannel_id() {
         return channel_id;
-    }
-
-    public void setChannel_id(String channel_id) {
-        this.channel_id = channel_id;
     }
 
     public String getHomePageTitle() {
@@ -76,16 +91,8 @@ public class News implements Parcelable{
         return contentPageTitle;
     }
 
-    public void setContentPageTitle(String contentPageTitle) {
-        this.contentPageTitle = contentPageTitle;
-    }
-
     public String getPub_time() {
         return pub_time;
-    }
-
-    public void setPub_time(String pub_time) {
-        this.pub_time = pub_time;
     }
 
     public String getSource() {
@@ -100,16 +107,8 @@ public class News implements Parcelable{
         return author;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
     public String getPoster() {
         return poster;
-    }
-
-    public void setPoster(String poster) {
-        this.poster = poster;
     }
 
     public String getContent() {
@@ -132,10 +131,6 @@ public class News implements Parcelable{
         return picUrls;
     }
 
-    public void setPicUrls(String picUrls) {
-        this.picUrls = picUrls;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -144,6 +139,7 @@ public class News implements Parcelable{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(news_id);
+        dest.writeInt(user_id);
         dest.writeString(channel_id);
         dest.writeString(homePageTitle);
         dest.writeString(contentPageTitle);
@@ -154,12 +150,15 @@ public class News implements Parcelable{
         dest.writeString(content);
         dest.writeString(url);
         dest.writeString(picUrls);
+        dest.writeInt(favorite);
+        dest.writeInt(thumbUp);
     }
 
     @Override
     public String toString() {
         return "News{" +
                 "news_id='" + news_id + '\'' +
+                "user_id='" + user_id + '\'' +
                 ", channel_id='" + channel_id + '\'' +
                 ", homePageTitle='" + homePageTitle + '\'' +
                 ", contentPageTitle='" + contentPageTitle + '\'' +

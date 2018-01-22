@@ -29,6 +29,7 @@
         </android.support.design.widget.AppBarLayout>
 
         <FrameLayout
+            android:background="@android:color/white"
             android:id="@+id/mainFragmentContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
