@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.cpd.yuqing.R
+import com.cpd.yuqing.adapter.FavoriteNewsRecyclerViewAdapter
 import com.cpd.yuqing.db.vo.News
 
 class NewsFavoriteListFragment : Fragment() {

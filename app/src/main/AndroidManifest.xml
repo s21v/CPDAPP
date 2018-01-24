@@ -3,22 +3,22 @@
     package="com.cpd.yuqing">
 
     <!-- 访问wifi网络信息，wifi信息会用于进行网络定位 -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <!-- 获取运营商信息， 用于支持提供运营商信息相关的接口-->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- 访问网络,网络定位需要上网 -->
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <!-- 这个权限用于获取WiFi的获取权限，WiFi信息会用来进行网络定位 -->
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <!-- 读取手机状态权限 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- 写入扩展存储权限，向扩展卡写入数据，用于写入离线定位数据 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- SD卡读取权限，用户写入离线定位数据 -->
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <!-- 位置权限:精确(GPS)、模糊(网络) -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -29,22 +29,31 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="Mgt5GZDWF5HfY0IG9TdMxMPyis9AiYG4"/>
-        <activity android:name=".activity.MainActivity" android:launchMode="singleTop"/>
+            android:value="Mgt5GZDWF5HfY0IG9TdMxMPyis9AiYG4" />
 
-        <activity android:name=".activity.SearchActivity" android:launchMode="singleTop">
+        <activity
+            android:name=".activity.MainActivity"
+            android:launchMode="singleTop" />
+
+        <activity
+            android:name=".activity.SearchActivity"
+            android:launchMode="singleTop">
             <intent-filter>
-                <action android:name="android.intent.action.SEARCH"/>
+                <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-            <meta-data android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
         </activity>
 
-        <activity android:name=".activity.CustomChannelActivity" android:launchMode="singleTop"
-            android:label=""/>
+        <activity
+            android:name=".activity.CustomChannelActivity"
+            android:label=""
+            android:launchMode="singleTop" />
 
-        <activity android:name=".activity.LocationActivity"
-            android:label=""/>
+        <activity
+            android:name=".activity.LocationActivity"
+            android:label="" />
 
         <!-- Mob分享的Activity 必须要有 -->
         <activity
@@ -55,6 +64,7 @@
             <intent-filter>
                 <data android:scheme="tencent1106105082" />
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -89,27 +99,24 @@
         <activity
             android:name=".activity.RegisterActivity"
             android:label="@string/title_activity_register"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".activity.BindUserActivity"
-            android:label="@string/bindUser"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.BindUserActivity"
+            android:label="@string/bindUser" />
 
-        <activity android:name=".activity.NewsContentActivity"
+        <activity
+            android:name=".activity.NewsContentActivity"
             android:parentActivityName=".activity.MainActivity">
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity">
-            </meta-data>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity"></meta-data>
         </activity>
 
-        <service android:name="com.baidu.location.f"
+        <service
+            android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote"/>
+            android:process=":remote" />
 
-        <!--<activity android:name=".activity.TestViewActivity">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
     </application>
 
 </manifest>

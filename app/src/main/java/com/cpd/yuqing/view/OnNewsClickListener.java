@@ -11,19 +11,16 @@ import com.cpd.yuqing.db.vo.News;
  * Created by s21v on 2017/12/15.
  */
 
-public class OnNewsClickListener implements View.OnClickListener {
-    private News mNews;
+public class OnNewsClickListener {
     private Context mContext;
 
-    public OnNewsClickListener(Context context, News news){
-        mNews = news;
+    public OnNewsClickListener(Context context){
         mContext = context;
     }
 
-    @Override
-    public void onClick(View v) {
+    public void onClick(News news) {
         Intent intent = new Intent(mContext, NewsContentActivity.class);
-        intent.putExtra("news", mNews);
+        intent.putExtra("news", news);
         mContext.startActivity(intent);
     }
 }

@@ -23,8 +23,8 @@ public class News implements Parcelable{
     private String content;		//正文内容
     private String url;			//新闻的url链接
     private String picUrls;	//新闻中的图片链接
-    private int favorite;   //是否收藏
-    private int thumbUp;    //是否点赞
+    private int favorite = 0;   //是否收藏
+    private int thumbUp = 0;    //是否点赞
 
     public News(Cursor cursor) {
         this.news_id = cursor.getString(cursor.getColumnIndex("_id"));
@@ -45,6 +45,7 @@ public class News implements Parcelable{
 
     protected News(Parcel in) {
         news_id = in.readString();
+        user_id = in.readInt();
         channel_id = in.readString();
         homePageTitle = in.readString();
         contentPageTitle = in.readString();
@@ -70,6 +71,7 @@ public class News implements Parcelable{
             return new News[size];
         }
     };
+
 
     public String getNews_id() {
         return news_id;

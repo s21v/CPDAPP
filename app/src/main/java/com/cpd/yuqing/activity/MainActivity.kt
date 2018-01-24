@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
                         Log.i(TAG, "fragment 不存在")
                         fragment = NewsFavoriteListFragment.newInstance(favoriteData)
                         supportFragmentManager.beginTransaction()
-                                .add(R.id.mainFragmentContent, fragment, "favorite")
+                                .replace(R.id.mainFragmentContent, fragment, "favorite")
                                 .addToBackStack("favorite")
                                 .commit()
                     }
@@ -83,9 +83,6 @@ class MainActivity : AppCompatActivity() {
                 .commit()
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-    }
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId) {
             //activity中只处理打开关闭侧边栏的主导航项

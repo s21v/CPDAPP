@@ -29,16 +29,21 @@ class NewsRecyclerViewAdapter(val context: Context, dataList: ArrayList<News>?) 
         RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var galleryData: ArrayList<News> = arrayListOf()
     private var listData: ArrayList<News> = arrayListOf()
-    private val noPicViewType = 1
-    private val hasPicViewType = 2
-    private val footViewType = 3
-    private val headerViewType = 4
-    private val emptyViewType = 5
-    private val galleryMaxSize = 3  //画廊控件的最大容量
+    private val newsClickListener: OnNewsClickListener
+
+    companion object {
+        private val noPicViewType = 1
+        private val hasPicViewType = 2
+        private val footViewType = 3
+        private val headerViewType = 4
+        private val emptyViewType = 5
+        private val galleryMaxSize = 3  //画廊控件的最大容量
+    }
 
     init {
         if (dataList != null)
             refreshData(dataList)
+        newsClickListener = OnNewsClickListener(context)
     }
 
     //刷新新闻
@@ -119,13 +124,13 @@ class NewsRecyclerViewAdapter(val context: Context, dataList: ArrayList<News>?) 
                     is NoPicViewHolder -> {
                         holder.viewDataBinding.setVariable(BR.news, news)
                         holder.viewDataBinding.executePendingBindings()
-                        holder.viewDataBinding.root.setOnClickListener(OnNewsClickListener(context, news))
+                        holder.viewDataBinding.root.setOnClickListener { newsClickListener.onClick(news) }
                     }
                     is HasPicViewHolder -> {
                         holder.viewDataBinding.setVariable(BR.news, news)
                         holder.viewDataBinding.executePendingBindings()
                         GlideApp.with(context).load(news.picUrls.split(" ")[0]).into(holder.viewDataBinding.image1)
-                        holder.viewDataBinding.root.setOnClickListener(OnNewsClickListener(context, news))
+                        holder.viewDataBinding.root.setOnClickListener { newsClickListener.onClick(news) }
                     }
                 }
             } else if (galleryData.isEmpty() && position<listData.size) {
@@ -134,13 +139,13 @@ class NewsRecyclerViewAdapter(val context: Context, dataList: ArrayList<News>?) 
                     is NoPicViewHolder -> {
                         holder.viewDataBinding.setVariable(BR.news, news)
                         holder.viewDataBinding.executePendingBindings()
-                        holder.viewDataBinding.root.setOnClickListener(OnNewsClickListener(context, news))
+                        holder.viewDataBinding.root.setOnClickListener { newsClickListener.onClick(news) }
                     }
                     is HasPicViewHolder -> {
                         holder.viewDataBinding.setVariable(BR.news, news)
                         holder.viewDataBinding.executePendingBindings()
                         GlideApp.with(context).load(news.picUrls.split(" ")[0]).into(holder.viewDataBinding.image1)
-                        holder.viewDataBinding.root.setOnClickListener(OnNewsClickListener(context, news))
+                        holder.viewDataBinding.root.setOnClickListener { newsClickListener.onClick(news) }
                     }
                 }
             }

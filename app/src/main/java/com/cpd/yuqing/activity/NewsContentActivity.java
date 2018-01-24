@@ -3,6 +3,7 @@ package com.cpd.yuqing.activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.cpd.yuqing.R;
 import com.cpd.yuqing.db.vo.News;

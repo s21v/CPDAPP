@@ -26,6 +26,7 @@ class GalleryView(context: Context, attrs: AttributeSet) : RelativeLayout(contex
     private var textColor: Int = 0
     private var radioGroup: RadioGroup? = null
     var data: ArrayList<News>? = null
+    private val newsOnClickListener: OnNewsClickListener
 
     init {
         val typeArray = context.obtainStyledAttributes(attrs, R.styleable.galleryView)
@@ -33,6 +34,7 @@ class GalleryView(context: Context, attrs: AttributeSet) : RelativeLayout(contex
         barBackgroundColor = typeArray.getColor(R.styleable.galleryView_barBackground, 0)
         textColor = typeArray.getColor(R.styleable.galleryView_textColor, 0)
         typeArray.recycle()
+        newsOnClickListener = OnNewsClickListener(context)
     }
 
     fun addChildView() {
@@ -108,7 +110,7 @@ class GalleryView(context: Context, attrs: AttributeSet) : RelativeLayout(contex
             imageView.layoutParams = ViewPager.LayoutParams()
             imageView.scaleType = ImageView.ScaleType.FIT_XY
             GlideApp.with(context).load(data!![position].picUrls.split(" ")[0]).into(imageView)
-            imageView.setOnClickListener(OnNewsClickListener(context, data!![position]))
+            imageView.setOnClickListener { newsOnClickListener.onClick(data!![position]) }
             container?.addView(imageView)
             return imageView
         }
