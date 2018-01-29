@@ -35,17 +35,17 @@ class NewsFavoriteListFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         Log.i(TAG, "onCreateView() !!!")
-        val view = inflater!!.inflate(R.layout.fragment_news_favorite_list, container, false)
-        if (view is RecyclerView) {
-            val context = view.getContext()
-            view.layoutManager = LinearLayoutManager(context)
-            view.adapter = FavoriteNewsRecyclerViewAdapter(data!!, object : OnListFragmentInteractionListener {
-                override fun onListFragmentInteraction(item: News) {
-                    //跳转到内容页面
-                }
-            })
-        }
-        return view
+//        val view = inflater!!.inflate(R.layout.fragment_news_favorite_list, container, false)
+//        if (view is RecyclerView) {
+//            val context = view.getContext()
+//            view.layoutManager = LinearLayoutManager(context)
+//            view.adapter = FavoriteNewsRecyclerViewAdapter(data!!, object : OnListFragmentInteractionListener {
+//                override fun onListFragmentInteraction(item: News) {
+//                    //跳转到内容页面
+//                }
+//            })
+//        }
+        return null
     }
 
 //    override fun onAttach(context: Context) {

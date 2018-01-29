@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
-import com.cpd.yuqing.fragment.NewsFragment
+import com.cpd.yuqing.fragment.NewsListFragment
 import com.cpd.yuqing.db.vo.Channel
 
 /**
@@ -14,7 +14,7 @@ class NewsViewPagerAdapter(fm: FragmentManager, private val channels: ArrayList<
     override fun getItem(p0: Int): Fragment {
         val args = Bundle()
         args.putParcelable("channel", channels[p0])
-        return NewsFragment.getInstance(args)
+        return NewsListFragment.getInstance(args)
     }
 
     override fun getCount(): Int = channels.size

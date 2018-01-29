@@ -136,12 +136,12 @@ class SearchActivity : AppCompatActivity() {
 
                         val alphaOut = ObjectAnimator.ofFloat(resultListView, "alpha", 1f, 0f)
                         val translationYOut = ObjectAnimator.ofFloat(resultListView, "translationY", resultListView.translationY, -resultListView.height.toFloat())
-                        val search_result_out = AnimatorSet()
-                        search_result_out.duration = 1000
-                        search_result_out.playTogether(listOf(alphaOut, translationYOut))
+                        val searchResultOut = AnimatorSet()
+                        searchResultOut.duration = 1000
+                        searchResultOut.playTogether(listOf(alphaOut, translationYOut))
 
                         val animatorSet = AnimatorSet()
-                        animatorSet.playSequentially(listOf(search_result_out, searched_tag_in))
+                        animatorSet.playSequentially(listOf(searchResultOut, searched_tag_in))
                         animatorSet.start()
                     }
                 }
@@ -161,11 +161,10 @@ class SearchActivity : AppCompatActivity() {
     inner class searchResultAdapter(var keyword: String, var resultList: List<String>) : BaseAdapter() {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-            val view: TextView
-            if (convertView == null) {
-                view = layoutInflater.inflate(android.R.layout.simple_list_item_1, null, false) as TextView
+            val view: TextView = if (convertView == null) {
+                layoutInflater.inflate(android.R.layout.simple_list_item_1, null, false) as TextView
             } else {
-                view = convertView as TextView
+                convertView as TextView
             }
             //给关键词标记颜色
             val currentString = getItem(position) as String

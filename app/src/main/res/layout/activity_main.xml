@@ -8,86 +8,11 @@
     android:layout_gravity="start"
     tools:context="com.cpd.yuqing.activity.MainActivity">
 
-    <android.support.design.widget.CoordinatorLayout
+    <FrameLayout
+        android:id="@+id/curNavigationFragmentContent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/appbarlayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:elevation="0dp">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?android:actionBarSize"
-                android:background="@color/colorPrimary"
-                app:layout_scrollFlags="scroll|snap"
-                app:titleTextAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                app:titleTextColor="@color/colorPrimaryDark" />
-        </android.support.design.widget.AppBarLayout>
-
-        <FrameLayout
-            android:background="@android:color/white"
-            android:id="@+id/mainFragmentContent"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-        <!-- 底部菜单栏 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="@color/colorPrimary"
-            android:elevation="4dp"
-            android:orientation="horizontal"
-            android:padding="4dp"
-            app:elevation="8dp"
-            app:layout_behavior="com.cpd.yuqing.behavior.bottomShowHideBehavior">
-
-            <TextView
-                android:id="@+id/home"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:drawableTop="@drawable/home"
-                android:gravity="center"
-                android:onClick="changeColumn"
-                android:text="@string/news" />
-
-            <TextView
-                android:id="@+id/location"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:drawableTop="@drawable/pin_map"
-                android:gravity="center"
-                android:onClick="changeColumn"
-                android:text="@string/location" />
-
-            <TextView
-                android:id="@+id/topic"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:drawableTop="@drawable/news"
-                android:gravity="center"
-                android:onClick="changeColumn"
-                android:text="@string/topic" />
-
-            <TextView
-                android:id="@+id/video"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:drawableTop="@drawable/movie"
-                android:gravity="center"
-                android:onClick="changeColumn"
-                android:text="@string/movie" />
-        </LinearLayout>
-    </android.support.design.widget.CoordinatorLayout>
+        android:layout_height="wrap_content"
+        android:background="@android:color/white" />
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"

@@ -4,7 +4,7 @@
 
     <!-- 访问wifi网络信息，wifi信息会用于进行网络定位 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!-- 获取运营商信息， 用于支持提供运营商信息相关的接口-->
+    <!-- 获取运营商信息， 用于支持提供运营商信息相关的接口 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- 访问网络,网络定位需要上网 -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -30,27 +30,26 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="Mgt5GZDWF5HfY0IG9TdMxMPyis9AiYG4" />
-
+        <!-- 登录后的主页面 -->
         <activity
             android:name=".activity.MainActivity"
             android:launchMode="singleTop" />
-
+        <!-- 文章搜索页面 -->
         <activity
             android:name=".activity.SearchActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-
         <activity
             android:name=".activity.CustomChannelActivity"
             android:label=""
             android:launchMode="singleTop" />
-
         <activity
             android:name=".activity.LocationActivity"
             android:label="" />
@@ -63,6 +62,7 @@
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <data android:scheme="tencent1106105082" />
+
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -71,6 +71,7 @@
             <!-- 调用新浪原生SDK，需要注册的回调activity -->
             <intent-filter>
                 <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -81,6 +82,7 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!-- 登录界面 -->
         <activity
             android:name=".activity.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -103,13 +105,13 @@
         <activity
             android:name=".activity.BindUserActivity"
             android:label="@string/bindUser" />
-
+        <!-- 文章内容 -->
         <activity
             android:name=".activity.NewsContentActivity"
             android:parentActivityName=".activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity"></meta-data>
+                android:value=".activity.MainActivity" />
         </activity>
 
         <service
@@ -117,6 +119,14 @@
             android:enabled="true"
             android:process=":remote" />
 
+        <activity android:name=".activity.SliderOperationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
     </application>
 
 </manifest>

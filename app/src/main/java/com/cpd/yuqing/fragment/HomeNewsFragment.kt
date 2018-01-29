@@ -17,15 +17,17 @@ import com.cpd.yuqing.util.NetUtils
 import com.cpd.yuqing.util.OkHttpUtils
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.fragment_home_news.*
 import okhttp3.*
 import java.io.IOException
 
 /**
- * Created by s21v on 2017/8/2.
+ * 新闻栏目导航fragment
+ * Created by s21v on 2018/1/26.
  */
-class NewsMainFragment : Fragment() {
+class HomeNewsFragment : Fragment() {
     private val requestChangeChannel = 10
+
     //栏目列表
     private var channelList: ArrayList<Channel>? = null
 
@@ -35,7 +37,7 @@ class NewsMainFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.fragment_main, container, false)
+        return inflater!!.inflate(R.layout.fragment_home_news, container, false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -136,16 +138,6 @@ class NewsMainFragment : Fragment() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == requestChangeChannel) {
-            if (resultCode == Activity.RESULT_OK) {
-                //返回自定义栏目列表
-                channelList = data?.getParcelableArrayListExtra("changedChannel")
-                viewPage.adapter = NewsViewPagerAdapter((activity as AppCompatActivity).supportFragmentManager, channelList!!)
-            }
-        }
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.news_opt_menu, menu)
     }
@@ -160,7 +152,13 @@ class NewsMainFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    companion object {
-        val TAG = NewsMainFragment::class.java.simpleName!!
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == requestChangeChannel) {
+            if (resultCode == Activity.RESULT_OK) {
+                //返回自定义栏目列表
+                channelList = data?.getParcelableArrayListExtra("changedChannel")
+                viewPage.adapter = NewsViewPagerAdapter((activity as AppCompatActivity).supportFragmentManager, channelList!!)
+            }
+        }
     }
 }

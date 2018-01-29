@@ -9,7 +9,7 @@ import android.net.NetworkInfo;
  */
 public class NetUtils {
     private static final String IP4Simulator = "10.0.3.2:8080";
-    private static final String IP4Phone = "192.168.8.100:8080";    //远程主机的地址
+    private static final String IP4Phone = "192.168.8.101:8080";    //远程主机的地址
     private static final String BASE_URL = "http://" + IP4Simulator + "/CpdNews";
     public static final String UserCommonURL = BASE_URL + "/UserDBServlet";
     public static final String ChannelCommonUrl = BASE_URL + "/ChannelDBServlet";

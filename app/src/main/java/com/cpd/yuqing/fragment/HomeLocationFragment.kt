@@ -16,15 +16,14 @@ import com.baidu.location.BDLocationListener
 import com.baidu.location.LocationClient
 import com.cpd.yuqing.R
 import com.cpd.yuqing.activity.LocationActivity
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_location.*
+import kotlinx.android.synthetic.main.fragment_header.*
 
 /**
  * Created by s21v on 2017/8/2.
  */
-class LocationFragment : Fragment() {
-    private val PERMISSIONS_REQUEST_CODE = 1
-    private val LOCATION_REQUEST_CODE = 2
+class HomeLocationFragment : Fragment() {
+
     private var mLocationClient:LocationClient? = null
     init {
         mLocationClient = LocationClient(activity)
@@ -51,7 +50,6 @@ class LocationFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-//        activity.channelLayout.visibility = View.GONE
         activity.appbarlayout.setExpanded(true)
         //运行时权限检查
         val requestPermissionList = arrayListOf<String>()
@@ -72,10 +70,6 @@ class LocationFragment : Fragment() {
         return inflater?.inflate(R.layout.fragment_location, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.location_opt_menu, menu)
     }
@@ -94,7 +88,7 @@ class LocationFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(requestCode == LOCATION_REQUEST_CODE)
             if (resultCode == LocationActivity.RESULT_CODE_SUCCESS) {
-                position_text_view.text = data?.getStringExtra("location")
+                position_text_view.text = data?.getStringExtra("location")?:"不能定位当前位置请手动选择位置"
             }
     }
 
@@ -118,6 +112,8 @@ class LocationFragment : Fragment() {
     }
 
     companion object {
-        val TAG = "LocationFragment"
+        val TAG = "NavLocationFragment"
+        private const val PERMISSIONS_REQUEST_CODE = 1
+        private const val LOCATION_REQUEST_CODE = 2
     }
 }

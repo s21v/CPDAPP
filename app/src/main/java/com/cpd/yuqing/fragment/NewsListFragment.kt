@@ -27,7 +27,7 @@ import kotlin.collections.ArrayList
 /**
  * Created by s21v on 2017/6/12.
  */
-class NewsFragment : Fragment() {
+class NewsListFragment : Fragment() {
     private var channel: Channel? = null
     //分页加载每页的新闻数量
     private val pageSize = 20
@@ -36,9 +36,9 @@ class NewsFragment : Fragment() {
     private var isLoading = false
 
     companion object {
-        val TAG = NewsFragment::class.java.simpleName!!
-        fun getInstance(args: Bundle): NewsFragment {
-            val fragment = NewsFragment()
+        val TAG = NewsListFragment::class.java.simpleName!!
+        fun getInstance(args: Bundle): NewsListFragment {
+            val fragment = NewsListFragment()
             fragment.arguments = args
             return fragment
         }
@@ -61,9 +61,10 @@ class NewsFragment : Fragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         //下拉刷新
-        swipeRefresh.setOnRefreshListener { //下拉刷新
+        swipeRefresh.setOnRefreshListener {
+            //下拉刷新
             //监听下拉刷新事件
-            loading(1, object : Callback{
+            loading(1, object : Callback {
                 override fun onFailure(call: Call?, e: IOException?) {
                     Toast.makeText(context, "新闻下载出错", Toast.LENGTH_SHORT).show()
                 }
@@ -77,7 +78,7 @@ class NewsFragment : Fragment() {
                             (newsList.adapter as NewsRecyclerViewAdapter).refreshData(dataList)
                             currentPage = 1
                         }
-                    } else{
+                    } else {
                         activity.runOnUiThread {
                             Toast.makeText(context, "新闻解析出错", Toast.LENGTH_SHORT).show()
                         }
@@ -120,7 +121,7 @@ class NewsFragment : Fragment() {
                                         //加载更多新闻
                                         object : Thread() {
                                             override fun run() {
-                                                loading(currentPage+1, object : Callback {
+                                                loading(currentPage + 1, object : Callback {
                                                     override fun onFailure(call: Call?, e: IOException?) {
                                                         Toast.makeText(context, "新闻下载出错", Toast.LENGTH_SHORT).show()
                                                     }
@@ -169,7 +170,7 @@ class NewsFragment : Fragment() {
         outState.putInt("currentPage", currentPage)
     }
 
-    inner class InitNewsCallback : Callback{
+    inner class InitNewsCallback : Callback {
         override fun onFailure(call: Call?, e: IOException?) {
             Log.i(TAG, "新闻下载失败")
             activity.runOnUiThread {

@@ -3,19 +3,14 @@ package com.cpd.yuqing.activity
 import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v4.app.Fragment
-import android.support.v7.app.ActionBarDrawerToggle
 import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
-import android.view.View
 import com.cpd.yuqing.CpdnewsApplication
 import com.cpd.yuqing.R
 import com.cpd.yuqing.db.dao.NewsDao
-import com.cpd.yuqing.fragment.LocationFragment
+import com.cpd.yuqing.fragment.NavigationHomeFragment
 import com.cpd.yuqing.fragment.NewsFavoriteListFragment
-import com.cpd.yuqing.fragment.NewsMainFragment
 import com.cpd.yuqing.util.NetUtils
 import com.cpd.yuqing.util.OkHttpUtils
 import kotlinx.android.synthetic.main.activity_main.*
@@ -28,26 +23,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
-        //设置显示条件为true
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        supportActionBar!!.setHomeButtonEnabled(true)
-        //创建ActionBarDrawerToggle,添加监听
-        val drawerToggle = object : ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.cloase) {
-            override fun onDrawerClosed(drawerView: View?) {
-                super.onDrawerClosed(drawerView)
-                bezierView.stopAnimator()
-            }
-
-            override fun onDrawerOpened(drawerView: View?) {
-                super.onDrawerOpened(drawerView)
-                bezierView.startAnimator()
-            }
-        }
-        drawerToggle.syncState()
-        drawerLayout.addDrawerListener(drawerToggle)
         //解决navigationView的item图标显示为灰色
         nav_view.itemIconTintList = null
+        //处理和NavigationView相关的操作
         nav_view.setNavigationItemSelectedListener { menuItem ->
             when(menuItem.itemId) {
                 //查看收藏
@@ -65,7 +43,7 @@ class MainActivity : AppCompatActivity() {
                         Log.i(TAG, "fragment 不存在")
                         fragment = NewsFavoriteListFragment.newInstance(favoriteData)
                         supportFragmentManager.beginTransaction()
-                                .replace(R.id.mainFragmentContent, fragment, "favorite")
+                                .replace(R.id.curNavigationFragmentContent, fragment, "favorite")
                                 .addToBackStack("favorite")
                                 .commit()
                     }
@@ -77,9 +55,11 @@ class MainActivity : AppCompatActivity() {
             drawerLayout.closeDrawer(Gravity.START)
             true
         }
-        //初始的栏目
+        //初始化导航栏
+        nav_view.setCheckedItem(R.id.home)
+        //初始的首页新闻栏目
         supportFragmentManager.beginTransaction()
-                .replace(R.id.mainFragmentContent, NewsMainFragment(), "homeFragment")
+                .replace(R.id.curNavigationFragmentContent, NavigationHomeFragment(), "homeFragment")
                 .commit()
     }
 
@@ -124,22 +104,12 @@ class MainActivity : AppCompatActivity() {
         super.onStop()
     }
 
-    //点击下方按钮栏中的按钮来改变栏目
-    fun changeColumn(view: View) {
-        when(view.id) {
-            R.id.home -> {
-                val fragment:Fragment? = supportFragmentManager.findFragmentByTag("homeFragment")
-                supportFragmentManager.beginTransaction()
-                        .replace(R.id.mainFragmentContent, fragment?: NewsMainFragment(), "homeFragment")
-                        .commit()
-            }
-            R.id.location -> {
-                val fragment:Fragment? = supportFragmentManager.findFragmentByTag("LocationFragment")
-                supportFragmentManager.beginTransaction()
-                        .replace(R.id.mainFragmentContent, fragment?:LocationFragment(), "LocationFragment")
-                        .commit()
-            }
-        }
+    fun startBezierViewAnimator() {
+        bezierView.startAnimator()
+    }
+
+    fun stopBezierViewAnimator() {
+        bezierView.stopAnimator()
     }
 
     companion object {
