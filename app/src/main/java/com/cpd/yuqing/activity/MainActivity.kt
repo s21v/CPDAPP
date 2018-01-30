@@ -10,7 +10,7 @@ import com.cpd.yuqing.CpdnewsApplication
 import com.cpd.yuqing.R
 import com.cpd.yuqing.db.dao.NewsDao
 import com.cpd.yuqing.fragment.NavigationHomeFragment
-import com.cpd.yuqing.fragment.NewsFavoriteListFragment
+import com.cpd.yuqing.fragment.NavigationFavoriteFragment
 import com.cpd.yuqing.util.NetUtils
 import com.cpd.yuqing.util.OkHttpUtils
 import kotlinx.android.synthetic.main.activity_main.*
@@ -34,14 +34,14 @@ class MainActivity : AppCompatActivity() {
                     //获得数据库中的数据
                     val dao = NewsDao(this)
                     val favoriteData = dao.selectAll(CpdnewsApplication.getCurrentUser().id, NewsDao.TYPE_FAVORITE)
-                    var fragment: NewsFavoriteListFragment? = supportFragmentManager.findFragmentByTag("favorite") as NewsFavoriteListFragment?
+                    var fragment: NavigationFavoriteFragment? = supportFragmentManager.findFragmentByTag("favorite") as NavigationFavoriteFragment?
                     if (fragment != null){
                         Log.i(TAG, "fragment 存在")
                         fragment!!.data = favoriteData
                         supportFragmentManager.beginTransaction().show(fragment)
                     } else {
                         Log.i(TAG, "fragment 不存在")
-                        fragment = NewsFavoriteListFragment.newInstance(favoriteData)
+                        fragment = NavigationFavoriteFragment.newInstance(favoriteData)
                         supportFragmentManager.beginTransaction()
                                 .replace(R.id.curNavigationFragmentContent, fragment, "favorite")
                                 .addToBackStack("favorite")

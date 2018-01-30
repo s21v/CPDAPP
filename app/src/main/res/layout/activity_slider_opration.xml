@@ -22,7 +22,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
-        tools:context="com.cpd.yuqing.fragment.NewsFavoriteListFragment"
+        tools:context="com.cpd.yuqing.fragment.NavigationFavoriteFragment"
         tools:listitem="@layout/fragment_news_favorite"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 </android.support.constraint.ConstraintLayout>

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.cpd.yuqing.R
 import com.cpd.yuqing.db.vo.News
-import com.cpd.yuqing.fragment.NewsFavoriteListFragment.OnListFragmentInteractionListener
+import com.cpd.yuqing.fragment.NavigationFavoriteFragment.OnListFragmentInteractionListener
 
 class FavoriteNewsRecyclerViewAdapter(private val mValues: ArrayList<News>,
                                       private val mListener: OnListFragmentInteractionListener?) :

@@ -2,17 +2,14 @@ package com.cpd.yuqing.fragment
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.cpd.yuqing.R
-import com.cpd.yuqing.adapter.FavoriteNewsRecyclerViewAdapter
 import com.cpd.yuqing.db.vo.News
 
-class NewsFavoriteListFragment : Fragment() {
+class NavigationFavoriteFragment : Fragment() {
     var data: ArrayList<News>? = null
     set(value) {
         Log.i(TAG, "setData !!!")
@@ -71,10 +68,10 @@ class NewsFavoriteListFragment : Fragment() {
 
     companion object {
         private val DATA = "data"
-        private val TAG = NewsFavoriteListFragment::class.java.simpleName
+        private val TAG = NavigationFavoriteFragment::class.java.simpleName
 
-        fun newInstance(data: ArrayList<News>): NewsFavoriteListFragment {
-            val fragment = NewsFavoriteListFragment()
+        fun newInstance(data: ArrayList<News>): NavigationFavoriteFragment {
+            val fragment = NavigationFavoriteFragment()
             val args = Bundle()
             args.putParcelableArrayList(DATA, data)
             fragment.arguments = args
