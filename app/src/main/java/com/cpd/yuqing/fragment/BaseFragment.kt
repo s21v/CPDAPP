@@ -14,6 +14,8 @@ import kotlinx.android.synthetic.main.fragment_header.*
  * Created by s21v on 2018/1/27.
  */
 abstract class BaseFragment : Fragment() {
+    protected var mActionBarTitle: CharSequence? = null
+
     protected fun initActionBar() {
         //设置toolbar
         (activity as AppCompatActivity).setSupportActionBar(toolbar)
@@ -21,6 +23,8 @@ abstract class BaseFragment : Fragment() {
         //设置home图标显示箭头按钮、可点击
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar.setHomeButtonEnabled(true)
+        if (mActionBarTitle != null)
+            supportActionBar.title = mActionBarTitle
         //创建ActionBarDrawerToggle,添加监听
         val drawerLayout = activity.findViewById<DrawerLayout>(R.id.drawerLayout)
         val drawerToggle = object : ActionBarDrawerToggle(activity, drawerLayout, toolbar, R.string.open, R.string.cloase) {

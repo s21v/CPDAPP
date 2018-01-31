@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.cpd.yuqing.R
 import com.cpd.yuqing.db.vo.News
-import com.cpd.yuqing.fragment.NavigationFavoriteFragment.OnListFragmentInteractionListener
+import com.cpd.yuqing.view.OnNewsClickListener
 
 class FavoriteNewsRecyclerViewAdapter(private val mValues: ArrayList<News>,
-                                      private val mListener: OnListFragmentInteractionListener?) :
+                                      private val mListener: OnNewsClickListener?) :
         RecyclerView.Adapter<FavoriteNewsRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,7 +24,7 @@ class FavoriteNewsRecyclerViewAdapter(private val mValues: ArrayList<News>,
         holder.mContentView.text = mValues[position].homePageTitle
 
         holder.mView.setOnClickListener {
-            mListener?.onListFragmentInteraction(holder.mItem!!)
+            mListener?.onClick(holder.mItem!!)
         }
     }
 

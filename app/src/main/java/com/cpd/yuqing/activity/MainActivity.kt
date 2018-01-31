@@ -19,6 +19,7 @@ import okhttp3.*
 import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
+    private var currentFragmentTag = NAV_HOME
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,30 +29,52 @@ class MainActivity : AppCompatActivity() {
         //处理和NavigationView相关的操作
         nav_view.setNavigationItemSelectedListener { menuItem ->
             when(menuItem.itemId) {
+                //主页
+                R.id.home -> {
+                    if (currentFragmentTag != NAV_HOME) {
+                        val hideFragment = supportFragmentManager.findFragmentByTag(currentFragmentTag)
+                        var showFragment: NavigationHomeFragment? = supportFragmentManager.findFragmentByTag(NAV_HOME) as NavigationHomeFragment?
+                        if (showFragment != null) {
+                            supportFragmentManager.beginTransaction().hide(hideFragment).show(showFragment).commit()
+                        } else {
+                            showFragment = NavigationHomeFragment()
+                            supportFragmentManager.beginTransaction()
+                                    .hide(hideFragment)
+                                    .add(R.id.curNavigationFragmentContent, showFragment, NAV_HOME)
+                                    .commit()
+                        }
+                        menuItem.isChecked = true
+                        currentFragmentTag = NAV_HOME
+                    }
+                }
                 //查看收藏
                 R.id.myfavorite -> {
-                    title = menuItem.title
-                    //获得数据库中的数据
-                    val dao = NewsDao(this)
-                    val favoriteData = dao.selectAll(CpdnewsApplication.getCurrentUser().id, NewsDao.TYPE_FAVORITE)
-                    var fragment: NavigationFavoriteFragment? = supportFragmentManager.findFragmentByTag("favorite") as NavigationFavoriteFragment?
-                    if (fragment != null){
-                        Log.i(TAG, "fragment 存在")
-                        fragment!!.data = favoriteData
-                        supportFragmentManager.beginTransaction().show(fragment)
-                    } else {
-                        Log.i(TAG, "fragment 不存在")
-                        fragment = NavigationFavoriteFragment.newInstance(favoriteData)
-                        supportFragmentManager.beginTransaction()
-                                .replace(R.id.curNavigationFragmentContent, fragment, "favorite")
-                                .addToBackStack("favorite")
-                                .commit()
+                    if (currentFragmentTag != NAV_FAVORITE) {
+                        //获得数据库中的数据
+                        val dao = NewsDao(this)
+                        val favoriteData = dao.selectAll(CpdnewsApplication.getCurrentUser().id, NewsDao.TYPE_FAVORITE)
+                        //待隐藏的fragment
+                        val hideFragment = supportFragmentManager.findFragmentByTag(currentFragmentTag)
+                        //待显示的fragment
+                        var showFragment: NavigationFavoriteFragment? = supportFragmentManager.findFragmentByTag(NAV_FAVORITE) as NavigationFavoriteFragment?
+                        if (showFragment != null) {
+                            showFragment.data = favoriteData
+                            supportFragmentManager.beginTransaction().hide(hideFragment).show(showFragment).commit()
+                        } else {
+                            showFragment = NavigationFavoriteFragment.newInstance(favoriteData, menuItem.title)
+                            supportFragmentManager.beginTransaction()
+                                    .hide(hideFragment)
+                                    .add(R.id.curNavigationFragmentContent, showFragment, NAV_FAVORITE)
+                                    .commit()
+                        }
+                        menuItem.isChecked = true
+                        currentFragmentTag = NAV_FAVORITE
                     }
                 }
                 //查看点赞
                 R.id.mythumbUp -> {}
             }
-            menuItem.isChecked = true
+
             drawerLayout.closeDrawer(Gravity.START)
             true
         }
@@ -59,7 +82,7 @@ class MainActivity : AppCompatActivity() {
         nav_view.setCheckedItem(R.id.home)
         //初始的首页新闻栏目
         supportFragmentManager.beginTransaction()
-                .replace(R.id.curNavigationFragmentContent, NavigationHomeFragment(), "homeFragment")
+                .replace(R.id.curNavigationFragmentContent, NavigationHomeFragment(), NAV_HOME)
                 .commit()
     }
 
@@ -114,5 +137,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private val TAG = "MainActivity"
+        private val NAV_HOME = "nav_home"
+        private val NAV_FAVORITE = "nav_favorite"
     }
 }
