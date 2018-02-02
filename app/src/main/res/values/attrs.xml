@@ -25,4 +25,9 @@
         <attr name="firstAnimationDuration" format="integer"/>
         <attr name="secondAnimationDuration" format="integer"/>
     </declare-styleable>
+
+    <declare-styleable name="AutoChangeLineLayout">
+        <attr name="ItemLRMargin" format="dimension"/>
+        <attr name="LineSpace" format="dimension"/>
+    </declare-styleable>
 </resources>

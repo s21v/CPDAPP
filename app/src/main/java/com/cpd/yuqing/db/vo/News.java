@@ -178,4 +178,7 @@ public class News implements Parcelable{
         return "责任编辑:"+poster;
     }
     public static String minPubTime(final String pubTime) { return pubTime.split("\\s+")[0];}
+    public static String getChannelName(final String channel_id) {
+        return "栏目:"+channel_id;
+    }
 }

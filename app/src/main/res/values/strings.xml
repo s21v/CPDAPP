@@ -45,4 +45,5 @@
     <string name="mythumbup">赞过的新闻</string>
     <string name="open">打开菜单</string>
     <string name="cloase">关闭菜单</string>
+    <string name="delete">删除</string>
 </resources>
