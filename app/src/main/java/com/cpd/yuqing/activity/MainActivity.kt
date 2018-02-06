@@ -6,9 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
-import com.cpd.yuqing.CpdnewsApplication
 import com.cpd.yuqing.R
-import com.cpd.yuqing.db.dao.NewsDao
 import com.cpd.yuqing.fragment.NavigationHomeFragment
 import com.cpd.yuqing.fragment.NavigationFavoriteFragment
 import com.cpd.yuqing.util.NetUtils
@@ -50,18 +48,14 @@ class MainActivity : AppCompatActivity() {
                 //查看收藏
                 R.id.myfavorite -> {
                     if (currentFragmentTag != NAV_FAVORITE) {
-                        //获得数据库中的数据
-                        val dao = NewsDao(this)
-                        val favoriteData = dao.selectAll(CpdnewsApplication.getCurrentUser().id, NewsDao.TYPE_FAVORITE)
                         //待隐藏的fragment
                         val hideFragment = supportFragmentManager.findFragmentByTag(currentFragmentTag)
                         //待显示的fragment
                         var showFragment: NavigationFavoriteFragment? = supportFragmentManager.findFragmentByTag(NAV_FAVORITE) as NavigationFavoriteFragment?
                         if (showFragment != null) {
-                            showFragment.data = favoriteData
                             supportFragmentManager.beginTransaction().hide(hideFragment).show(showFragment).commit()
                         } else {
-                            showFragment = NavigationFavoriteFragment.newInstance(favoriteData, menuItem.title)
+                            showFragment = NavigationFavoriteFragment.newInstance(menuItem.title)
                             supportFragmentManager.beginTransaction()
                                     .hide(hideFragment)
                                     .add(R.id.curNavigationFragmentContent, showFragment, NAV_FAVORITE)
@@ -137,7 +131,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private val TAG = "MainActivity"
-        private val NAV_HOME = "nav_home"
-        private val NAV_FAVORITE = "nav_favorite"
+        private const val NAV_HOME = "nav_home"
+        private const val NAV_FAVORITE = "nav_favorite"
     }
 }

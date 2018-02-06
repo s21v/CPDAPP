@@ -54,6 +54,18 @@ class NewsDao(context: Context) : Dao(context) {
         return result
     }
 
+    //根据类型取消已点赞或者已收藏的新闻
+    fun cancel(userId: Int, newsId: String, type: Int): Int {
+        val db = mDataBaseHelper.writableDatabase
+        val cv = ContentValues()
+        if (type == NewsDao.TYPE_FAVORITE) {
+            cv.put("favorite", 0)
+        } else if (type == NewsDao.TYPE_THUMBUP) {
+            cv.put("thumbUp", 0)
+        }
+        return db.update(NewsDao.TABLE_NAME, cv, "_id=? and userId=?", arrayOf(newsId, userId.toString()))
+    }
+
     fun selectOne(userId: Int, newsId: String): Cursor {
         val db = mDataBaseHelper.writableDatabase
         return db.query(TABLE_NAME, null, "_id=? and userId=?",
@@ -92,6 +104,7 @@ class NewsDao(context: Context) : Dao(context) {
         return result
     }
 
+    //清楚既不收藏，也没有点赞的新闻
     fun delete(userId: Int, newsId: String): Int {
         val db = mDataBaseHelper.writableDatabase
         return db.delete(TABLE_NAME, "_id=? and userId=? and favorite=0 and thumbUp=0",

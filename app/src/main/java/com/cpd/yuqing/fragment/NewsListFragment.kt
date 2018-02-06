@@ -92,7 +92,7 @@ class NewsListFragment : Fragment() {
         newsList.adapter = NewsRecyclerViewAdapter(context, null)
         newsList.setHasFixedSize(false)
         newsList.addItemDecoration(SampleLineItemDecoration(activity,
-                android.R.color.darker_gray, SampleLineItemDecoration.VERTICAL_LIST, 1))
+                android.R.color.darker_gray, SampleLineItemDecoration.VERTICAL_LIST, 1, true))
         newsList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)

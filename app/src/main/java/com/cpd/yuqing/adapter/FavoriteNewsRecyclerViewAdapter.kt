@@ -3,23 +3,34 @@ package com.cpd.yuqing.adapter
 import android.app.Activity
 import android.content.Context
 import android.databinding.DataBindingUtil
-import android.support.v4.app.ActivityCompat
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.cpd.yuqing.BR
 import com.cpd.yuqing.R
 import com.cpd.yuqing.databinding.FragmentNewsFavoriteBinding
 import com.cpd.yuqing.db.vo.News
 import com.cpd.yuqing.view.OnNewsClickListener
+import kotlinx.android.synthetic.main.fragment_news_favorite.view.*
 
-class FavoriteNewsRecyclerViewAdapter(private val mValues: ArrayList<News>,
-                                      private val mClickListener: OnNewsClickListener?,
+class FavoriteNewsRecyclerViewAdapter(private val mClickListener: OnNewsClickListener?,
                                       private val mLongClickListener: View.OnLongClickListener?,
                                       private val context: Context) :
         RecyclerView.Adapter<FavoriteNewsRecyclerViewAdapter.ViewHolder>() {
+
+    var isActionMode = false
+    set(value) {
+        field = value
+        notifyDataSetChanged()
+    }
+    var mValues: ArrayList<News> = arrayListOf()
+    set(value) {
+        field = value
+        notifyDataSetChanged()
+    }
+    //待删除的项
+    private val selectedSet: HashSet<News> = hashSetOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = (context as Activity).layoutInflater
@@ -27,16 +38,26 @@ class FavoriteNewsRecyclerViewAdapter(private val mValues: ArrayList<News>,
         return ViewHolder(dataBind)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder?, position: Int, payloads: MutableList<Any>?) {
-        super.onBindViewHolder(holder, position, payloads)
-    }
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.dataBind.setVariable(BR.news, mValues[position])
         val root = holder.dataBind.root
-        //设置监听器
-        root.setOnClickListener {
-            mClickListener?.onClick(mValues[position])
+        if (isActionMode) {
+            root.checkbox.visibility = View.VISIBLE
+            root.checkbox.isChecked = selectedSet.contains(mValues[position])
+            root.setOnClickListener {
+                root.checkbox.isChecked = !root.checkbox.isChecked
+                if (root.checkbox.isChecked)
+                    selectedSet.add(mValues[position])
+                else
+                    selectedSet.remove(mValues[position])
+            }
+        }
+        else {
+            root.checkbox.visibility = View.GONE
+            //设置监听器
+            root.setOnClickListener {
+                mClickListener?.onClick(mValues[position])
+            }
         }
         root.setOnLongClickListener(mLongClickListener)
     }
@@ -45,5 +66,24 @@ class FavoriteNewsRecyclerViewAdapter(private val mValues: ArrayList<News>,
         return mValues.size
     }
 
+    fun getSelectedSet(): HashSet<News> {
+        return selectedSet
+    }
+
+    fun removeSelectedItem(item: News) {
+        selectedSet.remove(item)
+        val position = mValues.indexOf(item)
+        mValues.remove(item)
+        notifyItemRemoved(position)
+    }
+
     inner class ViewHolder(val dataBind: FragmentNewsFavoriteBinding) : RecyclerView.ViewHolder(dataBind.root)
+
+    companion object {
+        private val TAG = FavoriteNewsRecyclerViewAdapter::class.java.simpleName
+    }
+
+    interface NotifySelectedNum {
+        fun selectedNumChanged(size: Int)
+    }
 }

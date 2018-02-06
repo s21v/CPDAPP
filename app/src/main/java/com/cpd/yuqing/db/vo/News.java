@@ -174,6 +174,23 @@ public class News implements Parcelable{
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        News news = (News) o;
+
+        return user_id == news.user_id && news_id.equals(news.news_id);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = news_id.hashCode();
+        result = 31 * result + user_id;
+        return result;
+    }
+
     public static String posterMix(final String poster) {
         return "责任编辑:"+poster;
     }

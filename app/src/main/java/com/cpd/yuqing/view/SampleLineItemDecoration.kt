@@ -11,7 +11,7 @@ import android.view.View
 /**
  * Created by s21v on 2017/11/21.
  */
-class SampleLineItemDecoration(context: Context, colorRes: Int, orientation: Int, lineSize: Int)
+class SampleLineItemDecoration(context: Context, colorRes: Int, orientation: Int, lineSize: Int, private val isHomeNewsPage: Boolean)
     : RecyclerView.ItemDecoration() {
     private val mOrientation:Int = orientation
     private val mLineSize = lineSize
@@ -32,7 +32,8 @@ class SampleLineItemDecoration(context: Context, colorRes: Int, orientation: Int
         val left = parent!!.paddingLeft
         val right = parent.width - parent.paddingRight
         val childCount = parent.childCount
-        for (i in 1 until childCount-1) {
+        val startIndex = if (isHomeNewsPage) 1 else 0
+        for (i in startIndex until childCount-1) {
             val childView = parent.getChildAt(i)
             val layoutParams = childView.layoutParams as RecyclerView.LayoutParams
             val top = childView.bottom + layoutParams.topMargin + layoutParams.bottomMargin
@@ -49,7 +50,8 @@ class SampleLineItemDecoration(context: Context, colorRes: Int, orientation: Int
         val top = parent!!.paddingTop
         val bottom = parent.height - parent.bottom
         val childCount = parent.childCount
-        for (i in 1 until childCount-1) {
+        val startIndex = if (isHomeNewsPage) 1 else 0
+        for (i in startIndex until childCount-1) {
             val childView = parent.getChildAt(i)
             val layoutParams = childView.layoutParams as RecyclerView.LayoutParams
             val left = childView.width + layoutParams.leftMargin + layoutParams.rightMargin
@@ -66,7 +68,7 @@ class SampleLineItemDecoration(context: Context, colorRes: Int, orientation: Int
     }
 
     companion object {
-        val HORIZONTAL_LIST = LinearLayoutManager.HORIZONTAL    //水平列表
-        val VERTICAL_LIST = LinearLayoutManager.VERTICAL    //垂直列表
+        const val HORIZONTAL_LIST = LinearLayoutManager.HORIZONTAL    //水平列表
+        const val VERTICAL_LIST = LinearLayoutManager.VERTICAL    //垂直列表
     }
 }
