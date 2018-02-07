@@ -10,6 +10,7 @@ import android.view.*
 import com.cpd.yuqing.CpdnewsApplication
 import com.cpd.yuqing.R
 import com.cpd.yuqing.adapter.FavoriteNewsRecyclerViewAdapter
+import com.cpd.yuqing.db.dao.ChannelDao
 import com.cpd.yuqing.db.dao.NewsDao
 import com.cpd.yuqing.db.vo.News
 import com.cpd.yuqing.view.OnNewsClickListener
@@ -44,9 +45,12 @@ class NavigationFavoriteFragment : BaseFragment(), ActionMode.Callback, Favorite
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater!!.inflate(R.layout.fragment_news_favorite_list, container, false)
+        val channelDao = ChannelDao.getInstance(context)
+        val channelList = channelDao.queryAll()
+        channelDao.closeDB()
         recyclerView = rootView.findViewById(R.id.favoriteList)
         recyclerView!!.layoutManager = LinearLayoutManager(context)
-        recyclerView!!.adapter = FavoriteNewsRecyclerViewAdapter(mNewsClickListener, mNewsLongClickListener, activity)
+        recyclerView!!.adapter = FavoriteNewsRecyclerViewAdapter(channelList!!, mNewsClickListener, mNewsLongClickListener, activity)
         recyclerView!!.addItemDecoration(SampleLineItemDecoration(context, android.R.color.darker_gray, SampleLineItemDecoration.VERTICAL_LIST, 1, false))
         return rootView
     }
@@ -90,6 +94,7 @@ class NavigationFavoriteFragment : BaseFragment(), ActionMode.Callback, Favorite
         if (item!!.itemId == R.id.delete) {
             if (dao != null) {
                 val copyData = (recyclerView!!.adapter as FavoriteNewsRecyclerViewAdapter).getSelectedSet().clone()
+                @Suppress("UNCHECKED_CAST")
                 (copyData as HashSet<News>).forEach{
                     if (dao!!.cancel(CpdnewsApplication.getCurrentUser().id, it.news_id, NewsDao.TYPE_FAVORITE) == 1)
                         (recyclerView!!.adapter as FavoriteNewsRecyclerViewAdapter).removeSelectedItem(it)
@@ -121,7 +126,7 @@ class NavigationFavoriteFragment : BaseFragment(), ActionMode.Callback, Favorite
 
     companion object {
         private const val ACTIONBAR_TITLE = "actionBarTitle"
-        private val TAG = NavigationFavoriteFragment::class.java.simpleName
+//        private val TAG = NavigationFavoriteFragment::class.java.simpleName
 
         fun newInstance(mActionBarTitle: CharSequence): NavigationFavoriteFragment {
             val fragment = NavigationFavoriteFragment()

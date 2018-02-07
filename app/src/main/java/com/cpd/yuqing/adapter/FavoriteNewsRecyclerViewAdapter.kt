@@ -10,11 +10,13 @@ import android.view.ViewGroup
 import com.cpd.yuqing.BR
 import com.cpd.yuqing.R
 import com.cpd.yuqing.databinding.FragmentNewsFavoriteBinding
+import com.cpd.yuqing.db.vo.Channel
 import com.cpd.yuqing.db.vo.News
 import com.cpd.yuqing.view.OnNewsClickListener
 import kotlinx.android.synthetic.main.fragment_news_favorite.view.*
 
-class FavoriteNewsRecyclerViewAdapter(private val mClickListener: OnNewsClickListener?,
+class FavoriteNewsRecyclerViewAdapter(private val channelList: ArrayList<Channel>,
+                                      private val mClickListener: OnNewsClickListener?,
                                       private val mLongClickListener: View.OnLongClickListener?,
                                       private val context: Context) :
         RecyclerView.Adapter<FavoriteNewsRecyclerViewAdapter.ViewHolder>() {
@@ -60,10 +62,21 @@ class FavoriteNewsRecyclerViewAdapter(private val mClickListener: OnNewsClickLis
             }
         }
         root.setOnLongClickListener(mLongClickListener)
+        val channelName = getChannelName(mValues[position].channel_id)
+        if (channelName != null)
+            root.channelName.setText("栏目:$channelName")
+        else
+            root.channelName.visibility = View.INVISIBLE
     }
 
     override fun getItemCount(): Int {
         return mValues.size
+    }
+
+    private fun getChannelName(channelId: String): String? {
+        return (0 .. channelList.size)
+                .firstOrNull { channelList[it].id == channelId }
+                ?.let { channelList[it].name }
     }
 
     fun getSelectedSet(): HashSet<News> {

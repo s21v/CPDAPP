@@ -58,11 +58,12 @@
                     android:textSize="12sp" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/channelName"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:gravity="end"
                     android:singleLine="true"
-                    android:text="@{News.getChannelName(news.channel_id)}"
                     android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
