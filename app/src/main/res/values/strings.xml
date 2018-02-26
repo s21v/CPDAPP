@@ -46,4 +46,5 @@
     <string name="open">打开菜单</string>
     <string name="cloase">关闭菜单</string>
     <string name="delete">删除</string>
+    <string name="switch_night_mode">模式切换</string>
 </resources>

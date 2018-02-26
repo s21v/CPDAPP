@@ -16,6 +16,7 @@
             android:drawableStart="@mipmap/news_source"
             android:text="@{news.source}"
             android:singleLine="true"
+            android:textColor="@color/textColorPrimary"
             android:textSize="12sp" />
         <TextView
             android:layout_weight="1"
@@ -25,6 +26,7 @@
             android:text="@{news.pub_time}"
             android:textSize="12sp"
             android:singleLine="true"
+            android:textColor="@color/textColorPrimary"
             android:drawableStart="@mipmap/publish_time"/>
         <!--<TextView android:drawableLeft="@mipmap/chat_bubble"-->
             <!--android:layout_width="0dp"-->

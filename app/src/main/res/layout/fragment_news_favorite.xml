@@ -11,6 +11,7 @@
     </data>
 
     <LinearLayout
+        android:background="@color/viewBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -28,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{news.homePageTitle}"
-                android:textColor="#616161"
+                android:textColor="@color/textColorPrimary"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
@@ -39,6 +40,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:textColor="@color/textColorPrimary"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -49,6 +51,7 @@
                     android:textSize="12sp" />
 
                 <TextView
+                    android:textColor="@color/textColorPrimary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableStart="@mipmap/publish_time"
@@ -58,6 +61,7 @@
                     android:textSize="12sp" />
 
                 <TextView
+                    android:textColor="@color/textColorPrimary"
                     android:id="@+id/channelName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

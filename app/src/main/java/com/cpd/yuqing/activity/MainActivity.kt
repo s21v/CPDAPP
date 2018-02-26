@@ -1,8 +1,11 @@
 package com.cpd.yuqing.activity
 
 import android.content.Context
+import android.content.res.Configuration
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatDelegate
 import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
@@ -22,6 +25,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        if (savedInstanceState != null)
+            currentFragmentTag = savedInstanceState.getString("currentFragmentTag")
         //解决navigationView的item图标显示为灰色
         nav_view.itemIconTintList = null
         //处理和NavigationView相关的操作
@@ -67,6 +72,27 @@ class MainActivity : AppCompatActivity() {
                 }
                 //查看点赞
                 R.id.mythumbUp -> {}
+                //切换模式
+                R.id.switch_night_mode -> {
+                    //获取当前UI模式
+                    //kotlin 中并没有为位操作提供操作符,而是用and(与) or(或) xor(异或) inv(按位取反) shl(左移) shr(右移) ushr(无符号右移)
+                    val mode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+                    if (Configuration.UI_MODE_NIGHT_YES == mode) {
+                        //关闭夜间模式
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                        getSharedPreferences("contentSetting", MODE_PRIVATE).edit()
+                                .putBoolean("isNightMode", false).apply()
+                    } else {
+                        //开启夜间模式
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                        getSharedPreferences("contentSetting", MODE_PRIVATE).edit()
+                                .putBoolean("isNightMode", true).apply()
+                    }
+                    window.setWindowAnimations(R.style.WindowAnimationFadeInOut)
+                    //应用新模式
+                    recreate()
+                    return@setNavigationItemSelectedListener true
+                }
             }
 
             drawerLayout.closeDrawer(Gravity.START)
@@ -74,10 +100,20 @@ class MainActivity : AppCompatActivity() {
         }
         //初始化导航栏
         nav_view.setCheckedItem(R.id.home)
-        //初始的首页新闻栏目
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.curNavigationFragmentContent, NavigationHomeFragment(), NAV_HOME)
-                .commit()
+        //检查当前栏目是否存在
+        if (supportFragmentManager.findFragmentByTag(currentFragmentTag) == null) {
+            Log.i(TAG, "当前栏目不存在")
+            val fragment = createFragment(currentFragmentTag)
+            //初始的首页新闻栏目
+            supportFragmentManager.beginTransaction()
+                    .add(R.id.curNavigationFragmentContent, fragment!!, currentFragmentTag)
+                    .commit()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState!!.putString("currentFragmentTag", currentFragmentTag)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -92,6 +128,15 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (drawerLayout.isDrawerOpen(Gravity.START))
+        {
+            Log.i(TAG, "isDrawerOpen()")
+            startBezierViewAnimator()
+        }
     }
 
     override fun onStop() {
@@ -119,6 +164,13 @@ class MainActivity : AppCompatActivity() {
             }
         })
         super.onStop()
+    }
+
+    private fun createFragment(fragmentTag: String): Fragment? {
+        return when (fragmentTag) {
+            NAV_HOME -> NavigationHomeFragment()
+            else -> null
+        }
     }
 
     fun startBezierViewAnimator() {

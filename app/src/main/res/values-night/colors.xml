@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#35464e</color>
+    <color name="colorPrimaryDark">#212a2f</color>
+    <color name="colorAccent">#212a2f</color>
+    <color name="textColorPrimary">@color/Grey400</color>
+    <color name="viewBackground">@color/Grey800</color>
+    <color name="line_divider">@color/Grey900</color>
+    <color name="tabIndicatorColor">@color/Grey500</color>
+    <color name="tabSelectedTextColor">@color/Grey100</color>
+    <color name="actionBarTitleColor">@color/Grey300</color>
+    <color name="bezierLine_combat">#4b5556</color>
+    <color name="bezierLine_second">#88616161</color>
+    <color name="dot_checked">@color/Grey100</color>
+    <color name="dot_checked_stroke">@color/Grey500</color>
+    <color name="dot_unchecked">#212a2f</color>
+    <color name="dot_unchecked_stroke">@color/Grey500</color>
+    <color name="navView_text_color">@color/Grey200</color>
+    <color name="channel_change_textColor">@color/Grey400</color>
+</resources>

@@ -1,6 +1,7 @@
 package com.cpd.yuqing.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.BitmapDrawable;
@@ -132,10 +133,13 @@ public class NewsContentFragment extends Fragment implements FontSizeView.Slider
                     //加载用户指定的字体大小
                     int[] fontSizeValues = getResources().getIntArray(R.array.FontSizeValue);
                     int defaultFontSizeValue = fontSizeValues[fontSizeValues.length/2];
-                    int fontSizeValue = getContext().getSharedPreferences("contentSetting", MODE_PRIVATE)
-                            .getInt("currentFontSizeValue", defaultFontSizeValue);
+                    SharedPreferences contentSettings = getContext().getSharedPreferences("contentSetting", MODE_PRIVATE);
+                    int fontSizeValue = contentSettings.getInt("currentFontSizeValue", defaultFontSizeValue);
+                    boolean isNightMode = contentSettings.getBoolean("isNightMode", false);
                     if (fontSizeValue != defaultFontSizeValue)
                         view.loadUrl(String.format("javascript:textSizeChange(%d)", fontSizeValue));
+                    if (isNightMode)
+                        view.loadUrl(String.format("javascript:switchNightMode(%b)", isNightMode));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

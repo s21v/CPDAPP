@@ -62,6 +62,11 @@ class NavigationHomeFragment : BaseFragment() {
                 else -> false
             }
         }
+        bottomNavigation.selectedItemId = when (currentFragmentTag) {
+            CHANNEL_NEWS_TAG -> R.id.bottomNavHome
+            CHANNEL_LOCATION_TAG -> R.id.bottomNavLocation
+            else -> 0
+        }
     }
 
     private fun hideAndShowFragment(hideFragmentTag: String, showFragmentTag: String) {

@@ -51,7 +51,7 @@ class NavigationFavoriteFragment : BaseFragment(), ActionMode.Callback, Favorite
         recyclerView = rootView.findViewById(R.id.favoriteList)
         recyclerView!!.layoutManager = LinearLayoutManager(context)
         recyclerView!!.adapter = FavoriteNewsRecyclerViewAdapter(channelList!!, mNewsClickListener, mNewsLongClickListener, activity)
-        recyclerView!!.addItemDecoration(SampleLineItemDecoration(context, android.R.color.darker_gray, SampleLineItemDecoration.VERTICAL_LIST, 1, false))
+        recyclerView!!.addItemDecoration(SampleLineItemDecoration(context, R.color.line_divider, SampleLineItemDecoration.VERTICAL_LIST, 1, false))
         return rootView
     }
 

@@ -13,6 +13,6 @@
         android:background="@color/colorPrimary"
         app:layout_scrollFlags="scroll|snap|enterAlways"
         app:titleTextAppearance="@style/Base.TextAppearance.AppCompat.Large"
-        app:titleTextColor="@color/colorPrimaryDark" />
+        app:titleTextColor="@color/actionBarTitleColor" />
 
 </android.support.design.widget.AppBarLayout>

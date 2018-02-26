@@ -21,7 +21,8 @@
             app:tabGravity="fill"
             app:tabIndicatorHeight="2dp"
             app:tabMode="scrollable"
-            app:tabSelectedTextColor="@android:color/white"
+            app:tabIndicatorColor="@color/tabIndicatorColor"
+            app:tabSelectedTextColor="@color/tabSelectedTextColor"
             app:tabTextAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             app:tabTextColor="@color/colorPrimaryDark" />
 

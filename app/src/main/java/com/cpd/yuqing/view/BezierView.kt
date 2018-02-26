@@ -34,7 +34,7 @@ class BezierView(context: Context, attrs: AttributeSet) : View(context, attrs) {
     init {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.BezierView)
         val firstColor = typedArray.getColor(R.styleable.BezierView_firstColor, resources.getColor(R.color.colorPrimary, null))
-        val secondColor = typedArray.getColor(R.styleable.BezierView_secondColor, resources.getColor(R.color.colorPrimaryDark, null))
+        val secondColor = typedArray.getColor(R.styleable.BezierView_secondColor, resources.getColor(R.color.bezierLine_second, null))
         val firstAnimationDuration = typedArray.getInt(R.styleable.BezierView_firstAnimationDuration, 10)
         val secondAnimationDuration = typedArray.getInt(R.styleable.BezierView_secondAnimationDuration, 4)
 //        firstLeft = typedArray.getFloat(R.styleable.BezierView_firstWaveLeft, -1f)

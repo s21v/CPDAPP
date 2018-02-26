@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@android:color/white"
+        android:background="@color/viewBackground"
         android:orientation="vertical">
 
         <LinearLayout
@@ -80,7 +80,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@android:color/darker_gray" />
+            android:background="@color/line_divider" />
 
         <com.cpd.yuqing.view.FontSizeView
             android:id="@+id/fontSizeView"

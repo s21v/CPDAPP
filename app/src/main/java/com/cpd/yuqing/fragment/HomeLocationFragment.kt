@@ -50,7 +50,6 @@ class HomeLocationFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        activity.appbarlayout.setExpanded(true)
         //运行时权限检查
         val requestPermissionList = arrayListOf<String>()
         if (ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_PHONE_STATE)
@@ -68,6 +67,11 @@ class HomeLocationFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.fragment_location, container, false)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        activity.appbarlayout.setExpanded(true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {

@@ -72,4 +72,5 @@ dependencies {
     implementation files('libs/MobShareSDK/ShareSDK-Wechat-Favorite-2.8.2.jar')
     implementation files('libs/MobShareSDK/ShareSDK-Wechat-Moments-2.8.2.jar')
     compile name: 'SMSSDK-2.1.4', ext: 'aar'
+    implementation project(':vitamio')
 }
