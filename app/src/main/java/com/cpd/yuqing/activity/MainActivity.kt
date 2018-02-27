@@ -31,8 +31,8 @@ class MainActivity : AppCompatActivity() {
         nav_view.itemIconTintList = null
         //处理和NavigationView相关的操作
         nav_view.setNavigationItemSelectedListener { menuItem ->
-            when(menuItem.itemId) {
-                //主页
+            when (menuItem.itemId) {
+            //主页
                 R.id.home -> {
                     if (currentFragmentTag != NAV_HOME) {
                         val hideFragment = supportFragmentManager.findFragmentByTag(currentFragmentTag)
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
                         currentFragmentTag = NAV_HOME
                     }
                 }
-                //查看收藏
+            //查看收藏
                 R.id.myfavorite -> {
                     if (currentFragmentTag != NAV_FAVORITE) {
                         //待隐藏的fragment
@@ -70,9 +70,10 @@ class MainActivity : AppCompatActivity() {
                         currentFragmentTag = NAV_FAVORITE
                     }
                 }
-                //查看点赞
-                R.id.mythumbUp -> {}
-                //切换模式
+            //查看点赞
+                R.id.mythumbUp -> {
+                }
+            //切换模式
                 R.id.switch_night_mode -> {
                     //获取当前UI模式
                     //kotlin 中并没有为位操作提供操作符,而是用and(与) or(或) xor(异或) inv(按位取反) shl(左移) shr(右移) ushr(无符号右移)
@@ -91,7 +92,6 @@ class MainActivity : AppCompatActivity() {
                     window.setWindowAnimations(R.style.WindowAnimationFadeInOut)
                     //应用新模式
                     recreate()
-                    return@setNavigationItemSelectedListener true
                 }
             }
 
@@ -117,8 +117,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId) {
-            //activity中只处理打开关闭侧边栏的主导航项
+        when (item?.itemId) {
+        //activity中只处理打开关闭侧边栏的主导航项
             android.R.id.home -> {
                 if (drawerLayout.isDrawerOpen(Gravity.START))
                     drawerLayout.closeDrawer(Gravity.START)
@@ -130,15 +130,6 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onStart() {
-        super.onStart()
-        if (drawerLayout.isDrawerOpen(Gravity.START))
-        {
-            Log.i(TAG, "isDrawerOpen()")
-            startBezierViewAnimator()
-        }
-    }
-
     override fun onStop() {
         //检查栏目是否更新
         //获取本地栏目信息
@@ -147,7 +138,7 @@ class MainActivity : AppCompatActivity() {
         //获取远程栏目信息
         val formBody = FormBody.Builder().add("m", "version").build()
         val request4Version = Request.Builder().url(NetUtils.ChannelCommonUrl).post(formBody).build()
-        OkHttpUtils.getOkHttpUtilInstance(this)!!.httpConnection(request4Version, object:Callback{
+        OkHttpUtils.getOkHttpUtilInstance(this)!!.httpConnection(request4Version, object : Callback {
             override fun onFailure(call: Call?, e: IOException?) {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
@@ -182,7 +173,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        private val TAG = "MainActivity"
+        private const val TAG = "MainActivity"
         private const val NAV_HOME = "nav_home"
         private const val NAV_FAVORITE = "nav_favorite"
     }

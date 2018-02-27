@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="translucent" parent="AppTheme.NoActionBar">
+    <style name="translucent" parent="AppTheme">
         <!--状态栏透明-->
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowTranslucentNavigation">true</item>

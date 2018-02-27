@@ -87,6 +87,8 @@ public class NewsContentFragment extends Fragment implements FontSizeView.Slider
         contentWebView = rootView.findViewById(R.id.contentWebView);
         //不显示滚动条
         contentWebView.setVerticalScrollBarEnabled(false);
+        //设置透明背景
+        contentWebView.setBackgroundColor(0);
         //设置webView,支持JavaScript
         WebSettings webSettings = contentWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);

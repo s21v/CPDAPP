@@ -89,7 +89,7 @@
             app:fontTextSize="12sp"
             app:lineTopSpaceSize="32dp"
             app:lineHeight="2dp"
-            app:lineColor="@color/colorPrimary"
+            app:lineColor="@color/dot_checked_stroke"
             app:sliderBackground="@drawable/radiobutton_dot_checked"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -101,7 +101,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@android:color/darker_gray" />
+            android:background="@color/line_divider" />
 
         <Button
             android:id="@+id/dismiss"
@@ -110,7 +110,7 @@
             android:background="@null"
             android:text="@string/dismiss"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-            android:textColor="@android:color/black"
+            android:textColor="@color/textColorPrimary"
             android:textStyle="bold" />
     </LinearLayout>
 </RelativeLayout>

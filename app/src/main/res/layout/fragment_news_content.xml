@@ -31,35 +31,36 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:background="@color/viewBackground">
 
             <TextView
-                android:textColor="@color/textColorPrimary"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="start"
                 android:text="@{News.minPubTime(news.pub_time)}"
+                android:textColor="@color/textColorPrimary"
                 android:textSize="12sp" />
 
             <TextView
-                android:textColor="@color/textColorPrimary"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="4dp"
                 android:gravity="center"
                 android:text="@{news.source}"
+                android:textColor="@color/textColorPrimary"
                 android:textSize="12sp" />
 
             <TextView
-                android:textColor="@color/textColorPrimary"
-                android:maxLines="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="end"
+                android:maxLines="1"
                 android:text="@{news.author}"
+                android:textColor="@color/textColorPrimary"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -70,18 +71,18 @@
             android:background="@android:color/darker_gray" />
 
         <WebView
-            android:background="@color/viewBackground"
             android:id="@+id/contentWebView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="@color/viewBackground"/>
 
         <TextView
-            android:textColor="@color/textColorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:gravity="end"
             android:text="@{News.posterMix(news.poster)}"
+            android:textColor="@color/textColorPrimary"
             android:textSize="12sp" />
     </LinearLayout>
 </layout>

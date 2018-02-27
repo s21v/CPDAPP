@@ -17,6 +17,7 @@ import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -28,6 +29,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.cpd.yuqing.CpdnewsApplication;
 import com.cpd.yuqing.R;
 import com.cpd.yuqing.contentProvider.UserContentProvider;
@@ -35,11 +37,14 @@ import com.cpd.yuqing.db.dao.UserDao;
 import com.cpd.yuqing.db.vo.User;
 import com.cpd.yuqing.util.NetUtils;
 import com.cpd.yuqing.util.Utils;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Set;
+
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
@@ -52,12 +57,13 @@ import okhttp3.FormBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+
 import com.cpd.yuqing.util.OkHttpUtils;
 
 /**
  * A login screen that offers login via username/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, View.OnClickListener{
+public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, View.OnClickListener {
     public static final String KEY_REGISTER_WITH_PLATFORM_ID = "registerWithPlatformId";
     public static final String KEY_FORGET_PASSWORD = "forgetPassword";
     private static final String TAG = "LoginActivity";
@@ -88,7 +94,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mPhoneNumView.setOnItemClickListener((parent, view, position, id) -> {
             Cursor cursor = adapter.getCursor();
             if (cursor != null) {
-                if(cursor.moveToPosition(position)) {
+                if (cursor.moveToPosition(position)) {
                     mPhoneNumView.setText(cursor.getString(cursor.getColumnIndex("phoneNum")));
                     mPasswordView.setText(cursor.getString(cursor.getColumnIndex("password")));
                 }
@@ -100,7 +106,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         TextView passwordCheckBoxTv = findViewById(R.id.pw_checkbox_tv);
         mSharedPreferences = getPreferences(MODE_PRIVATE);
         boolean isRememberPassword = mSharedPreferences.getBoolean(IS_REMEMBER_PASSWORD, false);
-        if(isRememberPassword)
+        if (isRememberPassword)
             passwordCheckBoxIv.setImageResource(R.drawable.remember_password_checkbox_checked);
         else
             passwordCheckBoxIv.setImageResource(R.drawable.remember_password_checkbox);
@@ -134,7 +140,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onResume() {
         super.onResume();
         //android6.0以上的系统设置通明的系统状态栏和导航栏
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             //清除系统提供的默认保护色
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
@@ -177,88 +183,92 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         .build();
                 OkHttpUtils.Companion.getOkHttpUtilInstance(getApplicationContext())
                         .httpConnection(request, new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        Log.e(TAG, e.getMessage());
-                        runOnUiThread(() -> Toast.makeText(LoginActivity.this, "网络异常", Toast.LENGTH_SHORT).show());
-                    }
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        String status = response.header("status");
-                        if ("success".equals(status)) {
-                            try {
-                                //获得返回的用户数据
-                                JSONObject jsonObject = new JSONObject(response.body().string());
-                                String phoneNumStr = jsonObject.getString("phoneNum");
-                                String nicknameStr = jsonObject.getString("name");
-                                String passwordValid = jsonObject.getString("password");
-                                //检查输入正确的用户名是否保存在本地数据库中
-                                if(mSharedPreferences.getBoolean(IS_REMEMBER_PASSWORD, false)) {
-                                    UserDao userDao = UserDao.getInstance(LoginActivity.this);
-                                    String passwordStr = mPasswordView.getText().toString();
-                                    if(Utils.SHAEncrypt(passwordStr).equals(passwordValid)) {
-                                        Cursor cursor = userDao.query4Cursor("phoneNum=? and password=?", new String[]{phoneNumStr, passwordStr});
-                                        //若没有保存，在本地数据库保存正确的用户名和密码
-                                        if (!cursor.moveToNext()) {
-                                            userDao.insert(new User(nicknameStr, passwordStr, phoneNumStr));
-                                        }
-                                        cursor.close();
-                                    }
-                                    userDao.closeDB();
-                                }
-                                //设置当前用户
-                                CpdnewsApplication.setCurrentUser(new User(nicknameStr, phoneNumStr, passwordValid));
-                            } catch (JSONException e) {
-                                Log.e(TAG, "解析用户json数据失败: "+e.getMessage());
+                            @Override
+                            public void onFailure(Call call, IOException e) {
+                                Log.e(TAG, e.getMessage());
+                                runOnUiThread(() -> Toast.makeText(LoginActivity.this, "网络异常", Toast.LENGTH_SHORT).show());
                             }
-                            //跳转到主界面
-                            Log.i(TAG, "用户名和密码登录成功");
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                            finish();
-                        } else if("fail".equals(status)) {
-                            //数据库中没有此用户名和密码
-                            runOnUiThread(() -> Toast.makeText(LoginActivity.this,
-                                    "用户名/密码 错误", Toast.LENGTH_SHORT).show());
-                        }
-                    }
-                });
+
+                            @Override
+                            public void onResponse(Call call, Response response) throws IOException {
+                                String status = response.header("status");
+                                if ("success".equals(status)) {
+                                    try {
+                                        //获得返回的用户数据
+                                        JSONObject jsonObject = new JSONObject(response.body().string());
+                                        String phoneNumStr = jsonObject.getString("phoneNum");
+                                        String nicknameStr = jsonObject.getString("name");
+                                        String passwordValid = jsonObject.getString("password");
+                                        //检查输入正确的用户名是否保存在本地数据库中
+                                        if (mSharedPreferences.getBoolean(IS_REMEMBER_PASSWORD, false)) {
+                                            UserDao userDao = UserDao.getInstance(LoginActivity.this);
+                                            String passwordStr = mPasswordView.getText().toString();
+                                            if (Utils.SHAEncrypt(passwordStr).equals(passwordValid)) {
+                                                Cursor cursor = userDao.query4Cursor("phoneNum=? and password=?", new String[]{phoneNumStr, passwordStr});
+                                                //若没有保存，在本地数据库保存正确的用户名和密码
+                                                if (!cursor.moveToNext()) {
+                                                    userDao.insert(new User(nicknameStr, passwordStr, phoneNumStr));
+                                                }
+                                                cursor.close();
+                                            }
+                                            userDao.closeDB();
+                                        }
+                                        //设置当前用户
+                                        CpdnewsApplication.setCurrentUser(new User(nicknameStr, phoneNumStr, passwordValid));
+                                    } catch (JSONException e) {
+                                        Log.e(TAG, "解析用户json数据失败: " + e.getMessage());
+                                    }
+                                    //跳转到主界面
+                                    Log.i(TAG, "用户名和密码登录成功");
+                                    if (getSharedPreferences("contentSetting", MODE_PRIVATE).getBoolean("isNightMode", false)) {
+                                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                                    }
+                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                    finish();
+                                } else if ("fail".equals(status)) {
+                                    //数据库中没有此用户名和密码
+                                    runOnUiThread(() -> Toast.makeText(LoginActivity.this,
+                                            "用户名/密码 错误", Toast.LENGTH_SHORT).show());
+                                }
+                            }
+                        });
                 break;
             //点击忘记密码，跳转到忘记密码页面
-            case R.id.forget_password_tv :
+            case R.id.forget_password_tv:
                 Intent intent2 = new Intent(this, RegisterActivity.class);
                 intent2.putExtra(KEY_FORGET_PASSWORD, true);
                 startActivity(intent2);
                 break;
             //点击注册页面，跳转到注册页面
-            case R.id.register_tv :
+            case R.id.register_tv:
                 Intent intent = new Intent(this, RegisterActivity.class);
                 intent.putExtra(KEY_REGISTER_WITH_PLATFORM_ID, false);
                 startActivity(intent);
                 break;
             //第三方登录
-            case R.id.sign_in_sinaweibo :
+            case R.id.sign_in_sinaweibo:
                 Platform weibo = ShareSDK.getPlatform(SinaWeibo.NAME);
                 weibo.SSOSetting(false);    //使用SSO授权方式
                 weibo.setPlatformActionListener(new MyPlatformActionListener("SinaWeibo"));
                 weibo.showUser(null);
                 break;
-            case R.id.sign_in_qq :
+            case R.id.sign_in_qq:
                 Platform qq = ShareSDK.getPlatform(QQ.NAME);
                 qq.SSOSetting(false);
                 qq.setPlatformActionListener(new MyPlatformActionListener("QQ"));
                 qq.showUser(null);
                 break;
-            case R.id.sign_in_wechat :
+            case R.id.sign_in_wechat:
                 final Platform weChat = ShareSDK.getPlatform(Wechat.NAME);
                 weChat.SSOSetting(false);
                 weChat.setPlatformActionListener(new PlatformActionListener() {
                     @Override
                     public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
                         Log.i(TAG, "微信授权成功: ");
-                        Log.i(TAG, "onComplete: platform:"+platform.getDb().exportData());
-                        Set<HashMap.Entry<String,Object>> set = hashMap.entrySet();
+                        Log.i(TAG, "onComplete: platform:" + platform.getDb().exportData());
+                        Set<HashMap.Entry<String, Object>> set = hashMap.entrySet();
                         for (HashMap.Entry entry : set)
-                            Log.i(TAG, "onComplete: Entry k:"+entry.getKey()+", v:"+entry.getValue());
+                            Log.i(TAG, "onComplete: Entry k:" + entry.getKey() + ", v:" + entry.getValue());
                     }
 
                     @Override
@@ -281,7 +291,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Log.d(TAG, "onCreateLoader() called with: i = [" + i + "], bundle = [" + bundle + "]");
         //加载所有已存储的用户名和密码
-        Uri uri = Uri.parse("content://"+ UserContentProvider.AUTHORITY+"/user");
+        Uri uri = Uri.parse("content://" + UserContentProvider.AUTHORITY + "/user");
         return new CursorLoader(this, uri, null, null, null, null);
     }
 
@@ -303,7 +313,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     //第三方平台授权监听器
-    class MyPlatformActionListener implements PlatformActionListener{
+    class MyPlatformActionListener implements PlatformActionListener {
         private String platformName;
         private static final String TAG = "PlatformActionListener";
 
@@ -313,7 +323,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-            Log.i(TAG, platformName+"onComplete: ");
+            Log.i(TAG, platformName + "onComplete: ");
             final String platformUserID = platform.getDb().get("userID");
             //查询服务器数据库，服务端判定用户是已注册用户
             RequestBody requestBody = new FormBody.Builder()
@@ -327,52 +337,55 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     .build();
             OkHttpUtils.Companion.getOkHttpUtilInstance(getApplicationContext())
                     .httpConnection(request, new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    Log.e(TAG, "网络连接失败 onFailure: "+e.getMessage());
-                }
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    String status = response.header("status");
-                    if ("success".equals(status)) { //网络返回成功，服务中找到对应的账号
-                        //设置当前用户
-                        try {
-                            JSONObject jsonObject = new JSONObject(response.body().string());
-                            User user = new User(jsonObject.getString("name"), jsonObject.getString("password"), jsonObject.getString("phoneNum"));
-                            CpdnewsApplication.setCurrentUser(user);
-                            Log.i(TAG, "onResponse: 转到主页面");
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                            finish();
-                        } catch (JSONException e) {
-                            Log.e(TAG, "解析返回的Json数据失败 onResponse: "+e.getMessage());
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            Log.e(TAG, "网络连接失败 onFailure: " + e.getMessage());
                         }
-                    } else if ("fail".equals(status)) { //此平台信息没有被记录过
-                        runOnUiThread(() -> {
-                            Log.i(TAG, "run: platformUserID:"+platformUserID);
-                            AlertDialog dialog = new AlertDialog.Builder(LoginActivity.this).setMessage("没有找到绑定的用户")
-                                    .setPositiveButton("已有用户，去绑定", (dialog12, which) -> {
-                                        Intent intent1 = new Intent(LoginActivity.this, BindUserActivity.class);
-                                        intent1.putExtra("platformName", platformName);
-                                        intent1.putExtra("platformID", platformUserID);
-                                        startActivity(intent1);
-                                    }).setNegativeButton("没有用户，去注册", (dialog1, which) -> {
-                                        Intent intent1 = new Intent(LoginActivity.this, RegisterActivity.class);
-                                        intent1.putExtra(KEY_REGISTER_WITH_PLATFORM_ID, true);
-                                        intent1.putExtra("platformName", platformName);
-                                        intent1.putExtra("platformID", platformUserID);
-                                        startActivity(intent1);
-                                    }).create();
-                            dialog.show();
-                        });
-                    }
-                }
-            });
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            String status = response.header("status");
+                            if ("success".equals(status)) { //网络返回成功，服务中找到对应的账号
+                                //设置当前用户
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response.body().string());
+                                    User user = new User(jsonObject.getString("name"), jsonObject.getString("password"), jsonObject.getString("phoneNum"));
+                                    CpdnewsApplication.setCurrentUser(user);
+                                    Log.i(TAG, "onResponse: 转到主页面");
+                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                    finish();
+                                } catch (JSONException e) {
+                                    Log.e(TAG, "解析返回的Json数据失败 onResponse: " + e.getMessage());
+                                }
+                            } else if ("fail".equals(status)) { //此平台信息没有被记录过
+                                runOnUiThread(() -> {
+                                    Log.i(TAG, "run: platformUserID:" + platformUserID);
+                                    AlertDialog dialog = new AlertDialog.Builder(LoginActivity.this).setMessage("没有找到绑定的用户")
+                                            .setPositiveButton("已有用户，去绑定", (dialog12, which) -> {
+                                                Intent intent1 = new Intent(LoginActivity.this, BindUserActivity.class);
+                                                intent1.putExtra("platformName", platformName);
+                                                intent1.putExtra("platformID", platformUserID);
+                                                startActivity(intent1);
+                                            }).setNegativeButton("没有用户，去注册", (dialog1, which) -> {
+                                                Intent intent1 = new Intent(LoginActivity.this, RegisterActivity.class);
+                                                intent1.putExtra(KEY_REGISTER_WITH_PLATFORM_ID, true);
+                                                intent1.putExtra("platformName", platformName);
+                                                intent1.putExtra("platformID", platformUserID);
+                                                startActivity(intent1);
+                                            }).create();
+                                    dialog.show();
+                                });
+                            }
+                        }
+                    });
         }
+
         @Override
         public void onError(Platform platform, int i, Throwable throwable) {
-            Log.e(TAG, platformName+"onError: "+throwable.getMessage());
+            Log.e(TAG, platformName + "onError: " + throwable.getMessage());
             platform.removeAccount(true);
         }
+
         @Override
         public void onCancel(Platform platform, int i) {
 

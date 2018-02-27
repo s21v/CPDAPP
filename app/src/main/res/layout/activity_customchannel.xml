@@ -1,51 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/viewBackground">
+    android:background="@color/viewBackground"
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?android:actionBarSize"
         android:background="@color/colorPrimary"
-        android:minHeight="?android:actionBarSize">
+        android:minHeight="?android:actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/channelChannel"
-            android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse"
+            android:textColor="@color/tabSelectedTextColor" />
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
-        android:background="@color/line_divider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/line_divider"
         android:orientation="horizontal"
-        android:paddingTop="4dp"
         android:paddingLeft="4dp"
-        android:paddingRight="4dp">
+        android:paddingRight="4dp"
+        android:paddingTop="4dp">
+
         <ImageView
-            android:layout_marginEnd="2dp"
             android:layout_width="4dp"
             android:layout_height="@dimen/abc_text_size_small_material"
             android:layout_gravity="center_vertical"
-            android:background="@color/colorPrimary"/>
+            android:layout_marginEnd="2dp"
+            android:background="@color/colorPrimary" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:text="@string/visibleChannelList"
-            android:textColor="@color/channel_change_textColor"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/channel_change_textColor" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
+            android:text="@string/visibleListOperation"
             android:textColor="@color/textColorPrimary"
-            android:text="@string/visibleListOperation"/>
+            android:textSize="12sp" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
@@ -56,31 +63,34 @@
         android:layout_weight="1" />
 
     <LinearLayout
-        android:background="@color/line_divider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/line_divider"
         android:orientation="horizontal"
-        android:paddingTop="4dp"
         android:paddingLeft="4dp"
-        android:paddingRight="4dp">
+        android:paddingRight="4dp"
+        android:paddingTop="4dp">
+
         <ImageView
-            android:layout_marginEnd="2dp"
             android:layout_width="4dp"
             android:layout_height="@dimen/abc_text_size_small_material"
             android:layout_gravity="center_vertical"
-            android:background="@color/colorPrimary"/>
+            android:layout_marginEnd="2dp"
+            android:background="@color/colorPrimary" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:text="@string/invisibleChannelList"
-            android:textColor="@color/channel_change_textColor"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/channel_change_textColor" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
+            android:text="@string/invisibleListOperation"
             android:textColor="@color/textColorPrimary"
-            android:text="@string/invisibleListOperation"/>
+            android:textSize="12sp" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

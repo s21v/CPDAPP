@@ -41,7 +41,7 @@ class FontSizeView : ViewGroup{
         val textSize = typeArray.getDimension(R.styleable.FontSizeView_fontTextSize, 10f)
         lineTopSpaceSize = typeArray.getDimension(R.styleable.FontSizeView_lineTopSpaceSize, 8f)
         val lineHeight = typeArray.getDimension(R.styleable.FontSizeView_lineHeight, 1f)
-        val lineColor = typeArray.getColor(R.styleable.FontSizeView_lineColor, R.color.colorPrimary)
+        val lineColor = typeArray.getColor(R.styleable.FontSizeView_lineColor, resources.getColor(R.color.colorPrimary, null))
         typeArray.recycle()
         val fontSizeName = resources.getStringArray(fontSizeNameRes)
         fontSizeValue = resources.getIntArray(fontSizeValueRes)
@@ -52,7 +52,7 @@ class FontSizeView : ViewGroup{
             textView.text = fontSizeName[i]
             textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
             textView.gravity = Gravity.CENTER
-            textView.setTextColor(Color.BLACK)
+            textView.setTextColor(resources.getColor(R.color.textColorPrimary, null))
             fontTextView.add(textView)
             addView(textView, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
         }

@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:paddingTop="16dp"
     android:paddingBottom="16dp"
-    android:background="@android:color/white">
+    android:background="@color/viewBackground">
     <ProgressBar
         android:id="@+id/refreshProgressBar"
         android:layout_toLeftOf="@id/refreshText"
@@ -16,7 +16,7 @@
         android:visibility="invisible"/>
     <TextView
         android:textStyle="bold"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="@color/textColorPrimary"
         android:id="@+id/refreshText"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
