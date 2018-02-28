@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:orientation="vertical">
+
+    <include layout="@layout/video_part_header" />
+
+    <android.support.v7.widget.GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/viewBackground"
+        app:columnCount="1"
+        app:rowCount="3"
+        app:useDefaultMargins="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/viewBackground"
+            android:orientation="horizontal"
+            app:layout_rowWeight="1">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="120dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="4dp"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="4"
+                android:text="中国警务新闻第65期：公安部派工作组看望慰问一线受辱受伤民警辅警"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/channel_change_textColor"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/viewBackground"
+            android:orientation="horizontal"
+            app:layout_rowWeight="1">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="120dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="4dp"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="4"
+                android:text="中国警务新闻第59期：CCTV2017年度法治人物评选结果揭晓"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/channel_change_textColor"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/viewBackground"
+            android:orientation="horizontal"
+            app:layout_rowWeight="1">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="120dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="4dp"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="4"
+                android:text="中国警务新闻第41期：警察特训营选手亮相"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/channel_change_textColor"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.GridLayout>
+</LinearLayout>
