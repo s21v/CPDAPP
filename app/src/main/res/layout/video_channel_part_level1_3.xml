@@ -1,110 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <include layout="@layout/video_part_header" />
+    <data>
 
-    <android.support.v7.widget.GridLayout
+        <import type="com.cpd.yuqing.db.vo.video.Channel" />
+
+        <import type="com.cpd.yuqing.db.vo.video.News" />
+
+        <import type="java.util.ArrayList" />
+
+        <variable
+            name="channel"
+            type="Channel" />
+
+        <variable
+            name="news"
+            type="ArrayList&lt;News>" />
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/viewBackground"
-        app:columnCount="1"
-        app:rowCount="3"
-        app:useDefaultMargins="true">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        android:background="@color/viewBackground">
 
-        <LinearLayout
+        <include
+            layout="@layout/video_part_header"
+            app:channel="@{channel}" />
+
+        <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/viewBackground"
-            android:orientation="horizontal"
-            app:layout_rowWeight="1">
+            android:layout_height="match_parent"
+            android:layout_marginEnd="4dp"
+            android:layout_marginStart="4dp"
+            android:padding="4dp">
 
-            <android.support.v7.widget.CardView
-                android:layout_width="120dp"
-                android:layout_height="80dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="4dp"
-                app:cardBackgroundColor="@color/colorPrimary"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="4dp" />
+            <TableRow android:layout_marginBottom="4dp">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:maxLines="4"
-                android:text="中国警务新闻第65期：公安部派工作组看望慰问一线受辱受伤民警辅警"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/channel_change_textColor"
-                android:textStyle="bold" />
+                <android.support.v7.widget.CardView
+                    android:layout_width="160dp"
+                    android:layout_height="90dp"
+                    android:layout_marginEnd="4dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp">
 
-        </LinearLayout>
+                    <ImageView
+                        android:id="@+id/thumbIcon1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY" />
+                </android.support.v7.widget.CardView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/viewBackground"
-            android:orientation="horizontal"
-            app:layout_rowWeight="1">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="4"
+                    android:text="@{news[0].title}"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="@dimen/news_title_size" />
+            </TableRow>
 
-            <android.support.v7.widget.CardView
-                android:layout_width="120dp"
-                android:layout_height="80dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="4dp"
-                app:cardBackgroundColor="@color/colorPrimary"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="4dp" />
+            <TableRow android:layout_marginBottom="4dp">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:maxLines="4"
-                android:text="中国警务新闻第59期：CCTV2017年度法治人物评选结果揭晓"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/channel_change_textColor"
-                android:textStyle="bold" />
+                <android.support.v7.widget.CardView
+                    android:layout_width="160dp"
+                    android:layout_height="90dp"
+                    android:layout_marginEnd="4dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp">
 
-        </LinearLayout>
+                    <ImageView
+                        android:id="@+id/thumbIcon2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY" />
+                </android.support.v7.widget.CardView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/viewBackground"
-            android:orientation="horizontal"
-            app:layout_rowWeight="1">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="4"
+                    android:text="@{news[1].title}"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="@dimen/news_title_size" />
+            </TableRow>
 
-            <android.support.v7.widget.CardView
-                android:layout_width="120dp"
-                android:layout_height="80dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="4dp"
-                app:cardBackgroundColor="@color/colorPrimary"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="4dp" />
+            <TableRow android:layout_marginBottom="2dp">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:maxLines="4"
-                android:text="中国警务新闻第41期：警察特训营选手亮相"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/channel_change_textColor"
-                android:textStyle="bold" />
+                <android.support.v7.widget.CardView
+                    android:layout_width="160dp"
+                    android:layout_height="90dp"
+                    android:layout_marginEnd="4dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp">
 
-        </LinearLayout>
+                    <ImageView
+                        android:id="@+id/thumbIcon3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY" />
+                </android.support.v7.widget.CardView>
 
-    </android.support.v7.widget.GridLayout>
-</LinearLayout>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="4"
+                    android:text="@{news[2].title}"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="@dimen/news_title_size" />
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+</layout>

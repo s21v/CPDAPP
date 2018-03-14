@@ -16,7 +16,7 @@ import com.baidu.location.BDLocationListener
 import com.baidu.location.LocationClient
 import com.cpd.yuqing.R
 import com.cpd.yuqing.activity.LocationActivity
-import kotlinx.android.synthetic.main.fragment_location.*
+import kotlinx.android.synthetic.main.fragment_home_location.*
 import kotlinx.android.synthetic.main.fragment_header.*
 
 /**
@@ -66,7 +66,7 @@ class HomeLocationFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.fragment_location, container, false)
+        return inflater?.inflate(R.layout.fragment_home_location, container, false)
     }
 
     override fun onStart() {

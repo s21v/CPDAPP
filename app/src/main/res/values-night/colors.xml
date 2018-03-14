@@ -17,4 +17,5 @@
     <color name="dot_unchecked_stroke">@color/Grey500</color>
     <color name="navView_text_color">@color/Grey200</color>
     <color name="channel_change_textColor">@color/Grey400</color>
+    <color name="videohomeback">@color/Grey900</color>
 </resources>

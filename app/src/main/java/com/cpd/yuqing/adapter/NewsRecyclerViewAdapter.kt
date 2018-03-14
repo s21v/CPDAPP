@@ -32,12 +32,12 @@ class NewsRecyclerViewAdapter(val context: Context, dataList: ArrayList<News>?) 
     private val newsClickListener: OnNewsClickListener
 
     companion object {
-        private val noPicViewType = 1
-        private val hasPicViewType = 2
-        private val footViewType = 3
-        private val headerViewType = 4
-        private val emptyViewType = 5
-        private val galleryMaxSize = 3  //画廊控件的最大容量
+        private const val noPicViewType = 1
+        private const val hasPicViewType = 2
+        private const val footViewType = 3
+        private const val headerViewType = 4
+        private const val emptyViewType = 5
+        private const val galleryMaxSize = 3  //画廊控件的最大容量
     }
 
     init {

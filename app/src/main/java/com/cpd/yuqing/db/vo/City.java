@@ -1,4 +1,4 @@
-package com.cpd.yuqing.data;
+package com.cpd.yuqing.db.vo;
 
 import java.util.List;
 

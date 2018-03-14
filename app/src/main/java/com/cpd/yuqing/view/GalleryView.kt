@@ -87,7 +87,7 @@ class GalleryView(context: Context, attrs: AttributeSet) : RelativeLayout(contex
             radioButtonLayoutParams.leftMargin = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 3f, context.resources.displayMetrics).toInt()
             radioButtonLayoutParams.rightMargin = radioButtonLayoutParams.leftMargin
             radioButton.layoutParams = radioButtonLayoutParams
-            radioButton.buttonDrawable = context.resources.getDrawable(R.drawable.radiobutton_dot)
+            radioButton.buttonDrawable = context.resources.getDrawable(R.drawable.radiobutton_dot, null)
             radioButton.background = null
             radioButton.setOnClickListener(RadioButtonOnClickListener(i))
             radioGroup!!.addView(radioButton)

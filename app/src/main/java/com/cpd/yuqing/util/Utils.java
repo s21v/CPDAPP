@@ -1,6 +1,7 @@
 package com.cpd.yuqing.util;
 
 import android.content.Context;
+import android.databinding.BindingAdapter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -14,7 +15,11 @@ import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 import com.cpd.yuqing.R;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
@@ -34,10 +39,10 @@ public class Utils {
             MessageDigest messageDigest = MessageDigest.getInstance("SHA");
             messageDigest.update(input.getBytes());
             for (byte b : messageDigest.digest()) {
-                builder.append(String.format("%1$02x",b));  //%1$02x 第一个0是flag：表示用0填充；2表示宽度;
+                builder.append(String.format("%1$02x", b));  //%1$02x 第一个0是flag：表示用0填充；2表示宽度;
             }
         } catch (NoSuchAlgorithmException e) {
-            Log.e(TAG, "SHA加密失败"+e.getMessage());
+            Log.e(TAG, "SHA加密失败" + e.getMessage());
         }
         return builder.toString();
     }
@@ -68,9 +73,10 @@ public class Utils {
 
     /**
      * 图片转换为圆形，作为头像使用
-     * @param source    要做成头像的图片
+     *
+     * @param source  要做成头像的图片
      * @param context
-     * @param dpVal 头像区域的大小,单位是dp
+     * @param dpVal   头像区域的大小,单位是dp
      * @return
      */
     public static Bitmap getRoundBitmap(Bitmap source, Context context, int dpVal) {
@@ -87,38 +93,46 @@ public class Utils {
         Bitmap round = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher_round);
         Matrix roundScale = new Matrix();
         //设置Bitmap缩放的缩放比例，注意类型转换否则比例不对
-        roundScale.postScale((float) destWidth/round.getWidth(), (float) destHeight/round.getHeight());
+        roundScale.postScale((float) destWidth / round.getWidth(), (float) destHeight / round.getHeight());
         canvas.drawBitmap(round, roundScale, paint);
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));  //（取上下层交集，显示上层）
         //后绘制头像图片（上层）
         Matrix sourceScale = new Matrix();
-        sourceScale.postScale((float) destWidth/source.getWidth(), (float) destHeight/source.getHeight());
+        sourceScale.postScale((float) destWidth / source.getWidth(), (float) destHeight / source.getHeight());
         canvas.drawBitmap(source, sourceScale, paint);
         return result;
     }
 
     //得到时间差
-    public static String getDateDifferenceValue(long publishTime){
+    public static String getDateDifferenceValue(long publishTime) {
         long nowDateTime = new Date().getTime();
         long differenceValue = nowDateTime - publishTime;
-        if(differenceValue/(24*60*60*1000) > 0) {
-            return String.format("%d天前", differenceValue/(24*60*60*1000));
+        if (differenceValue / (24 * 60 * 60 * 1000) > 0) {
+            return String.format("%d天前", differenceValue / (24 * 60 * 60 * 1000));
         } else {
-            long differenceValue2 = differenceValue % (24*60*60*1000);
-            if(differenceValue2/(60*60*1000) > 0)
-                return String.format("%d小时前", differenceValue2/(60*60*1000));
+            long differenceValue2 = differenceValue % (24 * 60 * 60 * 1000);
+            if (differenceValue2 / (60 * 60 * 1000) > 0)
+                return String.format("%d小时前", differenceValue2 / (60 * 60 * 1000));
             else {
-                long differenceValue3 = differenceValue2 % (60*60*1000);
-                if(differenceValue3/(60*1000) > 0)
-                    return String.format("%d分钟前", differenceValue3/(60*1000));
+                long differenceValue3 = differenceValue2 % (60 * 60 * 1000);
+                if (differenceValue3 / (60 * 1000) > 0)
+                    return String.format("%d分钟前", differenceValue3 / (60 * 1000));
                 else {
-                    long differenceValue4 = differenceValue3 % (60*1000);
-                    if(differenceValue4/1000 > 0)
-                        return String.format("%d秒钟前", differenceValue4/1000);
+                    long differenceValue4 = differenceValue3 % (60 * 1000);
+                    if (differenceValue4 / 1000 > 0)
+                        return String.format("%d秒钟前", differenceValue4 / 1000);
                     else
                         return "刚刚";
                 }
             }
         }
+    }
+
+    // databinding 数据转换
+    @BindingAdapter({"imageUrl"})
+    public static void loadImage(ImageView imageView, String imgUrl) {
+        Glide.with(imageView.getContext().getApplicationContext())
+                .load(imgUrl)
+                .into(imageView);
     }
 }

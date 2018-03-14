@@ -1,0 +1,24 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipChildren="false"
+    android:background="@color/viewBackground">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/id_viewpager"
+        android:layout_width="320dp"
+        android:layout_height="180dp"
+        android:layout_centerHorizontal="true"
+        android:clipChildren="false" />
+    <TextView android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:id="@+id/title_tv"
+        android:textSize="@dimen/news_title_size"
+        android:textColor="@color/textColorPrimary"
+        android:layout_below="@id/id_viewpager"
+        android:singleLine="true"
+        android:ellipsize="marquee" />
+
+</RelativeLayout>

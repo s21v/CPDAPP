@@ -30,12 +30,14 @@ class NavigationHomeFragment : BaseFragment() {
         //初始化fragment
         if (savedInstanceState != null)
             currentFragmentTag = savedInstanceState.getString("currentFragmentTag", CHANNEL_NEWS_TAG)
+        Log.i(TAG, "onActivityCreated() $currentFragmentTag")
         val fragmentManager = activity.supportFragmentManager
         var initFragment = fragmentManager.findFragmentByTag(currentFragmentTag)
         if (initFragment == null) {
             initFragment = when (currentFragmentTag) {
                 CHANNEL_NEWS_TAG -> HomeNewsFragment()
                 CHANNEL_LOCATION_TAG -> HomeLocationFragment()
+                CHANNEL_VIDEO_TAG -> HomeVideoFragment()
                 else -> null
             }
             fragmentManager.beginTransaction().replace(R.id.mainFragmentContent, initFragment, currentFragmentTag).commit()
@@ -59,12 +61,20 @@ class NavigationHomeFragment : BaseFragment() {
                     } else
                         false
                 }
+                R.id.bottomNavVideo -> {
+                    if (currentFragmentTag != CHANNEL_VIDEO_TAG) {
+                        hideAndShowFragment(currentFragmentTag, CHANNEL_VIDEO_TAG)
+                        return@setOnNavigationItemSelectedListener true
+                    } else
+                        return@setOnNavigationItemSelectedListener false
+                }
                 else -> false
             }
         }
         bottomNavigation.selectedItemId = when (currentFragmentTag) {
             CHANNEL_NEWS_TAG -> R.id.bottomNavHome
             CHANNEL_LOCATION_TAG -> R.id.bottomNavLocation
+            CHANNEL_VIDEO_TAG -> R.id.bottomNavVideo
             else -> 0
         }
     }
@@ -77,6 +87,7 @@ class NavigationHomeFragment : BaseFragment() {
             showFragment = when (showFragmentTag) {
                 CHANNEL_NEWS_TAG -> HomeNewsFragment()
                 CHANNEL_LOCATION_TAG -> HomeLocationFragment()
+                CHANNEL_VIDEO_TAG -> HomeVideoFragment()
                 else -> null
             }
             if (showFragment != null) {
@@ -97,6 +108,7 @@ class NavigationHomeFragment : BaseFragment() {
 
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
+        Log.i(TAG, "onSaveInstanceState() $currentFragmentTag")
         outState!!.putString("currentFragmentTag", currentFragmentTag)
     }
 
@@ -104,5 +116,6 @@ class NavigationHomeFragment : BaseFragment() {
         val TAG = NavigationHomeFragment::class.java.simpleName!!
         val CHANNEL_NEWS_TAG = HomeNewsFragment::class.java.simpleName!!
         val CHANNEL_LOCATION_TAG = HomeLocationFragment::class.java.simpleName!!
+        val CHANNEL_VIDEO_TAG = HomeVideoFragment::class.java.simpleName!!
     }
 }

@@ -4,11 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.graphics.Canvas
-import android.graphics.Color
 import android.support.v4.view.ViewCompat
 import android.support.v4.widget.ViewDragHelper
 import android.util.AttributeSet
-import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.widget.TextView
@@ -64,7 +62,7 @@ class FontSizeView : ViewGroup{
         addView(line)
         //加载滑块
         slider = View(context)
-        slider.background = resources.getDrawable(sliderBackground)
+        slider.background = resources.getDrawable(sliderBackground, null)
         addView(slider)
     }
 

@@ -13,7 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.cpd.yuqing.R
-import com.cpd.yuqing.data.City
+import com.cpd.yuqing.db.vo.City
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_location.*

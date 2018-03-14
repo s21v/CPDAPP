@@ -19,6 +19,7 @@
     <color name="dot_unchecked_stroke">@color/colorPrimary</color>
     <color name="navView_text_color">@color/Grey900</color>
     <color name="channel_change_textColor">@color/colorPrimaryDark</color>
+    <color name="videohomeback">@color/Grey200</color>
 
     <color name="Grey50">#FAFAFA</color>
     <color name="Grey100">#F5F5F5</color>

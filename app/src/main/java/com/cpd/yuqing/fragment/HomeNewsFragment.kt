@@ -69,7 +69,7 @@ class HomeNewsFragment : Fragment() {
                         ChannelDao.getInstance(activity).insertChannelList(channelList!!)
                         ChannelDao.getInstance(activity).closeDB()
                         activity.runOnUiThread{
-                            viewPage.adapter = NewsViewPagerAdapter((activity as AppCompatActivity).supportFragmentManager, channelList!!)
+                            viewPage.adapter = NewsViewPagerAdapter(childFragmentManager, channelList!!)
                         }
                     } else {
                         TODO("栏目版本获取失败 version fail")
@@ -125,7 +125,7 @@ class HomeNewsFragment : Fragment() {
             } else {
                 //从本地数据库中记载栏目信息
                 channelList = ChannelDao.getInstance(activity).queryByIsShow(true)
-                viewPage.adapter = NewsViewPagerAdapter((activity as AppCompatActivity).supportFragmentManager, channelList!!)
+                viewPage.adapter = NewsViewPagerAdapter(childFragmentManager, channelList!!)
                 ChannelDao.getInstance(activity).closeDB()
             }
         }
@@ -157,7 +157,7 @@ class HomeNewsFragment : Fragment() {
             if (resultCode == Activity.RESULT_OK) {
                 //返回自定义栏目列表
                 channelList = data?.getParcelableArrayListExtra("changedChannel")
-                viewPage.adapter = NewsViewPagerAdapter((activity as AppCompatActivity).supportFragmentManager, channelList!!)
+                viewPage.adapter = NewsViewPagerAdapter(childFragmentManager, channelList!!)
             }
         }
     }

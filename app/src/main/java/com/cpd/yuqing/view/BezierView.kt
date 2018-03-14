@@ -116,7 +116,7 @@ class BezierView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         secondBezierPath.close()
 
         canvas!!.drawPath(firstBezierPath, firstPaint)
-        canvas!!.drawPath(secondBezierPath, secondPaint)
+        canvas.drawPath(secondBezierPath, secondPaint)
     }
 
     companion object {

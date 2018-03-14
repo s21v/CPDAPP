@@ -19,15 +19,17 @@ class OkHttpUtils private constructor(context: Context) {
         //生成OkHttpUtil对象
         val builder = OkHttpClient.Builder()
         //设置读写、链接超时
-        builder.connectTimeout(30, TimeUnit.SECONDS)
-        builder.writeTimeout(30, TimeUnit.SECONDS)
-        builder.readTimeout(30, TimeUnit.SECONDS)
-        //50M外部缓存
+        builder.connectTimeout(40, TimeUnit.SECONDS)
+        builder.writeTimeout(40, TimeUnit.SECONDS)
+        builder.readTimeout(40, TimeUnit.SECONDS)
+        //失败重连
+        builder.retryOnConnectionFailure(true)
+        //100M外部缓存
         if (Environment.MEDIA_MOUNTED == Environment.getExternalStorageState())
-            builder.cache(Cache(context.externalCacheDir!!, (50 shl 20).toLong()))
+            builder.cache(Cache(context.externalCacheDir!!, (100 shl 20).toLong()))
         else
-        //20M内存缓存
-            builder.cache(Cache(context.cacheDir, (20 shl 20).toLong()))
+        //30M内存缓存
+            builder.cache(Cache(context.cacheDir, (30 shl 20).toLong()))
         okHttpClientInstance = builder.build()
     }
 
@@ -38,6 +40,7 @@ class OkHttpUtils private constructor(context: Context) {
 
     // 单例
     companion object {
+        @Volatile
         private var okHttpUtilsInstance: OkHttpUtils? = null
 
         fun getOkHttpUtilInstance(context: Context): OkHttpUtils? {

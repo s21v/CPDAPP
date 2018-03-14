@@ -1,35 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/viewBackground"
-    android:orientation="horizontal"
-    android:padding="2dp">
+<layout>
 
-    <ImageView
-        android:layout_width="4dp"
-        android:layout_height="@dimen/abc_text_size_medium_material"
-        android:layout_gravity="center_vertical"
-        android:layout_marginEnd="4dp"
-        android:background="@color/colorPrimary" />
+    <data>
 
-    <TextView
-        android:id="@+id/channelName"
-        android:layout_width="0dp"
+        <import type="com.cpd.yuqing.db.vo.video.Channel" />
+
+        <variable
+            name="channel"
+            type="Channel" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="公安微电影"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@color/channel_change_textColor"
-        android:textStyle="bold" />
+        android:background="@color/viewBackground"
+        android:orientation="horizontal"
+        android:padding="2dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
-        android:text="@string/more"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textColor="@color/textColorPrimary" />
-</LinearLayout>
+        <ImageView
+            android:layout_width="4dp"
+            android:layout_height="@dimen/abc_text_size_medium_material"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="4dp"
+            android:background="@color/colorPrimary" />
+
+        <TextView
+            android:id="@+id/channelName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@{channel.name}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/channel_change_textColor"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:text="@string/more"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/textColorPrimary" />
+    </LinearLayout>
+</layout>

@@ -81,7 +81,8 @@ public class NewsContentFragment extends Fragment implements FontSizeView.Slider
             DataBinding在Activity中使用：DataBindingUtil.setContentView(...)
             DataBinding在Fragment中使用：DataBindingUtil.inflate(...)
         */
-        FragmentNewsContentBinding dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_news_content, container, false);
+        FragmentNewsContentBinding dataBinding = DataBindingUtil.inflate(inflater,
+                R.layout.fragment_news_content, container, false);
         dataBinding.setNews(news);
         View rootView = dataBinding.getRoot();
         contentWebView = rootView.findViewById(R.id.contentWebView);

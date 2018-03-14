@@ -40,9 +40,9 @@ class GlideUtils : AppGlideModule() {
                 .format(DecodeFormat.PREFER_ARGB_8888))
         //如果外部存储可用使用外部磁盘缓存，否则使用内部磁盘缓存
         if (Environment.MEDIA_MOUNTED == Environment.getExternalStorageState())
-            builder.setDiskCache(ExternalCacheDiskCacheFactory(context, "glideDiskCache", 50 shl 20))
+            builder.setDiskCache(ExternalCacheDiskCacheFactory(context, "glideDiskCache", 100 shl 20))
         else
-            builder.setDiskCache(InternalCacheDiskCacheFactory(context, "glideDiskCache", 20 shl 20))
+            builder.setDiskCache(InternalCacheDiskCacheFactory(context, "glideDiskCache", 30 shl 20))
         //设置内存缓存大小
         val calculator = MemorySizeCalculator.Builder(context!!)
                 .setMemoryCacheScreens(3f)
