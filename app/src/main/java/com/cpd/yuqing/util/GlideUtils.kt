@@ -37,7 +37,7 @@ class GlideUtils : AppGlideModule() {
                 .fitCenter()
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .skipMemoryCache(false)
-                .format(DecodeFormat.PREFER_ARGB_8888))
+                .format(DecodeFormat.PREFER_RGB_565))
         //如果外部存储可用使用外部磁盘缓存，否则使用内部磁盘缓存
         if (Environment.MEDIA_MOUNTED == Environment.getExternalStorageState())
             builder.setDiskCache(ExternalCacheDiskCacheFactory(context, "glideDiskCache", 100 shl 20))
