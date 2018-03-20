@@ -140,14 +140,14 @@ class VideoHomeRecyclerViewAdapter(val context: Context, channels: ArrayList<Cha
                             Glide.with(context.applicationContext)
                                     .load(news[2].thumbIconUrl)
                                     .into(viewDataBinding.thumbIcon3)
-                            val tableLayout = viewDataBinding.root.findViewById<TableLayout>(R.id.tableLayout)
-                            for (i in 0 until tableLayout.childCount) {
-                                tableLayout.getChildAt(i).setOnClickListener {
-                                    val intent = Intent(context, VideoContentActivity::class.java)
-                                    intent.putExtra("news", news[i])
-                                    context.startActivity(intent)
-                                }
-                            }
+//                            val tableLayout = viewDataBinding.root.findViewById<TableLayout>(R.id.tableLayout)
+//                            for (i in 0 until tableLayout.childCount) {
+//                                tableLayout.getChildAt(i).setOnClickListener {
+//                                    val intent = Intent(context, VideoContentActivity::class.java)
+//                                    intent.putExtra("news", news[i])
+//                                    context.startActivity(intent)
+//                                }
+//                            }
                         }
 
                         override fun onError(e: Throwable?) {
