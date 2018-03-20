@@ -18,6 +18,7 @@ import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
 /**
+ * 首页底部导航栏的视频栏目页
  * Created by s21v on 2018/3/6.
  */
 class HomeVideoFragment : Fragment() {

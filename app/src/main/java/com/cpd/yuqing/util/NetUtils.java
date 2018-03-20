@@ -5,10 +5,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 /**
+ * 网络相关
  * Created by s21v on 2017/5/15.
  */
 public class NetUtils {
-    private static final String IP4Simulator = "10.0.3.2:8080";
+    private static final String IP4Simulator = "10.0.2.2:8080"; //genymotion模拟机IP:10.0.3.2:8080
     private static final String IP4Phone = "192.168.5.102:8080";    //远程主机的地址
     public static final String BASE_URL = "http://" + IP4Simulator + "/CpdNews/";
     public static final String UserCommonURL = BASE_URL + "UserDBServlet";

@@ -13,6 +13,7 @@ import com.cpd.yuqing.db.vo.video.Channel
 import kotlinx.android.synthetic.main.news_channel_layout.*
 
 /**
+ * 视频栏目首页
  * Created by s21v on 2018/3/7.
  */
 class VideoHomeFragment : Fragment() {

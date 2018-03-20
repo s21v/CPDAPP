@@ -1,6 +1,7 @@
 package com.cpd.yuqing.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
@@ -11,9 +12,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TableLayout
 import com.bumptech.glide.Glide
 import com.cpd.yuqing.BR
 import com.cpd.yuqing.R
+import com.cpd.yuqing.activity.VideoContentActivity
 import com.cpd.yuqing.databinding.*
 import com.cpd.yuqing.db.vo.video.Channel
 import com.cpd.yuqing.db.vo.video.News
@@ -27,6 +30,7 @@ import kotlin.properties.Delegates
 import kotlinx.android.synthetic.main.video_channel_part_level1_5.view.*
 
 /**
+ * 视频栏目首页的RecyclerViewAdapter
  * Created by s21v on 2018/3/8.
  */
 class VideoHomeRecyclerViewAdapter(val context: Context, channels: ArrayList<Channel>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -136,6 +140,14 @@ class VideoHomeRecyclerViewAdapter(val context: Context, channels: ArrayList<Cha
                             Glide.with(context.applicationContext)
                                     .load(news[2].thumbIconUrl)
                                     .into(viewDataBinding.thumbIcon3)
+                            val tableLayout = viewDataBinding.root.findViewById<TableLayout>(R.id.tableLayout)
+                            for (i in 0 until tableLayout.childCount) {
+                                tableLayout.getChildAt(i).setOnClickListener {
+                                    val intent = Intent(context, VideoContentActivity::class.java)
+                                    intent.putExtra("news", news[i])
+                                    context.startActivity(intent)
+                                }
+                            }
                         }
 
                         override fun onError(e: Throwable?) {
