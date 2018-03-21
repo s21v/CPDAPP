@@ -35,7 +35,8 @@
             android:layout_height="wrap_content"
             app:columnCount="2"
             app:rowCount="3"
-            app:useDefaultMargins="true">
+            app:useDefaultMargins="true"
+            android:id="@+id/GridLayout">
 
             <LinearLayout
                 android:layout_width="0dp"

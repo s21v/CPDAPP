@@ -117,6 +117,29 @@ public class NewsContentFragment extends Fragment implements FontSizeView.Slider
         news.setContent(css+removeBrAgain);
         //加载文章内容
         contentWebView.loadDataWithBaseURL(baseUrl, news.getContent(), "text/html", "utf-8", null);
+        return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        dao = new NewsDao(getContext());
+        //更新新闻数据
+        int userId = CpdnewsApplication.getCurrentUser().getId();
+        Cursor cursor = dao.selectOne(userId, news.getNews_id());
+        if (cursor.moveToFirst()){
+            isFavorite = cursor.getInt(cursor.getColumnIndex("favorite")) == 1;
+            isThumbUp = cursor.getInt(cursor.getColumnIndex("thumbUp")) == 1;
+        } else {
+            isFavorite = false;
+            isThumbUp = false;
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        dao.openDB(getContext());
         //加载本地js文件
         contentWebView.setWebViewClient(new WebViewClient(){
             @Override
@@ -148,29 +171,6 @@ public class NewsContentFragment extends Fragment implements FontSizeView.Slider
                 }
             }
         });
-        return rootView;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        dao = new NewsDao(getContext());
-        //更新新闻数据
-        int userId = CpdnewsApplication.getCurrentUser().getId();
-        Cursor cursor = dao.selectOne(userId, news.getNews_id());
-        if (cursor.moveToFirst()){
-            isFavorite = cursor.getInt(cursor.getColumnIndex("favorite")) == 1;
-            isThumbUp = cursor.getInt(cursor.getColumnIndex("thumbUp")) == 1;
-        } else {
-            isFavorite = false;
-            isThumbUp = false;
-        }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        dao.openDB(getContext());
     }
 
     @Override

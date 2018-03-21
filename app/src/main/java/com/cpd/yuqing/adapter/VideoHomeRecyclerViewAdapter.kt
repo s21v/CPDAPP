@@ -5,6 +5,7 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
+import android.support.v7.widget.GridLayout
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.util.TypedValue
@@ -114,284 +115,334 @@ class VideoHomeRecyclerViewAdapter(val context: Context, channels: ArrayList<Cha
             .plus(typeChannelMap[LEVEL_2_TYPE]!!.size) + 4
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
-        if (holder is Level13ViewHolder) {
-            videoNewsApi.getLastCpdNews(3)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(object : Subscriber<ArrayList<News>>() {
-                        lateinit var news: ArrayList<News>
-                        override fun onNext(t: ArrayList<News>?) {
-                            Log.i(TAG, "onNext()")
-                            news = t!!
-                        }
-
-                        override fun onCompleted() {
-                            Log.i(TAG, "onCompleted()")
-                            val viewDataBinding = holder.viewDataBinding
-                            viewDataBinding.setVariable(BR.channel, holder.channel)
-                            viewDataBinding.setVariable(BR.news, news)
-                            viewDataBinding.executePendingBindings()
-                            Glide.with(context.applicationContext)
-                                    .load(news[0].thumbIconUrl)
-                                    .into(viewDataBinding.thumbIcon1)
-                            Glide.with(context.applicationContext)
-                                    .load(news[1].thumbIconUrl)
-                                    .into(viewDataBinding.thumbIcon2)
-                            Glide.with(context.applicationContext)
-                                    .load(news[2].thumbIconUrl)
-                                    .into(viewDataBinding.thumbIcon3)
-//                            val tableLayout = viewDataBinding.root.findViewById<TableLayout>(R.id.tableLayout)
-//                            for (i in 0 until tableLayout.childCount) {
-//                                tableLayout.getChildAt(i).setOnClickListener {
-//                                    val intent = Intent(context, VideoContentActivity::class.java)
-//                                    intent.putExtra("news", news[i])
-//                                    context.startActivity(intent)
-//                                }
-//                            }
-                        }
-
-                        override fun onError(e: Throwable?) {
-                            Log.i(TAG, e?.message)
-                        }
-                    })
-        } else if (holder is Level15ViewHolder) {
-            videoNewsApi.getLastNotCpdNews(7)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(object : Subscriber<ArrayList<News>>() {
-                        lateinit var news: ArrayList<News>
-                        val imageViews: ArrayList<ImageView> = arrayListOf()
-                        override fun onNext(t: ArrayList<News>?) {
-                            Log.i(TAG, "onNext()")
-                            news = t!!
-                            for (i in news) {
-                                val imageView = ImageView(context)
-                                imageView.scaleType = ImageView.ScaleType.FIT_XY
-                                Glide.with(context).load(i.thumbIconUrl).into(imageView)
-                                imageViews.add(imageView)
+        when (holder) {
+            is Level13ViewHolder -> //警务新闻
+                videoNewsApi.getLastCpdNews(3)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(object : Subscriber<ArrayList<News>>() {
+                            lateinit var news: ArrayList<News>
+                            override fun onNext(t: ArrayList<News>?) {
+                                Log.i(TAG, "onNext()")
+                                news = t!!
                             }
-                            //设置viewpager首尾重复项,达到循环的效果
-                            val firstImageView = ImageView(context)
-                            firstImageView.scaleType = ImageView.ScaleType.FIT_XY
-                            Glide.with(context).load(news.last().thumbIconUrl).into(firstImageView)
-                            imageViews.add(0, firstImageView)
-                            val endImageView = ImageView(context)
-                            endImageView.scaleType = ImageView.ScaleType.FIT_XY
-                            Glide.with(context).load(news[0].thumbIconUrl).into(endImageView)
-                            imageViews.add(endImageView)
-                        }
 
-                        override fun onCompleted() {
-                            val mViewPager = holder.view.id_viewpager
-                            mViewPager.pageMargin = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                                    4f, context.resources.displayMetrics).toInt()
-                            mViewPager.offscreenPageLimit = imageViews.size
-                            mViewPager.adapter = object : PagerAdapter() {
-                                override fun instantiateItem(container: ViewGroup, position: Int): Any {
-                                    container.addView(imageViews[position])
-                                    return imageViews[position]
-                                }
-
-                                override fun destroyItem(container: ViewGroup, position: Int, `object`: Any?) {
-                                    container.removeView(imageViews[position])
-                                }
-
-                                override fun isViewFromObject(view: View, `object`: Any): Boolean {
-                                    return view === `object`
-                                }
-
-                                override fun getCount(): Int {
-                                    return imageViews.size
-                                }
-                            }
-                            mViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-                                var currentPosition = mViewPager.currentItem
-                                override fun onPageScrollStateChanged(state: Int) {
-                                    if (ViewPager.SCROLL_STATE_IDLE != state)
-                                        return
-                                    if (currentPosition == 0)
-                                        mViewPager.setCurrentItem(imageViews.size - 2, false)
-                                    else if (currentPosition == imageViews.size - 1)
-                                        mViewPager.setCurrentItem(1, false)
-                                }
-
-                                /**
-                                 * 在非第一页与最后一页时:
-                                 * 滑动到下一页，position为当前页位置；滑动到上一页：position为当前页-1;
-                                 * positionOffset 滑动到下一页，[0,1)区间上变化；滑动到上一页：(1,0]区间上变化;
-                                 * positionOffsetPixels这个和positionOffset很像：滑动到下一页，[0,宽度)区间上变化；滑动到上一页：(宽度,0]区间上变化
-                                 *
-                                 * 第一页时：滑动到上一页position=0 ，其他基本为0
-                                 *
-                                 * 最后一页时：滑动到下一页position为当前页位置，其他两个参数为0
-                                 */
-                                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
-
-                                override fun onPageSelected(position: Int) {
-                                    currentPosition = position
-                                    when (currentPosition) {
-                                        0 -> holder.view.title_tv.text = news[news.size - 1].title
-                                        imageViews.size - 1 -> holder.view.title_tv.text = news[0].title
-                                        else -> holder.view.title_tv.text = news[position - 1].title
+                            override fun onCompleted() {
+                                Log.i(TAG, "onCompleted()")
+                                val viewDataBinding = holder.viewDataBinding
+                                viewDataBinding.setVariable(BR.channel, holder.channel)
+                                viewDataBinding.setVariable(BR.news, news)
+                                viewDataBinding.executePendingBindings()
+                                Glide.with(context.applicationContext)
+                                        .load(news[0].thumbIconUrl)
+                                        .into(viewDataBinding.thumbIcon1)
+                                Glide.with(context.applicationContext)
+                                        .load(news[1].thumbIconUrl)
+                                        .into(viewDataBinding.thumbIcon2)
+                                Glide.with(context.applicationContext)
+                                        .load(news[2].thumbIconUrl)
+                                        .into(viewDataBinding.thumbIcon3)
+                                val gridLayout = viewDataBinding.root.findViewById<GridLayout>(R.id.GridLayout)
+                                for (i in 0 until gridLayout.childCount) {
+                                    gridLayout.getChildAt(i).setOnClickListener {
+                                        val intent = Intent(context, VideoContentActivity::class.java)
+                                        intent.putExtra("news", news[i])
+                                        context.startActivity(intent)
                                     }
                                 }
-                            })
-                            mViewPager.currentItem = imageViews.size / 2
-                        }
+                            }
 
-                        override fun onError(e: Throwable?) {
-                            Log.i(TAG, e?.message)
-                        }
-                    })
-        }
-        // 一级栏目
-        else if (holder is Level1ViewHolder) {
-            val curChannel = typeChannelMap[LEVEL_1_1_TYPE]!![position - 2]
-            videoNewsApi.getLastVideoNews(curChannel.id, 4)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(object : Subscriber<ArrayList<News>>() {
-                        lateinit var news: ArrayList<News>
-                        override fun onNext(t: ArrayList<News>?) {
-                            Log.i(TAG, "onNext()")
-                            news = t!!
-                        }
+                            override fun onError(e: Throwable?) {
+                                Log.i(TAG, e?.message)
+                            }
+                        })
+            is Level15ViewHolder -> //轮播
+                videoNewsApi.getLastNotCpdNews(7)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(object : Subscriber<ArrayList<News>>() {
+                            lateinit var news: ArrayList<News>
+                            val imageViews: ArrayList<ImageView> = arrayListOf()
+                            override fun onNext(t: ArrayList<News>?) {
+                                Log.i(TAG, "onNext()")
+                                news = t!!
+                                for (i in news) {
+                                    val imageView = ImageView(context)
+                                    imageView.scaleType = ImageView.ScaleType.FIT_XY
+                                    Glide.with(context).load(i.thumbIconUrl).into(imageView)
+                                    imageViews.add(imageView)
+                                    imageView.setOnClickListener {
+                                        val intent = Intent(context, VideoContentActivity::class.java)
+                                        intent.putExtra("news", i)
+                                        context.startActivity(intent)
+                                    }
+                                }
+                                //设置viewpager首尾重复项,达到循环的效果
+                                val firstImageView = ImageView(context)
+                                firstImageView.scaleType = ImageView.ScaleType.FIT_XY
+                                Glide.with(context).load(news.last().thumbIconUrl).into(firstImageView)
+                                imageViews.add(0, firstImageView)
+                                val endImageView = ImageView(context)
+                                endImageView.scaleType = ImageView.ScaleType.FIT_XY
+                                Glide.with(context).load(news[0].thumbIconUrl).into(endImageView)
+                                imageViews.add(endImageView)
+                            }
 
-                        override fun onCompleted() {
-                            Log.i(TAG, "onCompleted()")
-                            val viewDataBinding = holder.viewDataBinding
-                            viewDataBinding.setVariable(BR.channel, curChannel)
-                            viewDataBinding.setVariable(BR.news, news)
-                            viewDataBinding.executePendingBindings()
-                            Glide.with(context.applicationContext)
-                                    .load(news[0].thumbIconUrl)
-                                    .into(viewDataBinding.newsImg1)
-                            Glide.with(context.applicationContext)
-                                    .load(news[1].thumbIconUrl)
-                                    .into(viewDataBinding.newsImg2)
-                            Glide.with(context.applicationContext)
-                                    .load(news[2].thumbIconUrl)
-                                    .into(viewDataBinding.newsImg3)
-                            Glide.with(context.applicationContext)
-                                    .load(news[3].thumbIconUrl)
-                                    .into(viewDataBinding.newsImg4)
-                        }
+                            override fun onCompleted() {
+                                val mViewPager = holder.view.id_viewpager
+                                mViewPager.pageMargin = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                                        4f, context.resources.displayMetrics).toInt()
+                                mViewPager.offscreenPageLimit = imageViews.size
+                                mViewPager.adapter = object : PagerAdapter() {
+                                    override fun instantiateItem(container: ViewGroup, position: Int): Any {
+                                        container.addView(imageViews[position])
+                                        return imageViews[position]
+                                    }
 
-                        override fun onError(e: Throwable?) {
-                            Log.i(TAG, e?.message)
-                        }
-                    })
-        }
+                                    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any?) {
+                                        container.removeView(imageViews[position])
+                                    }
+
+                                    override fun isViewFromObject(view: View, `object`: Any): Boolean {
+                                        return view === `object`
+                                    }
+
+                                    override fun getCount(): Int {
+                                        return imageViews.size
+                                    }
+                                }
+                                mViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                                    var currentPosition = mViewPager.currentItem
+                                    override fun onPageScrollStateChanged(state: Int) {
+                                        if (ViewPager.SCROLL_STATE_IDLE != state)
+                                            return
+                                        if (currentPosition == 0)
+                                            mViewPager.setCurrentItem(imageViews.size - 2, false)
+                                        else if (currentPosition == imageViews.size - 1)
+                                            mViewPager.setCurrentItem(1, false)
+                                    }
+
+                                    /**
+                                     * 在非第一页与最后一页时:
+                                     * 滑动到下一页，position为当前页位置；滑动到上一页：position为当前页-1;
+                                     * positionOffset 滑动到下一页，[0,1)区间上变化；滑动到上一页：(1,0]区间上变化;
+                                     * positionOffsetPixels这个和positionOffset很像：滑动到下一页，[0,宽度)区间上变化；滑动到上一页：(宽度,0]区间上变化
+                                     *
+                                     * 第一页时：滑动到上一页position=0 ，其他基本为0
+                                     *
+                                     * 最后一页时：滑动到下一页position为当前页位置，其他两个参数为0
+                                     */
+                                    /**
+                                     * 在非第一页与最后一页时:
+                                     * 滑动到下一页，position为当前页位置；滑动到上一页：position为当前页-1;
+                                     * positionOffset 滑动到下一页，[0,1)区间上变化；滑动到上一页：(1,0]区间上变化;
+                                     * positionOffsetPixels这个和positionOffset很像：滑动到下一页，[0,宽度)区间上变化；滑动到上一页：(宽度,0]区间上变化
+                                     *
+                                     * 第一页时：滑动到上一页position=0 ，其他基本为0
+                                     *
+                                     * 最后一页时：滑动到下一页position为当前页位置，其他两个参数为0
+                                     */
+                                    /**
+                                     * 在非第一页与最后一页时:
+                                     * 滑动到下一页，position为当前页位置；滑动到上一页：position为当前页-1;
+                                     * positionOffset 滑动到下一页，[0,1)区间上变化；滑动到上一页：(1,0]区间上变化;
+                                     * positionOffsetPixels这个和positionOffset很像：滑动到下一页，[0,宽度)区间上变化；滑动到上一页：(宽度,0]区间上变化
+                                     *
+                                     * 第一页时：滑动到上一页position=0 ，其他基本为0
+                                     *
+                                     * 最后一页时：滑动到下一页position为当前页位置，其他两个参数为0
+                                     */
+                                    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+
+                                    override fun onPageSelected(position: Int) {
+                                        currentPosition = position
+                                        when (currentPosition) {
+                                            0 -> holder.view.title_tv.text = news[news.size - 1].title
+                                            imageViews.size - 1 -> holder.view.title_tv.text = news[0].title
+                                            else -> holder.view.title_tv.text = news[position - 1].title
+                                        }
+                                    }
+                                })
+                                mViewPager.currentItem = imageViews.size / 2
+                            }
+
+                            override fun onError(e: Throwable?) {
+                                Log.i(TAG, e?.message)
+                            }
+                        })
+            // 一级栏目
+            is Level1ViewHolder -> {
+                val curChannel = typeChannelMap[LEVEL_1_1_TYPE]!![position - 2]
+                videoNewsApi.getLastVideoNews(curChannel.id, 4)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(object : Subscriber<ArrayList<News>>() {
+                            lateinit var news: ArrayList<News>
+                            override fun onNext(t: ArrayList<News>?) {
+                                Log.i(TAG, "onNext()")
+                                news = t!!
+                            }
+
+                            override fun onCompleted() {
+                                Log.i(TAG, "onCompleted()")
+                                val viewDataBinding = holder.viewDataBinding
+                                viewDataBinding.setVariable(BR.channel, curChannel)
+                                viewDataBinding.setVariable(BR.news, news)
+                                viewDataBinding.executePendingBindings()
+                                Glide.with(context.applicationContext)
+                                        .load(news[0].thumbIconUrl)
+                                        .into(viewDataBinding.newsImg1)
+                                Glide.with(context.applicationContext)
+                                        .load(news[1].thumbIconUrl)
+                                        .into(viewDataBinding.newsImg2)
+                                Glide.with(context.applicationContext)
+                                        .load(news[2].thumbIconUrl)
+                                        .into(viewDataBinding.newsImg3)
+                                Glide.with(context.applicationContext)
+                                        .load(news[3].thumbIconUrl)
+                                        .into(viewDataBinding.newsImg4)
+                                val gridLayout = viewDataBinding.root.findViewById<GridLayout>(R.id.GridLayout)
+                                for (i in 0 until gridLayout.childCount) {
+                                    gridLayout.getChildAt(i).setOnClickListener {
+                                        val intent = Intent(context, VideoContentActivity::class.java)
+                                        intent.putExtra("news", news[i])
+                                        context.startActivity(intent)
+                                    }
+                                }
+                            }
+
+                            override fun onError(e: Throwable?) {
+                                Log.i(TAG, e?.message)
+                            }
+                        })
+            }
         // 最新专题
-        else if (holder is Level14ViewHolder) {
-            val videoChannelApi = RetrofitUtils.getInstance(context)!!.retrofitInstance
-                    .create(IVideoChannelApi::class.java)
-            videoChannelApi.lastSubject
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(object : Subscriber<Channel>() {
-                        lateinit var result: Channel
-                        override fun onNext(t: Channel?) {
-                            result = t!!
-                        }
+            is Level14ViewHolder -> {
+                val videoChannelApi = RetrofitUtils.getInstance(context)!!.retrofitInstance
+                        .create(IVideoChannelApi::class.java)
+                videoChannelApi.lastSubject
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(object : Subscriber<Channel>() {
+                            lateinit var result: Channel
+                            override fun onNext(t: Channel?) {
+                                result = t!!
+                            }
 
-                        override fun onCompleted() {
-                            val viewDataBinding = holder.viewDataBinding
-                            viewDataBinding.setVariable(BR.channel, result)
-                            viewDataBinding.executePendingBindings()
-                            Glide.with(context).load(result.subject_img_url)
-                                    .into(viewDataBinding.subjectImg)
-                        }
+                            override fun onCompleted() {
+                                val viewDataBinding = holder.viewDataBinding
+                                viewDataBinding.setVariable(BR.channel, result)
+                                viewDataBinding.executePendingBindings()
+                                Glide.with(context).load(result.subject_img_url)
+                                        .into(viewDataBinding.subjectImg)
+                            }
 
-                        override fun onError(e: Throwable?) {
-                            Log.i(TAG, e?.message)
-                        }
-                    })
-        }
+                            override fun onError(e: Throwable?) {
+                                Log.i(TAG, e?.message)
+                            }
+                        })
+            }
         // 二级栏目
-        else if (holder is Level2ViewHolder) {
-            val curChannel = typeChannelMap[LEVEL_2_TYPE]!![position - 3 - typeChannelMap[LEVEL_1_1_TYPE]!!.size]
-            videoNewsApi.getLastVideoNews(curChannel.id, 5)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(object : Subscriber<ArrayList<News>>() {
-                        lateinit var news: ArrayList<News>
-                        override fun onNext(t: ArrayList<News>?) {
-                            Log.i(TAG, "onNext()")
-                            news = t!!
-                        }
+            is Level2ViewHolder -> {
+                val curChannel = typeChannelMap[LEVEL_2_TYPE]!![position - 3 - typeChannelMap[LEVEL_1_1_TYPE]!!.size]
+                videoNewsApi.getLastVideoNews(curChannel.id, 5)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(object : Subscriber<ArrayList<News>>() {
+                            lateinit var news: ArrayList<News>
+                            override fun onNext(t: ArrayList<News>?) {
+                                Log.i(TAG, "onNext()")
+                                news = t!!
+                            }
 
-                        override fun onCompleted() {
-                            Log.i(TAG, "onCompleted()")
-                            val viewDataBinding = holder.viewDataBinding
-                            viewDataBinding.setVariable(BR.channel, curChannel)
-                            viewDataBinding.setVariable(BR.news, news)
-                            viewDataBinding.executePendingBindings()
-                            Glide.with(context.applicationContext)
-                                    .load(news[0].thumbIconUrl)
-                                    .into(viewDataBinding.newsImg1)
-                            Glide.with(context.applicationContext)
-                                    .load(news[1].thumbIconUrl)
-                                    .into(viewDataBinding.newsImg2)
-                            Glide.with(context.applicationContext)
-                                    .load(news[2].thumbIconUrl)
-                                    .into(viewDataBinding.newsImg3)
-                            Glide.with(context.applicationContext)
-                                    .load(news[3].thumbIconUrl)
-                                    .into(viewDataBinding.newsImg4)
-                            Glide.with(context.applicationContext)
-                                    .load(news[4].thumbIconUrl)
-                                    .into(viewDataBinding.newsImg5)
-                        }
+                            override fun onCompleted() {
+                                Log.i(TAG, "onCompleted()")
+                                val viewDataBinding = holder.viewDataBinding
+                                viewDataBinding.setVariable(BR.channel, curChannel)
+                                viewDataBinding.setVariable(BR.news, news)
+                                viewDataBinding.executePendingBindings()
+                                Glide.with(context.applicationContext)
+                                        .load(news[0].thumbIconUrl)
+                                        .into(viewDataBinding.newsImg1)
+                                Glide.with(context.applicationContext)
+                                        .load(news[1].thumbIconUrl)
+                                        .into(viewDataBinding.newsImg2)
+                                Glide.with(context.applicationContext)
+                                        .load(news[2].thumbIconUrl)
+                                        .into(viewDataBinding.newsImg3)
+                                Glide.with(context.applicationContext)
+                                        .load(news[3].thumbIconUrl)
+                                        .into(viewDataBinding.newsImg4)
+                                Glide.with(context.applicationContext)
+                                        .load(news[4].thumbIconUrl)
+                                        .into(viewDataBinding.newsImg5)
+                                val gridLayout = viewDataBinding.root.findViewById<GridLayout>(R.id.GridLayout)
+                                for (i in 0 until gridLayout.childCount) {
+                                    gridLayout.getChildAt(i).setOnClickListener {
+                                        val intent = Intent(context, VideoContentActivity::class.java)
+                                        intent.putExtra("news", news[i])
+                                        context.startActivity(intent)
+                                    }
+                                }
+                            }
 
-                        override fun onError(e: Throwable?) {
-                            Log.i(TAG, e?.message)
-                        }
-                    })
-        }
+                            override fun onError(e: Throwable?) {
+                                Log.i(TAG, e?.message)
+                            }
+                        })
+            }
         // 微视频
-        else if (holder is Level12ViewHolder) {
-            val curChannel = typeChannelMap[LEVEL_1_2_TYPE]!![0]
-            videoNewsApi.getLastVideoNews(curChannel.id, 6)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(object : Subscriber<ArrayList<News>>() {
-                        lateinit var news: ArrayList<News>
-                        override fun onNext(t: ArrayList<News>?) {
-                            Log.i(TAG, "onNext()")
-                            news = t!!
-                        }
+            is Level12ViewHolder -> {
+                val curChannel = typeChannelMap[LEVEL_1_2_TYPE]!![0]
+                videoNewsApi.getLastVideoNews(curChannel.id, 6)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(object : Subscriber<ArrayList<News>>() {
+                            lateinit var news: ArrayList<News>
+                            override fun onNext(t: ArrayList<News>?) {
+                                Log.i(TAG, "onNext()")
+                                news = t!!
+                            }
 
-                        override fun onCompleted() {
-                            Log.i(TAG, "onCompleted()")
-                            val viewDataBinding = holder.viewDataBinding
-                            viewDataBinding.setVariable(BR.channel, curChannel)
-                            viewDataBinding.setVariable(BR.news, news)
-                            viewDataBinding.executePendingBindings()
-                            Glide.with(context.applicationContext)
-                                    .load(news[0].thumbIconUrl)
-                                    .into(viewDataBinding.newsImg1)
-                            Glide.with(context.applicationContext)
-                                    .load(news[1].thumbIconUrl)
-                                    .into(viewDataBinding.newsImg2)
-                            Glide.with(context.applicationContext)
-                                    .load(news[2].thumbIconUrl)
-                                    .into(viewDataBinding.newsImg3)
-                            Glide.with(context.applicationContext)
-                                    .load(news[3].thumbIconUrl)
-                                    .into(viewDataBinding.newsImg4)
-                            Glide.with(context.applicationContext)
-                                    .load(news[4].thumbIconUrl)
-                                    .into(viewDataBinding.newsImg5)
-                            Glide.with(context.applicationContext)
-                                    .load(news[5].thumbIconUrl)
-                                    .into(viewDataBinding.newsImg6)
-                        }
+                            override fun onCompleted() {
+                                Log.i(TAG, "onCompleted()")
+                                val viewDataBinding = holder.viewDataBinding
+                                viewDataBinding.setVariable(BR.channel, curChannel)
+                                viewDataBinding.setVariable(BR.news, news)
+                                viewDataBinding.executePendingBindings()
+                                Glide.with(context.applicationContext)
+                                        .load(news[0].thumbIconUrl)
+                                        .into(viewDataBinding.newsImg1)
+                                Glide.with(context.applicationContext)
+                                        .load(news[1].thumbIconUrl)
+                                        .into(viewDataBinding.newsImg2)
+                                Glide.with(context.applicationContext)
+                                        .load(news[2].thumbIconUrl)
+                                        .into(viewDataBinding.newsImg3)
+                                Glide.with(context.applicationContext)
+                                        .load(news[3].thumbIconUrl)
+                                        .into(viewDataBinding.newsImg4)
+                                Glide.with(context.applicationContext)
+                                        .load(news[4].thumbIconUrl)
+                                        .into(viewDataBinding.newsImg5)
+                                Glide.with(context.applicationContext)
+                                        .load(news[5].thumbIconUrl)
+                                        .into(viewDataBinding.newsImg6)
+                                val gridLayout = viewDataBinding.root.findViewById<GridLayout>(R.id.GridLayout)
+                                for (i in 0 until gridLayout.childCount) {
+                                    gridLayout.getChildAt(i).setOnClickListener {
+                                        val intent = Intent(context, VideoContentActivity::class.java)
+                                        intent.putExtra("news", news[i])
+                                        context.startActivity(intent)
+                                    }
+                                }
+                            }
 
-                        override fun onError(e: Throwable?) {
-                            Log.i(TAG, e?.message)
-                        }
-                    })
+                            override fun onError(e: Throwable?) {
+                                Log.i(TAG, e?.message)
+                            }
+                        })
+            }
         }
     }
 
