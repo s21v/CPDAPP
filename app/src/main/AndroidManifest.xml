@@ -88,10 +88,10 @@
         <activity
             android:name=".activity.LoginActivity"
             android:theme="@style/AppTheme">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <provider
@@ -127,6 +127,7 @@
         <!-- 视频内容页 -->
         <activity
             android:name=".activity.VideoContentActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
             android:parentActivityName=".activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -138,13 +139,6 @@
             android:enabled="true"
             android:process=":remote" />
 
-        <activity android:name=".activity.TestVideoPlayer"
-            android:theme="@style/Base.Theme.AppCompat.Light.DarkActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

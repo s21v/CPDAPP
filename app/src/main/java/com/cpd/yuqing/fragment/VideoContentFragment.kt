@@ -2,22 +2,29 @@ package com.cpd.yuqing.fragment
 
 import android.annotation.SuppressLint
 import android.content.Context.MODE_PRIVATE
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.LinearLayout
+import com.bumptech.glide.Glide
 import com.cpd.yuqing.BR
 import com.cpd.yuqing.R
 import com.cpd.yuqing.databinding.FragmentVedioContentBinding
 import com.cpd.yuqing.db.vo.video.News
+import com.cpd.yuqing.util.DensityUtils
 import io.vov.vitamio.Vitamio
 import io.vov.vitamio.widget.MediaController
+import io.vov.vitamio.widget.VideoView
 import kotlinx.android.synthetic.main.fragment_vedio_content.*
 import java.io.IOException
 import java.nio.charset.Charset
@@ -28,6 +35,9 @@ import java.nio.charset.Charset
  */
 class VideoContentFragment : Fragment() {
     private lateinit var news: News
+    //当前是否为全屏
+    private var mIsFullScreen: Boolean = false
+    private lateinit var mMediaController: MediaController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,10 +59,23 @@ class VideoContentFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         // 检查设备是否支持Vitamio
         if (Vitamio.isInitialized(context)) {
-            videoView.setVideoURI(Uri.parse(news.videoUrl))
-            val mMediaController = MediaController(context)
-            mMediaController.setAnchorView(videoView)
-            videoView.setMediaController(mMediaController)
+            mMediaController = MediaController(activity, true, videoContainer)
+            mMediaController.visibility = View.GONE
+            Glide.with(this).load(news.thumbIconUrl).into(videoThumbnail)
+            // 播放按钮
+            videoStartButton.setOnClickListener {
+                videoStartButton.visibility = View.GONE
+                videoView.setVideoURI(Uri.parse(news.videoUrl))
+                videoView.setVideoLayout(VideoView.VIDEO_LAYOUT_SCALE, 0f)
+                videoView.setMediaController(mMediaController)
+                videoThumbnail.visibility = View.GONE
+            }
+            // onComplete监听
+            videoView.setOnCompletionListener {
+                //停止播放
+                videoView.stopPlayback()
+                videoStartButton.visibility = View.VISIBLE
+            }
         }
         //设置WebView
         contentWebView.isVerticalFadingEdgeEnabled = false
@@ -94,9 +117,60 @@ class VideoContentFragment : Fragment() {
         }
     }
 
+    override fun onConfigurationChanged(newConfig: Configuration?) {
+        super.onConfigurationChanged(newConfig)
+        if (newConfig?.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            //横屏
+            mIsFullScreen = true
+            //隐藏actionBar
+            (activity as AppCompatActivity).supportActionBar?.hide()
+            //隐藏状态栏
+            activity.window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_FULLSCREEN
+                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION)
+
+
+            //调整mFlVideoGroup布局参数
+            val params = LinearLayout.LayoutParams(LinearLayout
+                    .LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT)
+            videoContainer.layoutParams = params
+            videoView.setVideoLayout(VideoView.VIDEO_LAYOUT_SCALE, 0f)
+        } else {
+            mIsFullScreen = false
+            //显示actionBar
+            (activity as AppCompatActivity).supportActionBar?.show()
+            //显示状态栏
+            activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
+
+            val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                    DensityUtils.dp2px(context, 234f))
+            videoContainer.layoutParams = params
+            videoView.setVideoLayout(VideoView.VIDEO_LAYOUT_SCALE, 0f)
+        }
+    }
+
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
         outState?.putParcelable("news", news)
+    }
+
+    fun onBackPressed(): Boolean {
+        if (mIsFullScreen) {
+            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            mMediaController.setFullScreenIconState(false)
+            return true
+        }
+        return false
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (videoView != null) {
+            //清除缓存
+            videoView.destroyDrawingCache()
+            //停止播放
+            videoView.stopPlayback()
+        }
     }
 
     companion object {

@@ -24,12 +24,22 @@ class VideoContentActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentVideoContentContainer, VideoContentFragment.getInstance(mNews))
+                .replace(R.id.fragmentVideoContentContainer, VideoContentFragment.getInstance(mNews),
+                        "videoFragment")
                 .commit()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putParcelable("news", mNews)
+    }
+
+    override fun onBackPressed() {
+        val fragment = supportFragmentManager.findFragmentByTag("videoFragment")
+        if (fragment != null) {
+            if (!(fragment as VideoContentFragment).onBackPressed())
+                super.onBackPressed()
+        } else
+            super.onBackPressed()
     }
 }
