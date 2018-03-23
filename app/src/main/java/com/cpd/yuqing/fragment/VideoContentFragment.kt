@@ -127,9 +127,7 @@ class VideoContentFragment : Fragment() {
             //隐藏状态栏
             activity.window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_FULLSCREEN
                     or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION)
-
-
-            //调整mFlVideoGroup布局参数
+            //调整videoContainer布局参数
             val params = LinearLayout.LayoutParams(LinearLayout
                     .LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.MATCH_PARENT)
@@ -141,7 +139,6 @@ class VideoContentFragment : Fragment() {
             (activity as AppCompatActivity).supportActionBar?.show()
             //显示状态栏
             activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
-
             val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                     DensityUtils.dp2px(context, 234f))
             videoContainer.layoutParams = params
