@@ -9,6 +9,7 @@ import retrofit2.http.Query;
 import rx.Observable;
 
 /**
+ * retrofit接口:视频新闻
  * Created by s21v on 2018/3/5.
  */
 
@@ -24,4 +25,8 @@ public interface IVideoNewsApi {
     //获得非播报类警务新闻
     @GET("VideoNewsDBServlet?m=getNotCpdNews")
     Observable<ArrayList<News>> getLastNotCpdNews(@Query("count") int count);
+
+    //分页获取新闻
+    @GET("VideoNewsDBServlet?m=getNewsByPage")
+    Observable<ArrayList<News>> getNewsByPage(@Query("cid") int channelId, @Query("curPage") int curPage, @Query("count") int count);
 }

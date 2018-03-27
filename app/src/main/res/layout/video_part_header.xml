@@ -43,6 +43,7 @@
             android:paddingRight="4dp"
             android:text="@string/more"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@color/textColorPrimary" />
+            android:textColor="@color/textColorPrimary"
+            android:id="@+id/more"/>
     </LinearLayout>
 </layout>

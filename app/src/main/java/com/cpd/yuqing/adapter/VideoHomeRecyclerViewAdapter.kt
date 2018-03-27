@@ -13,7 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TableLayout
+import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.cpd.yuqing.BR
 import com.cpd.yuqing.R
@@ -29,6 +29,7 @@ import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import kotlin.properties.Delegates
 import kotlinx.android.synthetic.main.video_channel_part_level1_5.view.*
+import kotlinx.android.synthetic.main.video_part_header.*
 
 /**
  * 视频栏目首页的RecyclerViewAdapter
@@ -149,6 +150,11 @@ class VideoHomeRecyclerViewAdapter(val context: Context, channels: ArrayList<Cha
                                         intent.putExtra("news", news[i])
                                         context.startActivity(intent)
                                     }
+                                }
+                                // 更多按钮
+                                val moreTv = viewDataBinding.root.findViewById<TextView>(R.id.more)
+                                moreTv.setOnClickListener {
+                                    //todo 跳转视频新闻列表
                                 }
                             }
 
@@ -316,7 +322,7 @@ class VideoHomeRecyclerViewAdapter(val context: Context, channels: ArrayList<Cha
                             }
                         })
             }
-        // 最新专题
+            // 最新专题
             is Level14ViewHolder -> {
                 val videoChannelApi = RetrofitUtils.getInstance(context)!!.retrofitInstance
                         .create(IVideoChannelApi::class.java)
@@ -342,7 +348,7 @@ class VideoHomeRecyclerViewAdapter(val context: Context, channels: ArrayList<Cha
                             }
                         })
             }
-        // 二级栏目
+            // 二级栏目
             is Level2ViewHolder -> {
                 val curChannel = typeChannelMap[LEVEL_2_TYPE]!![position - 3 - typeChannelMap[LEVEL_1_1_TYPE]!!.size]
                 videoNewsApi.getLastVideoNews(curChannel.id, 5)
@@ -391,7 +397,7 @@ class VideoHomeRecyclerViewAdapter(val context: Context, channels: ArrayList<Cha
                             }
                         })
             }
-        // 微视频
+            // 微视频
             is Level12ViewHolder -> {
                 val curChannel = typeChannelMap[LEVEL_1_2_TYPE]!![0]
                 videoNewsApi.getLastVideoNews(curChannel.id, 6)
@@ -480,6 +486,7 @@ class VideoHomeRecyclerViewAdapter(val context: Context, channels: ArrayList<Cha
 
     companion object {
         private const val TAG = "VideoHomeRVAdapter"
+        private const val COUNT_PER_PAGE = 20
         private const val LEVEL_1_5_TYPE = 1  //警务新闻中非播报的内容,轮播
         private const val LEVEL_1_3_TYPE = 2    //警务新闻播报
         private const val LEVEL_1_1_TYPE = 3    //一级栏目 如 推荐 资讯
