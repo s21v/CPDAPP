@@ -2,6 +2,9 @@ package com.cpd.yuqing.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
+import android.view.KeyEvent
+import android.view.MenuItem
 import com.cpd.yuqing.R
 import com.cpd.yuqing.db.vo.video.News
 import com.cpd.yuqing.fragment.VideoContentFragment
@@ -41,5 +44,15 @@ class VideoContentActivity : AppCompatActivity() {
                 super.onBackPressed()
         } else
             super.onBackPressed()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

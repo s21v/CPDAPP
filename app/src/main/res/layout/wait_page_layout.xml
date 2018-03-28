@@ -18,7 +18,8 @@
             android:layout_above="@id/cpdlogo"
             android:layout_alignStart="@id/cpdlogo"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/cpd_logo_1" />
+            android:src="@drawable/cpd_logo_1"
+            android:contentDescription="@string/app_name"/>
 
         <ProgressBar
             android:id="@+id/progressBar1"
@@ -36,6 +37,7 @@
             android:layout_centerInParent="true"
             android:text="@string/cpd_destination"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/textColorPrimary"
             android:textStyle="bold" />
     </RelativeLayout>
 

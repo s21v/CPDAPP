@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide
 import com.cpd.yuqing.BR
 import com.cpd.yuqing.R
 import com.cpd.yuqing.activity.VideoContentActivity
+import com.cpd.yuqing.activity.VideoListActivity
 import com.cpd.yuqing.databinding.*
 import com.cpd.yuqing.db.vo.video.Channel
 import com.cpd.yuqing.db.vo.video.News
@@ -154,7 +155,9 @@ class VideoHomeRecyclerViewAdapter(val context: Context, channels: ArrayList<Cha
                                 // 更多按钮
                                 val moreTv = viewDataBinding.root.findViewById<TextView>(R.id.more)
                                 moreTv.setOnClickListener {
-                                    //todo 跳转视频新闻列表
+                                    val intent = Intent(context, VideoListActivity::class.java)
+                                    intent.putExtra("channel", holder.channel)
+                                    context.startActivity(intent)
                                 }
                             }
 

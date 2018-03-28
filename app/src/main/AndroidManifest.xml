@@ -127,7 +127,9 @@
         <!-- 视频内容页 -->
         <activity
             android:name=".activity.VideoContentActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
+            android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation" />
+
+        <activity android:name=".activity.VideoListActivity"
             android:parentActivityName=".activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
