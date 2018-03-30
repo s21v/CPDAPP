@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#738fee</color>
     <color name="colorPrimaryDark">#2a36b1</color>
-    <color name="colorAccent">#ffff8d</color>
+    <color name="colorAccent">#0277bd</color>
     <color name="sign_in_button_normal">#4CAF50</color>
     <color name="sign_in_button_click">#1B5E20</color>
     <color name="tabIndicatorColor">#a6baff</color>

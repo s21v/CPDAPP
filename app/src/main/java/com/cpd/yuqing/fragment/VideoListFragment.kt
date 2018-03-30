@@ -1,19 +1,22 @@
 package com.cpd.yuqing.fragment
 
+import android.opengl.Visibility
 import android.os.Bundle
 import android.support.v4.app.ListFragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import com.cpd.yuqing.R
+import com.cpd.yuqing.activity.VideoListActivity
+import com.cpd.yuqing.adapter.VideoListAdapter
 import com.cpd.yuqing.db.vo.video.Channel
 import com.cpd.yuqing.db.vo.video.News
 import com.cpd.yuqing.retrofitInterface.IVideoNewsApi
 import com.cpd.yuqing.util.RetrofitUtils
-import retrofit2.Retrofit
-import kotlinx.android.synthetic.main.*
 import kotlinx.android.synthetic.main.fragment_video_list.*
+import kotlinx.android.synthetic.main.wait_page_layout.*
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -51,7 +54,9 @@ class VideoListFragment : ListFragment() {
                     }
 
                     override fun onCompleted() {
-                        Log.i("onCompleted", "size: ${data.size}")
+                        list.adapter = VideoListAdapter(context, data)
+                        empty.visibility = View.GONE
+                        list.visibility = View.VISIBLE
                     }
 
                     override fun onError(e: Throwable?) {
