@@ -69,7 +69,7 @@ public class VideoListAdapter extends BaseAdapter {
         News news = data.get(position);
         viewHolder.titleTv.setText(news.getTitle());
         viewHolder.sourceTv.setText(news.getSource());
-        viewHolder.pubTimeTv.setText(news.minFormatPubTime());
+        viewHolder.pubTimeTv.setText(news.minPubTime());
         Glide.with(context).load(news.getThumbIconUrl()).into(viewHolder.thumbIconIv);
         return convertView;
     }

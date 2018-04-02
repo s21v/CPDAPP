@@ -174,7 +174,7 @@ class NewsListFragment : Fragment() {
         override fun onFailure(call: Call?, e: IOException?) {
             Log.i(TAG, "新闻下载失败")
             activity.runOnUiThread {
-                newsList.adapter.notifyItemChanged(0, arrayOf(currentPage, InitNewsCallback(), ::loading))
+                newsList.adapter.notifyItemChanged(0, arrayOf(currentPage, InitNewsCallback(), this@NewsListFragment::loading))
             }
         }
 
@@ -189,7 +189,7 @@ class NewsListFragment : Fragment() {
             } else {
                 Log.i(TAG, "新闻下载失败")
                 activity.runOnUiThread {
-                    newsList.adapter.notifyItemChanged(0, arrayOf(currentPage, InitNewsCallback(), ::loading))
+                    newsList.adapter.notifyItemChanged(0, arrayOf(currentPage, InitNewsCallback(), this@NewsListFragment::loading))
                 }
             }
         }
