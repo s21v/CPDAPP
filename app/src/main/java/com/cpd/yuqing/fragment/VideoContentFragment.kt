@@ -48,7 +48,7 @@ class VideoContentFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val dataBinding = DataBindingUtil.inflate<FragmentVedioContentBinding>(inflater, R.layout.fragment_vedio_content, container, false)
+        val dataBinding = DataBindingUtil.inflate<FragmentVedioContentBinding>(inflater!!, R.layout.fragment_vedio_content, container, false)
         dataBinding.setVariable(BR.news, news)
         dataBinding.executePendingBindings()
         return dataBinding.root

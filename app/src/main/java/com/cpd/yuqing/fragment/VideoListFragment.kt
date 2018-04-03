@@ -54,10 +54,9 @@ class VideoListFragment : ListFragment() {
                     }
 
                     override fun onCompleted() {
-                        Log.i("onCompleted", "size:${data.size}")
                         list.adapter = VideoListAdapter(context, data)
                         empty.visibility = View.GONE
-                        list.visibility = View.VISIBLE
+                        swipeRefresh.visibility = View.VISIBLE
                     }
 
                     override fun onError(e: Throwable?) {
