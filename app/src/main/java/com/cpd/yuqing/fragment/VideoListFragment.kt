@@ -1,22 +1,23 @@
 package com.cpd.yuqing.fragment
 
-import android.opengl.Visibility
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v4.app.ListFragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
+import android.widget.AbsListView
+import android.widget.ProgressBar
+import android.widget.TextView
 import com.cpd.yuqing.R
-import com.cpd.yuqing.activity.VideoListActivity
 import com.cpd.yuqing.adapter.VideoListAdapter
 import com.cpd.yuqing.db.vo.video.Channel
 import com.cpd.yuqing.db.vo.video.News
 import com.cpd.yuqing.retrofitInterface.IVideoNewsApi
 import com.cpd.yuqing.util.RetrofitUtils
+import kotlinx.android.synthetic.main.footer_loadmore.*
 import kotlinx.android.synthetic.main.fragment_video_list.*
-import kotlinx.android.synthetic.main.wait_page_layout.*
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -42,6 +43,7 @@ class VideoListFragment : ListFragment() {
         videoNewApi = RetrofitUtils.getInstance(context)?.retrofitInstance?.create(IVideoNewsApi::class.java)!!
     }
 
+    @SuppressLint("InflateParams")
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater?.inflate(R.layout.fragment_video_list, container, false)
         videoNewApi.getNewsByPage(channel.id, currentPage, COUNT_IN_PAGE)
@@ -54,7 +56,56 @@ class VideoListFragment : ListFragment() {
                     }
 
                     override fun onCompleted() {
-                        list.adapter = VideoListAdapter(context, data)
+                        val footView = inflater?.inflate(R.layout.footer_loadmore, null)
+                        val refreshTv = footView?.findViewById<TextView>(R.id.refreshText)
+                        val loadProgressBar = footView?.findViewById<ProgressBar>(R.id.refreshProgressBar)
+                        list.setOnScrollListener(object : AbsListView.OnScrollListener {
+                            override fun onScroll(view: AbsListView?, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {}
+
+                            override fun onScrollStateChanged(view: AbsListView?, scrollState: Int) {
+                                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE &&
+                                        list.bottom == list.getChildAt(list.childCount - 1).bottom) {
+                                    //更新View
+                                    refreshTv?.text = "正在刷新,请稍后..."
+                                    loadProgressBar?.visibility = View.VISIBLE
+                                    // 执行上拉刷新操作
+                                    videoNewApi.getNewsByPage(channel.id, currentPage + 1, COUNT_IN_PAGE)
+                                            .subscribeOn(Schedulers.io())
+                                            .observeOn(AndroidSchedulers.mainThread())
+                                            .subscribe(object : Subscriber<ArrayList<News>>() {
+                                                lateinit var data: ArrayList<News>
+                                                override fun onNext(t: ArrayList<News>?) {
+                                                    data = t!!
+                                                }
+
+                                                override fun onCompleted() {
+                                                    Log.i("onCompleted", "data size : ${data.size}")
+                                                    (listAdapter as VideoListAdapter).data.addAll(data)
+                                                    (listAdapter as VideoListAdapter).notifyDataSetChanged()
+                                                    currentPage++
+                                                    //更新View
+                                                    refreshTv?.text = "上拉刷新"
+                                                    loadProgressBar?.visibility = View.GONE
+                                                }
+
+                                                override fun onError(e: Throwable?) {
+                                                    //更新View
+                                                    loadProgressBar?.visibility = View.GONE
+                                                    refreshTv?.text = "无更多新闻"
+                                                    footView?.visibility = View.GONE
+                                                }
+
+                                            })
+                                }
+                            }
+
+                        })
+                        list.addFooterView(footView, null, false)
+                        listAdapter = VideoListAdapter(context, data)
+                        if (list.lastVisiblePosition != data.size - 1)    //对于包含多条目的列表页设置上拉刷新
+                            refreshTv?.text = "上拉刷新"
+                        else
+                            refreshTv?.text = ""
                         empty.visibility = View.GONE
                         swipeRefresh.visibility = View.VISIBLE
                     }
@@ -75,7 +126,7 @@ class VideoListFragment : ListFragment() {
 
     companion object {
         private const val COUNT_IN_PAGE = 20
-        fun getInstance(channel: Channel): VideoListFragment{
+        fun getInstance(channel: Channel): VideoListFragment {
             val fragment = VideoListFragment()
             val bundle = Bundle()
             bundle.putParcelable("channel", channel)

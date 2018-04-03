@@ -318,6 +318,13 @@ class VideoHomeRecyclerViewAdapter(val context: Context, channels: ArrayList<Cha
                                         context.startActivity(intent)
                                     }
                                 }
+                                // 更多按钮
+                                val moreTv = viewDataBinding.root.findViewById<TextView>(R.id.more)
+                                moreTv.setOnClickListener {
+                                    val intent = Intent(context, VideoListActivity::class.java)
+                                    intent.putExtra("channel", curChannel)
+                                    context.startActivity(intent)
+                                }
                             }
 
                             override fun onError(e: Throwable?) {
@@ -393,6 +400,13 @@ class VideoHomeRecyclerViewAdapter(val context: Context, channels: ArrayList<Cha
                                         context.startActivity(intent)
                                     }
                                 }
+                                // 更多按钮
+                                val moreTv = viewDataBinding.root.findViewById<TextView>(R.id.more)
+                                moreTv.setOnClickListener {
+                                    val intent = Intent(context, VideoListActivity::class.java)
+                                    intent.putExtra("channel", curChannel)
+                                    context.startActivity(intent)
+                                }
                             }
 
                             override fun onError(e: Throwable?) {
@@ -444,6 +458,13 @@ class VideoHomeRecyclerViewAdapter(val context: Context, channels: ArrayList<Cha
                                         intent.putExtra("news", news[i])
                                         context.startActivity(intent)
                                     }
+                                }
+                                // 更多按钮
+                                val moreTv = viewDataBinding.root.findViewById<TextView>(R.id.more)
+                                moreTv.setOnClickListener {
+                                    val intent = Intent(context, VideoListActivity::class.java)
+                                    intent.putExtra("channel", curChannel)
+                                    context.startActivity(intent)
                                 }
                             }
 

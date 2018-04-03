@@ -88,8 +88,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="4dp"
                 android:background="@color/viewBackground"
                 android:orientation="horizontal">
 
@@ -126,13 +125,13 @@
             <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:overScrollMode="never">
+                android:overScrollMode="never"
+                android:layout_marginTop="8dp">
 
                 <WebView
                     android:id="@+id/contentWebView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="2dp"
                     android:background="@color/viewBackground" />
 
             </android.support.v4.widget.NestedScrollView>
