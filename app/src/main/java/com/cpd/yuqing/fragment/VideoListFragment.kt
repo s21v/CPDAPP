@@ -3,6 +3,7 @@ package com.cpd.yuqing.fragment
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v4.app.ListFragment
+import android.support.v4.widget.SwipeRefreshLayout
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,13 +11,13 @@ import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import com.cpd.yuqing.R
 import com.cpd.yuqing.adapter.VideoListAdapter
 import com.cpd.yuqing.db.vo.video.Channel
 import com.cpd.yuqing.db.vo.video.News
 import com.cpd.yuqing.retrofitInterface.IVideoNewsApi
 import com.cpd.yuqing.util.RetrofitUtils
-import kotlinx.android.synthetic.main.footer_loadmore.*
 import kotlinx.android.synthetic.main.fragment_video_list.*
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
@@ -79,7 +80,6 @@ class VideoListFragment : ListFragment() {
                                                 }
 
                                                 override fun onCompleted() {
-                                                    Log.i("onCompleted", "data size : ${data.size}")
                                                     (listAdapter as VideoListAdapter).data.addAll(data)
                                                     (listAdapter as VideoListAdapter).notifyDataSetChanged()
                                                     currentPage++
@@ -92,9 +92,7 @@ class VideoListFragment : ListFragment() {
                                                     //更新View
                                                     loadProgressBar?.visibility = View.GONE
                                                     refreshTv?.text = "无更多新闻"
-                                                    footView?.visibility = View.GONE
                                                 }
-
                                             })
                                 }
                             }
@@ -102,12 +100,9 @@ class VideoListFragment : ListFragment() {
                         })
                         list.addFooterView(footView, null, false)
                         listAdapter = VideoListAdapter(context, data)
-                        if (list.lastVisiblePosition != data.size - 1)    //对于包含多条目的列表页设置上拉刷新
-                            refreshTv?.text = "上拉刷新"
-                        else
-                            refreshTv?.text = ""
                         empty.visibility = View.GONE
                         swipeRefresh.visibility = View.VISIBLE
+
                     }
 
                     override fun onError(e: Throwable?) {
@@ -116,6 +111,36 @@ class VideoListFragment : ListFragment() {
 
                 })
         return root
+    }
+
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        // 下拉刷新操作
+        swipeRefresh.setOnRefreshListener {
+            videoNewApi.getNewsByPage(channel.id, 1, COUNT_IN_PAGE)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(object : Subscriber<ArrayList<News>>() {
+                        lateinit var data: ArrayList<News>
+                        override fun onNext(t: ArrayList<News>?) {
+                            Log.i("onNext", "data size : ${t?.size}")
+                            data = t!!
+                        }
+
+                        override fun onCompleted() {
+                            Log.i("onCompleted", "data size : ${data.size}")
+                            (listAdapter as VideoListAdapter).data = data
+                            (listAdapter as VideoListAdapter).notifyDataSetChanged()
+                            currentPage = 1
+                            swipeRefresh.isRefreshing = false
+                        }
+
+                        override fun onError(e: Throwable?) {
+                            Toast.makeText(context, "刷新失败", Toast.LENGTH_SHORT).show()
+                            swipeRefresh.isRefreshing = false
+                        }
+                    })
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
