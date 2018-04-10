@@ -88,10 +88,7 @@
         <activity
             android:name=".activity.LoginActivity"
             android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
 
         <provider
@@ -128,8 +125,8 @@
         <activity
             android:name=".activity.VideoContentActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation" />
-
-        <activity android:name=".activity.VideoListActivity"
+        <activity
+            android:name=".activity.VideoListActivity"
             android:parentActivityName=".activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -141,6 +138,13 @@
             android:enabled="true"
             android:process=":remote" />
 
+        <activity android:name=".activity.TestActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
