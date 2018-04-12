@@ -49,7 +49,7 @@ public class TestActivity extends AppCompatActivity {
 //        ArrayList<Rect> rects = SplitRect.Split2Rect(inputPoints);
 //        for (Rect r: rects)
 //            Log.i("# 图形", "Rect:"+r);
-
+//
 //        // 普通 图形
 //        LinkedList<Point> inputPoints1 = new LinkedList<>();
 //        inputPoints1.add(new Point(100, 100));
@@ -163,31 +163,73 @@ public class TestActivity extends AppCompatActivity {
 //        ArrayList<Rect> rects9 = SplitRect.Split2Rect(inputPoints9);
 //        for (Rect r: rects9)
 //            Log.i("十字型", "Rect:"+r);
+//
+////         test1字型
+//        LinkedList<Point> inputPoints10 = new LinkedList<>();
+//        inputPoints10.add(new Point(100, 100));      //1
+//        inputPoints10.add(new Point(150, 100));    //2
+//        inputPoints10.add(new Point(150, 50));   //3
+//        inputPoints10.add(new Point(200, 50));     //4
+//        inputPoints10.add(new Point(200, 100));   //5
+//        inputPoints10.add(new Point(250, 100));   //6
+//        inputPoints10.add(new Point(250, 50));    //7
+//        inputPoints10.add(new Point(300, 50));    //8
+//        inputPoints10.add(new Point(300, 100));   //9
+//        inputPoints10.add(new Point(350, 100));   //10
+//        inputPoints10.add(new Point(350, 150));   //11
+//        inputPoints10.add(new Point(300, 150));   //12
+//        inputPoints10.add(new Point(300, 200));   //13
+//        inputPoints10.add(new Point(350, 200));   //14
+//        inputPoints10.add(new Point(350, 250));   //15
+//        inputPoints10.add(new Point(300, 250));   //16
+//        inputPoints10.add(new Point(300, 300));   //17
+//        inputPoints10.add(new Point(250, 300));   //18
+//        inputPoints10.add(new Point(250, 250));   //19
+//        inputPoints10.add(new Point(100, 250));   //20
+//        ArrayList<Rect> rects10 = SplitRect.Split2Rect(inputPoints10);
+//        for (Rect r: rects10)
+//            Log.i("test1字型", "Rect:"+r);
 
-        // test1字型
-        LinkedList<Point> inputPoints10 = new LinkedList<>();
-        inputPoints10.add(new Point(100, 100));      //1
-        inputPoints10.add(new Point(150, 100));    //2
-        inputPoints10.add(new Point(150, 50));   //3
-        inputPoints10.add(new Point(200, 50));     //4
-        inputPoints10.add(new Point(200, 100));   //5
-        inputPoints10.add(new Point(250, 100));   //6
-        inputPoints10.add(new Point(250, 50));    //7
-        inputPoints10.add(new Point(300, 50));    //8
-        inputPoints10.add(new Point(300, 100));   //9
-        inputPoints10.add(new Point(350, 100));   //10
-        inputPoints10.add(new Point(350, 150));   //11
-        inputPoints10.add(new Point(300, 150));   //12
-        inputPoints10.add(new Point(300, 200));   //13
-        inputPoints10.add(new Point(350, 200));   //14
-        inputPoints10.add(new Point(350, 250));   //15
-        inputPoints10.add(new Point(300, 250));   //16
-        inputPoints10.add(new Point(300, 300));   //17
-        inputPoints10.add(new Point(250, 300));   //18
-        inputPoints10.add(new Point(250, 250));   //19
-        inputPoints10.add(new Point(100, 250));   //20
-        ArrayList<Rect> rects10 = SplitRect.Split2Rect(inputPoints10);
-        for (Rect r: rects10)
-            Log.i("test1字型", "Rect:"+r);
+//        // 凸字形
+//        LinkedList<Point> inputPoints11 = new LinkedList<>();
+//        inputPoints11.add(new Point(100, 100));
+//        inputPoints11.add(new Point(150, 100));
+//        inputPoints11.add(new Point(150, 50));
+//        inputPoints11.add(new Point(200, 50));
+//        inputPoints11.add(new Point(200, 100));
+//        inputPoints11.add(new Point(250, 100));
+//        inputPoints11.add(new Point(250, 150));
+//        inputPoints11.add(new Point(100, 150));
+//        ArrayList<Rect> rects11 = SplitRect.Split2Rect(inputPoints11);
+//        for (Rect r: rects11)
+//            Log.i("凸字形", "Rect:"+r);
+//
+//        // 倒凹字形
+//        LinkedList<Point> inputPoints12 = new LinkedList<>();
+//        inputPoints12.add(new Point(100, 100));
+//        inputPoints12.add(new Point(250, 100));
+//        inputPoints12.add(new Point(250, 200));
+//        inputPoints12.add(new Point(200, 200));
+//        inputPoints12.add(new Point(200, 150));
+//        inputPoints12.add(new Point(150, 150));
+//        inputPoints12.add(new Point(150, 200));
+//        inputPoints12.add(new Point(100, 200));
+//        ArrayList<Rect> rects12 = SplitRect.Split2Rect(inputPoints12);
+//        for (Rect r: rects12)
+//            Log.i("倒凹字形", "Rect:"+r);
+
+        // 凹字形
+        LinkedList<Point> inputPoints13 = new LinkedList<>();
+        inputPoints13.add(new Point(100, 100));
+        inputPoints13.add(new Point(150, 100));
+        inputPoints13.add(new Point(150, 150));
+        inputPoints13.add(new Point(200, 150));
+        inputPoints13.add(new Point(200, 100));
+        inputPoints13.add(new Point(250, 100));
+        inputPoints13.add(new Point(250, 200));
+        inputPoints13.add(new Point(100, 200));
+        ArrayList<Rect> rects13 = SplitRect.Split2Rect(inputPoints13);
+        for (Rect r: rects13)
+            Log.i("凹字形", "Rect:"+r);
     }
 }
