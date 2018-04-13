@@ -3,7 +3,6 @@ package com.cpd.yuqing.util;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -93,7 +92,7 @@ public class SplitRect {
                             pointsInRect.add(newPoint);
                             //  比较end之后的点，以决定是否将end顶点添加回队列
                             Point next = points.peek();
-                            //  将删去的点添加到原始点链表队列的队尾(这里两个点的顺序不能乱，也要按顺时针方向添加)      //todo 向原始点队列添加时应视end节点的下一个点所在位置决定是否添加、及添加的顺序
+                            //  将删去的点添加到原始点链表队列的队尾(这里两个点的顺序不能乱，也要按顺时针方向添加)
                             points.add(0, first);
                             //  添加新截取的点到原始点链表队列的队头
                             points.add(1, newPoint);
@@ -130,15 +129,62 @@ public class SplitRect {
     private static void checkIntersectRect(ArrayList<Rect> rects) {
         for (int i = 0; i < rects.size(); i++) {
             Rect x = rects.get(i);
-            for (int j = i+1; j < rects.size(); j++) {
-
-                    Rect y = rects.get(j);
-                    if (y.contains(x)) {
-                        Log.i("checkIntersectRect", y + " contains " + x);
-                        Log.i("checkIntersectRect", "intersect: "+y.intersect(x));
-                        Log.i("checkIntersectRect", "after intersect: "+y);
+            for (int j = i + 1; j < rects.size(); j++) {
+                Rect y = rects.get(j);
+                if (y.contains(x)) {
+                    //  两点重合
+                    if (x.left == y.left && x.right == y.right && x.top == y.top) {
+                        Rect new1 = new Rect(x.left, x.bottom, x.right, y.bottom);
+                        rects.remove(j);
+                        rects.remove(i);
+                        rects.add(new1);
+                        continue;
+                    } else if (x.left == y.left && x.right == y.right && x.bottom == y.bottom) {
+                        Rect new1 = new Rect(y.left, y.top, y.right, x.top);
+                        rects.remove(j);
+                        rects.remove(i);
+                        rects.add(new1);
+                        continue;
+                    } else if (x.top == y.top && x.bottom == y.bottom && x.left == y.left) {
+                        Rect new1 = new Rect(x.right, y.top, y.right, y.bottom);
+                        rects.remove(j);
+                        rects.remove(i);
+                        rects.add(new1);
+                        continue;
+                    } else if (x.top == y.top && x.bottom == y.bottom && x.right == y.right) {
+                        Rect new1 = new Rect(y.left, y.top, x.right, y.bottom);
+                        rects.remove(j);
+                        rects.remove(i);
+                        rects.add(new1);
+                        continue;
                     }
-
+                    // 单点重合
+                    Rect new1 = null;
+                    Rect new2 = null;
+                    if (x.left == y.left) {
+                        if (x.top == y.top) {
+                            new1 = new Rect(x.left, x.bottom, x.right, y.bottom);
+                            new2 = new Rect(x.right, y.top, y.right, y.bottom);
+                        } else if (x.bottom == y.bottom) {
+                            new1 = new Rect(y.left, y.top, x.right, x.top);
+                            new2 = new Rect(x.right, y.top, y.right, y.bottom);
+                        }
+                    } else if (x.right == y.right) {
+                        if (x.top == y.top) {
+                            new1 = new Rect(x.left, x.bottom, x.right, y.bottom);
+                            new2 = new Rect(y.left, y.top, x.left, y.bottom);
+                        } else if (x.bottom == y.bottom) {
+                            new1 = new Rect(x.left, y.top, x.right, x.top);
+                            new2 = new Rect(y.left, y.top, x.left, x.bottom);
+                        }
+                    }
+                    rects.remove(j);
+                    rects.remove(i);
+                    if (new1 != null) {
+                        rects.add(new1);
+                        rects.add(new2);
+                    }
+                }
             }
         }
     }
