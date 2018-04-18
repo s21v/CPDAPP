@@ -36,12 +36,6 @@ android {
     }
 }
 
-repositories {
-    flatDir {
-        dirs 'libs/MobShareSDK/'
-    }
-}
-
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
