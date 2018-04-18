@@ -45,8 +45,6 @@ public class BindUserActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //初始化SMSSDK, appKey与appSecrect必须与mob平台申请的一致
-        SMSSDK.initSDK(this, "1db8beeb19f63", "00ed9695bc864f03ca98a62b5005635f", SMSSDK.InitFlag.DISABLE_CONTACT);
         //获得参数
         if(savedInstanceState != null) {
             platformName = savedInstanceState.getString("platformName");

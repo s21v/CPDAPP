@@ -79,8 +79,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_2);
-        //初始化ShareSDK
-        ShareSDK.initSDK(this);
         //初始化UI组件
         //第三方登录
         ImageButton signInByQQ = findViewById(R.id.sign_in_qq);

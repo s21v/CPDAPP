@@ -16,7 +16,9 @@
     <!-- 写入扩展存储权限，向扩展卡写入数据，用于写入离线定位数据 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- SD卡读取权限，用户写入离线定位数据 -->
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission
+        android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
+        tools:ignore="ProtectedPermissions" />
     <!-- 位置权限:精确(GPS)、模糊(网络) -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -32,10 +34,12 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="Mgt5GZDWF5HfY0IG9TdMxMPyis9AiYG4" />
+
         <!-- 登录后的主页面 -->
         <activity
             android:name=".activity.MainActivity"
             android:launchMode="singleTop" />
+
         <!-- 文章搜索页面 -->
         <activity
             android:name=".activity.SearchActivity"
@@ -48,42 +52,16 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+
         <activity
             android:name=".activity.CustomChannelActivity"
             android:label=""
             android:launchMode="singleTop" />
+
         <activity
             android:name=".activity.LocationActivity"
             android:label="" />
 
-        <!-- Mob分享的Activity 必须要有 -->
-        <activity
-            android:name="com.mob.tools.MobUIShell"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:windowSoftInputMode="stateHidden|adjustResize">
-            <intent-filter>
-                <data android:scheme="tencent1106105082" />
-
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.BROWSABLE" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <!-- 调用新浪原生SDK，需要注册的回调activity -->
-            <intent-filter>
-                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <!-- 微信分享回调 -->
-        <activity
-            android:name=".wxapi.WXEntryActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <!-- 登录界面 -->
         <activity
             android:name=".activity.LoginActivity"
@@ -104,6 +82,7 @@
         <activity
             android:name=".activity.BindUserActivity"
             android:label="@string/bindUser" />
+
         <!-- 文章内容页 -->
         <activity
             android:name=".activity.NewsContentActivity"
@@ -125,6 +104,7 @@
         <activity
             android:name=".activity.VideoContentActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation" />
+
         <activity
             android:name=".activity.VideoListActivity"
             android:parentActivityName=".activity.MainActivity">

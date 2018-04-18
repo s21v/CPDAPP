@@ -2,6 +2,7 @@ package com.cpd.yuqing;
 
 import android.app.Application;
 import com.cpd.yuqing.db.vo.User;
+import com.mob.MobSDK;
 
 import io.vov.vitamio.Vitamio;
 
@@ -14,6 +15,8 @@ public class CpdnewsApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        // 初始化ShareSDK、SMSSDK
+        MobSDK.init(this);
     }
 
     public static User getCurrentUser() {
