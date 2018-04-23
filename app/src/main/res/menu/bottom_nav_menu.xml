@@ -6,9 +6,9 @@
     <item android:id="@+id/bottomNavLocation"
         android:icon="@drawable/pin_map"
         android:title="@string/location"/>
-    <item android:id="@+id/bottomNavTopic"
+    <item android:id="@+id/bottomNavPaper"
         android:icon="@drawable/news"
-        android:title="@string/topic"/>
+        android:title="@string/paper"/>
     <item android:id="@+id/bottomNavVideo"
         android:icon="@drawable/movie"
         android:title="@string/movie"/>

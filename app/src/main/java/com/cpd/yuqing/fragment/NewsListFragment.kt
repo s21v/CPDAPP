@@ -48,7 +48,6 @@ class NewsListFragment : Fragment() {
         super.onCreate(savedInstanceState)
         if (savedInstanceState != null) {
             channel = savedInstanceState.getParcelable("channel")
-            currentPage = savedInstanceState.getInt("currentPage", 1)
         } else {
             if (arguments != null) {
                 channel = arguments.getParcelable("channel")
@@ -167,7 +166,6 @@ class NewsListFragment : Fragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putParcelable("channel", channel)
-        outState.putInt("currentPage", currentPage)
     }
 
     inner class InitNewsCallback : Callback {

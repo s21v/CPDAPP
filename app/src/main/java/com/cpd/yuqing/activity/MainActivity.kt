@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
                         if (showFragment != null) {
                             supportFragmentManager.beginTransaction().hide(hideFragment).show(showFragment).commit()
                         } else {
-                            showFragment = NavigationHomeFragment()
+                            showFragment = createFragment(NAV_HOME) as NavigationHomeFragment?
                             supportFragmentManager.beginTransaction()
                                     .hide(hideFragment)
                                     .add(R.id.curNavigationFragmentContent, showFragment, NAV_HOME)
@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
                         if (showFragment != null) {
                             supportFragmentManager.beginTransaction().hide(hideFragment).show(showFragment).commit()
                         } else {
-                            showFragment = NavigationFavoriteFragment.newInstance(menuItem.title)
+                            showFragment = createFragment(NAV_FAVORITE) as NavigationFavoriteFragment?
                             supportFragmentManager.beginTransaction()
                                     .hide(hideFragment)
                                     .add(R.id.curNavigationFragmentContent, showFragment, NAV_FAVORITE)
@@ -149,9 +149,9 @@ class MainActivity : AppCompatActivity() {
                     sharedPreferences.edit()
                             .putBoolean("needUpdate", true)
                             .putInt("localChannelListVersion", channelVersion)
-                            .commit()
+                            .apply()
                 } else
-                    sharedPreferences.edit().putBoolean("needUpdate", false).commit()
+                    sharedPreferences.edit().putBoolean("needUpdate", false).apply()
             }
         })
         super.onStop()
@@ -160,6 +160,7 @@ class MainActivity : AppCompatActivity() {
     private fun createFragment(fragmentTag: String): Fragment? {
         return when (fragmentTag) {
             NAV_HOME -> NavigationHomeFragment()
+            NAV_FAVORITE -> NavigationFavoriteFragment.newInstance("我的收藏")
             else -> null
         }
     }

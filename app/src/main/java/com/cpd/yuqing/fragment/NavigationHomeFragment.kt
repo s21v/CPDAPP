@@ -1,10 +1,17 @@
 package com.cpd.yuqing.fragment
 
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
+import android.support.v4.app.Fragment
+import android.support.v4.view.ViewCompat
+import android.support.v4.view.ViewGroupCompat
 import android.util.Log
 import android.view.*
 import com.cpd.yuqing.R
 import com.cpd.yuqing.view.BottomNavigationViewHelper
+import kotlinx.android.synthetic.main.fragment_header.*
 import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
@@ -34,12 +41,7 @@ class NavigationHomeFragment : BaseFragment() {
         val fragmentManager = activity.supportFragmentManager
         var initFragment = fragmentManager.findFragmentByTag(currentFragmentTag)
         if (initFragment == null) {
-            initFragment = when (currentFragmentTag) {
-                CHANNEL_NEWS_TAG -> HomeNewsFragment()
-                CHANNEL_LOCATION_TAG -> HomeLocationFragment()
-                CHANNEL_VIDEO_TAG -> HomeVideoFragment()
-                else -> null
-            }
+            initFragment = createFragment(currentFragmentTag)
             fragmentManager.beginTransaction().replace(R.id.mainFragmentContent, initFragment, currentFragmentTag).commit()
         }
         //设置底部导航栏点击事件
@@ -68,6 +70,13 @@ class NavigationHomeFragment : BaseFragment() {
                     } else
                         return@setOnNavigationItemSelectedListener false
                 }
+                R.id.bottomNavPaper -> {
+                    if (currentFragmentTag != CHANNEL_PAPER_TAG) {
+                        hideAndShowFragment(currentFragmentTag, CHANNEL_PAPER_TAG)
+                        return@setOnNavigationItemSelectedListener true
+                    } else
+                        return@setOnNavigationItemSelectedListener false
+                }
                 else -> false
             }
         }
@@ -79,17 +88,32 @@ class NavigationHomeFragment : BaseFragment() {
         }
     }
 
+    private fun createFragment(fragmentTag: String): Fragment? {
+        when (fragmentTag) {
+            CHANNEL_NEWS_TAG -> {
+                return HomeNewsFragment()
+            }
+            CHANNEL_LOCATION_TAG -> {
+                return HomeLocationFragment()
+            }
+            CHANNEL_VIDEO_TAG -> {
+                return HomeVideoFragment()
+            }
+            CHANNEL_PAPER_TAG -> {
+                val fragment = HomePaperFragment()
+                fragment.setTargetFragment(this@NavigationHomeFragment, PAPER_RESUME)
+                return fragment
+            }
+        }
+        return null
+    }
+
     private fun hideAndShowFragment(hideFragmentTag: String, showFragmentTag: String) {
         val fragmentManager = activity.supportFragmentManager
         val hideFragment = fragmentManager.findFragmentByTag(hideFragmentTag)
         var showFragment = fragmentManager.findFragmentByTag(showFragmentTag)
         if (showFragment == null) {
-            showFragment = when (showFragmentTag) {
-                CHANNEL_NEWS_TAG -> HomeNewsFragment()
-                CHANNEL_LOCATION_TAG -> HomeLocationFragment()
-                CHANNEL_VIDEO_TAG -> HomeVideoFragment()
-                else -> null
-            }
+            showFragment = createFragment(showFragmentTag)
             if (showFragment != null) {
                 fragmentManager.beginTransaction()
                         .hide(hideFragment)
@@ -108,8 +132,16 @@ class NavigationHomeFragment : BaseFragment() {
 
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
-        Log.i(TAG, "onSaveInstanceState() $currentFragmentTag")
         outState!!.putString("currentFragmentTag", currentFragmentTag)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PAPER_RESUME)
+        {
+            coordinatorLayout.dispatchNestedScroll(0, 196, 0, 196, null)
+        }
     }
 
     companion object {
@@ -117,5 +149,7 @@ class NavigationHomeFragment : BaseFragment() {
         val CHANNEL_NEWS_TAG = HomeNewsFragment::class.java.simpleName!!
         val CHANNEL_LOCATION_TAG = HomeLocationFragment::class.java.simpleName!!
         val CHANNEL_VIDEO_TAG = HomeVideoFragment::class.java.simpleName!!
+        val CHANNEL_PAPER_TAG = HomePaperFragment::class.java.simpleName!!
+        const val PAPER_RESUME = 100
     }
 }
