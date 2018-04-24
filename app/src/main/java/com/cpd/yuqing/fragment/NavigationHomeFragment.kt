@@ -1,12 +1,12 @@
 package com.cpd.yuqing.fragment
 
+import android.animation.ObjectAnimator
+import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
-import android.support.v4.view.ViewCompat
-import android.support.v4.view.ViewGroupCompat
 import android.util.Log
 import android.view.*
 import com.cpd.yuqing.R
@@ -37,7 +37,6 @@ class NavigationHomeFragment : BaseFragment() {
         //初始化fragment
         if (savedInstanceState != null)
             currentFragmentTag = savedInstanceState.getString("currentFragmentTag", CHANNEL_NEWS_TAG)
-        Log.i(TAG, "onActivityCreated() $currentFragmentTag")
         val fragmentManager = activity.supportFragmentManager
         var initFragment = fragmentManager.findFragmentByTag(currentFragmentTag)
         if (initFragment == null) {
@@ -88,6 +87,12 @@ class NavigationHomeFragment : BaseFragment() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        Log.i(TAG, "onStart")
+        appbarlayout.setExpanded(true)
+    }
+
     private fun createFragment(fragmentTag: String): Fragment? {
         when (fragmentTag) {
             CHANNEL_NEWS_TAG -> {
@@ -135,12 +140,16 @@ class NavigationHomeFragment : BaseFragment() {
         outState!!.putString("currentFragmentTag", currentFragmentTag)
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PAPER_RESUME)
-        {
-            coordinatorLayout.dispatchNestedScroll(0, 196, 0, 196, null)
+        // 数字报页面返回值
+        if (requestCode == PAPER_RESUME) {
+            //隐藏多余组件
+            appbarlayout.setExpanded(false)
+            val bottomNavGone = ObjectAnimator.ofFloat(bottomNavigation, "translationY", bottomNavigation.translationY, bottomNavigation.height.toFloat())
+            bottomNavGone.duration = 500
+            bottomNavGone.setAutoCancel(false)
+            bottomNavGone.start()
         }
     }
 

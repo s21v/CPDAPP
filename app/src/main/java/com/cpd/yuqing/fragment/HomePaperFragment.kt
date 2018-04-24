@@ -1,5 +1,6 @@
 package com.cpd.yuqing.fragment
 
+import android.app.Activity
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
@@ -18,9 +19,17 @@ class HomePaperFragment : Fragment() {
         return inflater?.inflate(R.layout.fragment_home_paper, container, false)
     }
 
-    override fun onStart() {
-        super.onStart()
-        targetFragment.onActivityResult(NavigationHomeFragment.PAPER_RESUME, 200, null)
+    override fun onResume() {
+        super.onResume()
+        // 除去多余的组件
+        targetFragment.onActivityResult(NavigationHomeFragment.PAPER_RESUME, Activity.RESULT_OK, null)
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden)
+            // 除去多余的组件
+            targetFragment.onActivityResult(NavigationHomeFragment.PAPER_RESUME, Activity.RESULT_OK, null)
     }
 
     companion object {
