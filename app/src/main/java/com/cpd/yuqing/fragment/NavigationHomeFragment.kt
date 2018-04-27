@@ -37,7 +37,7 @@ class NavigationHomeFragment : BaseFragment() {
         //初始化fragment
         if (savedInstanceState != null)
             currentFragmentTag = savedInstanceState.getString("currentFragmentTag", CHANNEL_NEWS_TAG)
-        val fragmentManager = activity.supportFragmentManager
+        val fragmentManager = childFragmentManager
         var initFragment = fragmentManager.findFragmentByTag(currentFragmentTag)
         if (initFragment == null) {
             initFragment = createFragment(currentFragmentTag)
@@ -73,8 +73,11 @@ class NavigationHomeFragment : BaseFragment() {
                     if (currentFragmentTag != CHANNEL_PAPER_TAG) {
                         hideAndShowFragment(currentFragmentTag, CHANNEL_PAPER_TAG)
                         return@setOnNavigationItemSelectedListener true
-                    } else
+                    } else {
+                        //隐藏多余组件
+                        hideBar()
                         return@setOnNavigationItemSelectedListener false
+                    }
                 }
                 else -> false
             }
@@ -87,9 +90,9 @@ class NavigationHomeFragment : BaseFragment() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        Log.i(TAG, "onStart")
+    override fun onResume() {
+        super.onResume()
+        Log.i(TAG, "onResume")
         appbarlayout.setExpanded(true)
     }
 
@@ -105,16 +108,14 @@ class NavigationHomeFragment : BaseFragment() {
                 return HomeVideoFragment()
             }
             CHANNEL_PAPER_TAG -> {
-                val fragment = HomePaperFragment()
-                fragment.setTargetFragment(this@NavigationHomeFragment, PAPER_RESUME)
-                return fragment
+                return HomePaperFragment1()
             }
         }
         return null
     }
 
     private fun hideAndShowFragment(hideFragmentTag: String, showFragmentTag: String) {
-        val fragmentManager = activity.supportFragmentManager
+        val fragmentManager = childFragmentManager
         val hideFragment = fragmentManager.findFragmentByTag(hideFragmentTag)
         var showFragment = fragmentManager.findFragmentByTag(showFragmentTag)
         if (showFragment == null) {
@@ -140,12 +141,19 @@ class NavigationHomeFragment : BaseFragment() {
         outState!!.putString("currentFragmentTag", currentFragmentTag)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        // 数字报页面返回值
-        if (requestCode == PAPER_RESUME) {
-            //隐藏多余组件
-            appbarlayout.setExpanded(false)
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        // 数字报页面返回值
+//        if (requestCode == PAPER_RESUME) {
+//
+//            }
+//        }
+//    }
+
+    fun hideBar() {
+        //隐藏多余组件
+        appbarlayout.setExpanded(false)
+        bottomNavigation.post {
             val bottomNavGone = ObjectAnimator.ofFloat(bottomNavigation, "translationY", bottomNavigation.translationY, bottomNavigation.height.toFloat())
             bottomNavGone.duration = 500
             bottomNavGone.setAutoCancel(false)

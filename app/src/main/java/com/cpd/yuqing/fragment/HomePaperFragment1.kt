@@ -19,7 +19,7 @@ import org.xmlpull.v1.XmlPullParser
  * 数字报页面
  * Created by s21v on 2018/4/23.
  */
-class HomePaperFragment : Fragment() {
+class HomePaperFragment1 : Fragment() {
     private lateinit var curPaper: Paper
     private lateinit var curArticleList: ArrayList<Article>
 
@@ -33,47 +33,20 @@ class HomePaperFragment : Fragment() {
             curPaper = getPaper()
             curArticleList = arrayListOf()
         }
-        parserPaperXml()
+//        parserPaperXml()
 //        Log.i(TAG, "curPaper:$curPaper")
 //        Log.i(TAG, "curArticleList:$curArticleList")
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.fragment_home_paper, container, false)
+        return inflater?.inflate(R.layout.fragment_home_paper_1, container, false)
     }
 
-    override fun onStart() {
-        super.onStart()
-        Log.i(TAG, "onStart()")
-        // 获得宽高、避免为0
-        shadeView.post {
-            shadeView.setData(curPaper, curArticleList)
-        }
-        // 除去多余的组件
-        if (parentFragment is NavigationHomeFragment)
-            (parentFragment as NavigationHomeFragment).hideBar()
-    }
-
-    // fragment hide\show 时调用
-    override fun onHiddenChanged(hidden: Boolean) {
-        super.onHiddenChanged(hidden)
-        Log.i(TAG, "onHiddenChanged()")
-        if (!hidden) {
-            // 获得宽高、避免为0
-            shadeView.post {
-                shadeView.setData(curPaper, curArticleList)
-            }
-            // 除去多余的组件
-            if (parentFragment is NavigationHomeFragment)
-                (parentFragment as NavigationHomeFragment).hideBar()
-        }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle?) {
-        super.onSaveInstanceState(outState)
-        outState?.putParcelable("curPaper", curPaper)
-        outState?.putParcelableArrayList("curArticleList", curArticleList)
-    }
+//    override fun onSaveInstanceState(outState: Bundle?) {
+//        super.onSaveInstanceState(outState)
+//        outState?.putParcelable("curPaper", curPaper)
+//        outState?.putParcelableArrayList("curArticleList", curArticleList)
+//    }
 
     private fun getPaper(): Paper {
         return Paper("01", "要闻", "szb", "20180423", "testszb.xml",

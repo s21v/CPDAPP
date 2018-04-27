@@ -30,4 +30,8 @@
         <attr name="ItemLRMargin" format="dimension"/>
         <attr name="LineSpace" format="dimension"/>
     </declare-styleable>
+    
+    <declare-styleable name="ShadeView">
+        <attr name="color" format="color"/>
+    </declare-styleable>
 </resources>
