@@ -4,18 +4,19 @@ import android.content.Context
 import android.util.AttributeSet
 import android.util.DisplayMetrics
 import android.util.Log
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
-import java.security.MessageDigest
+import android.view.*
+import android.widget.Scroller
 
 /**
  * Created by s21v on 2018/4/27.
  */
 class VerticalOverLayout(context: Context?, attrs: AttributeSet?) : ViewGroup(context, attrs) {
     // child view高度
-    val heightSize: Int
+    private val heightSize: Int
+    // 手势
+    private val mGestureDetector: GestureDetector
+    // 滚动
+    private val mScroller: Scroller
     init {
         // 获得屏幕高度
         val dm = DisplayMetrics()
@@ -28,6 +29,11 @@ class VerticalOverLayout(context: Context?, attrs: AttributeSet?) : ViewGroup(co
         if (resourceID > 0)
             statusBarHeight = context.resources.getDimensionPixelSize(resourceID)
         heightSize = screenHeight - statusBarHeight
+        // 手势监听
+        val gestureListener = MyGestureListrener()
+        mGestureDetector = GestureDetector(context, gestureListener)
+        // 滚动相关
+        mScroller = Scroller(context)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -52,17 +58,52 @@ class VerticalOverLayout(context: Context?, attrs: AttributeSet?) : ViewGroup(co
         }
     }
 
-//    var lastY = 0f
 //    override fun onTouchEvent(event: MotionEvent?): Boolean {
-//        when (event?.action) {
-//            MotionEvent.ACTION_DOWN -> {
-//                lastY = event.y
-//            }
-//            MotionEvent.ACTION_MOVE -> {
-//                val offsetY = event.y - lastY
-//                layout(left, (top+offsetY).toInt(), right, (bottom+offsetY).toInt())
-//            }
-//        }
-//        return true
+//        return mGestureDetector.onTouchEvent(event)
 //    }
+
+    override fun computeScroll() {
+        super.computeScroll()
+        if (mScroller.computeScrollOffset()) {
+            (parent as View).scrollTo(mScroller.currX, mScroller.currY)
+            invalidate()
+        }
+    }
+
+    // 当前显示的子View
+    private var currentChildIndex = 0
+
+    inner class MyGestureListrener(): GestureDetector.SimpleOnGestureListener() {
+        override fun onDown(e: MotionEvent?): Boolean {
+            Log.i("MyGestureListrener", "onDown")
+            parent.requestDisallowInterceptTouchEvent(true)
+            return true
+        }
+
+        override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean {
+            return super.onScroll(e1, e2, distanceX, distanceY)
+        }
+        override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
+            Log.i("MyGestureListrener", "onFling")
+            if (currentChildIndex == 0 && velocityY<0) {    // 当报纸页面显示时，手指上滑显示版面信息页面
+                Log.i("MyGestureListrener", "手指上滑显示版面信息页面")
+                mScroller.startScroll(0, getChildAt(currentChildIndex).top, 0, heightSize, 500)
+                invalidate()
+                currentChildIndex = 1
+                return true
+            }
+            else if (currentChildIndex == 1 && velocityY>0) {    // 当版面信息页面显示时, 手指下滑显示报纸页面
+                Log.i("MyGestureListrener", "手指下滑显示报纸页面")
+                mScroller.startScroll(0, getChildAt(currentChildIndex).top, 0, -heightSize, 500)
+                invalidate()
+                currentChildIndex = 0
+                return true
+            } else {
+                parent.requestDisallowInterceptTouchEvent(false)
+                return true
+            }
+
+        }
+
+    }
 }

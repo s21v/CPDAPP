@@ -76,8 +76,8 @@ class ShadeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         acquireVelocityTracker(event!!)
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                parent.requestDisallowInterceptTouchEvent(true)
-//                Log.i(TAG, "ACTION_DOWN")
+//                parent.requestDisallowInterceptTouchEvent(true)
+                Log.i(TAG, "ACTION_DOWN")
                 lastTouchX = touchX!!
                 // 找到触摸点所在的文章
                 val touchArticleIndex = getTouchArticleIndex(touchX, event.y)
@@ -90,15 +90,15 @@ class ShadeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
             }
             MotionEvent.ACTION_MOVE -> {
                 velocityTracker?.computeCurrentVelocity(1000)
-//                Log.i(TAG, "ACTION_MOVE v:${velocityTracker?.yVelocity!!}")
+                Log.i(TAG, "ACTION_MOVE v:${velocityTracker?.yVelocity!!}")
                 val dx = touchX!! - lastTouchX
                 lastTouchX = touchX
-                // 滑动冲突
-                if (abs(velocityTracker?.yVelocity!!) > scaledMaximumFlingVelocity
-                        && abs(dx) < scaledTouchSlop) {
-                    parent.requestDisallowInterceptTouchEvent(false)
-                    return false
-                }
+//                // 滑动冲突
+//                if (abs(velocityTracker?.yVelocity!!) > scaledMaximumFlingVelocity
+//                        && abs(dx) < scaledTouchSlop) {
+//                    parent.requestDisallowInterceptTouchEvent(false)
+//                    return false
+//                }
                 val touchArticleIndex = getTouchArticleIndex(touchX, event.y)
                 if (touchArticleIndex != curTouchArticleIndex) {
                     curTouchArticleIndex = touchArticleIndex
@@ -107,7 +107,7 @@ class ShadeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 }
             }
             MotionEvent.ACTION_UP -> {
-//                Log.i(TAG, "ACTION_UP")
+                Log.i(TAG, "ACTION_UP")
                 releaseVelocityTracker()
                 lastTouchX = touchX!!
                 recycleShadeBitmap()
@@ -116,7 +116,7 @@ class ShadeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 curTouchArticleIndex = -1
             }
             MotionEvent.ACTION_CANCEL -> {
-//                Log.i(TAG, "ACTION_CANCEL")
+                Log.i(TAG, "ACTION_CANCEL")
                 releaseVelocityTracker()
                 lastTouchX = touchX!!
                 recycleShadeBitmap()

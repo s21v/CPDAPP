@@ -1,6 +1,5 @@
 package com.cpd.yuqing.fragment
 
-import android.app.Activity
 import android.graphics.Point
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -12,7 +11,7 @@ import android.view.ViewGroup
 import com.cpd.yuqing.R
 import com.cpd.yuqing.db.vo.szb.Article
 import com.cpd.yuqing.db.vo.szb.Paper
-import kotlinx.android.synthetic.main.fragment_home_paper.*
+import kotlinx.android.synthetic.main.fragment_home_paper_1.*
 import org.xmlpull.v1.XmlPullParser
 
 /**
@@ -33,7 +32,7 @@ class HomePaperFragment1 : Fragment() {
             curPaper = getPaper()
             curArticleList = arrayListOf()
         }
-//        parserPaperXml()
+        parserPaperXml()
 //        Log.i(TAG, "curPaper:$curPaper")
 //        Log.i(TAG, "curArticleList:$curArticleList")
     }
@@ -42,11 +41,43 @@ class HomePaperFragment1 : Fragment() {
         return inflater?.inflate(R.layout.fragment_home_paper_1, container, false)
     }
 
-//    override fun onSaveInstanceState(outState: Bundle?) {
-//        super.onSaveInstanceState(outState)
-//        outState?.putParcelable("curPaper", curPaper)
-//        outState?.putParcelableArrayList("curArticleList", curArticleList)
-//    }
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        childFragmentManager.beginTransaction().add(R.id.szbInfo, PaperInfoFragment(), "szbInfo").commit()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState?.putParcelable("curPaper", curPaper)
+        outState?.putParcelableArrayList("curArticleList", curArticleList)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.i(TAG, "onStart()")
+        // 获得宽高、避免为0
+        shadeView.post {
+            shadeView.setData(curPaper, curArticleList)
+        }
+        // 除去多余的组件
+        if (parentFragment is NavigationHomeFragment)
+            (parentFragment as NavigationHomeFragment).hideBar()
+    }
+
+    // fragment hide\show 时调用
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        Log.i(TAG, "onHiddenChanged()")
+        if (!hidden) {
+            // 获得宽高、避免为0
+            shadeView.post {
+                shadeView.setData(curPaper, curArticleList)
+            }
+            // 除去多余的组件
+            if (parentFragment is NavigationHomeFragment)
+                (parentFragment as NavigationHomeFragment).hideBar()
+        }
+    }
 
     private fun getPaper(): Paper {
         return Paper("01", "要闻", "szb", "20180423", "testszb.xml",
@@ -106,6 +137,6 @@ class HomePaperFragment1 : Fragment() {
     }
 
     companion object {
-        private const val TAG = "HomePaperFragment"
+        private const val TAG = "HomePaperFragment1"
     }
 }

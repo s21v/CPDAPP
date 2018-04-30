@@ -4,18 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/Image1"
+    <com.cpd.yuqing.view.ShadeView
+        android:id="@+id/shadeView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        android:src="@drawable/page_02" />
+        app:color="@color/szbShadeViewColor"
+        android:background="@drawable/page_01"/>
 
-    <ImageView
-        android:id="@+id/Image2"
+    <FrameLayout android:id="@+id/szbInfo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        android:src="@drawable/page_01" />
+        android:layout_height="match_parent"/>
 
 </com.cpd.yuqing.view.VerticalOverLayout>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/viewBackground">
+    <LinearLayout android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp">
+        <TextView android:gravity="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorPrimary"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="人民公安报"/>
+        <View android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/line_divider"/>
+        <TextView android:gravity="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorPrimary"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="交通周刊"/>
+        <View android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/line_divider"/>
+        <TextView android:gravity="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorPrimary"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="消防周刊"/>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/line_divider"
+        android:layout_marginEnd="2dp"
+        android:layout_marginStart="2dp"/>
+    <GridView
+        android:id="@+id/paperInfoList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="2" />
+    <ListView
+        android:id="@+id/paperArticleList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/line_divider"/>
+</LinearLayout>

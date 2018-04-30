@@ -141,15 +141,6 @@ class NavigationHomeFragment : BaseFragment() {
         outState!!.putString("currentFragmentTag", currentFragmentTag)
     }
 
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        // 数字报页面返回值
-//        if (requestCode == PAPER_RESUME) {
-//
-//            }
-//        }
-//    }
-
     fun hideBar() {
         //隐藏多余组件
         appbarlayout.setExpanded(false)
