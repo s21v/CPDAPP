@@ -76,7 +76,7 @@ class ShadeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         acquireVelocityTracker(event!!)
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-//                parent.requestDisallowInterceptTouchEvent(true)
+                parent.requestDisallowInterceptTouchEvent(true)
                 Log.i(TAG, "ACTION_DOWN")
                 lastTouchX = touchX!!
                 // 找到触摸点所在的文章
@@ -93,12 +93,12 @@ class ShadeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 Log.i(TAG, "ACTION_MOVE v:${velocityTracker?.yVelocity!!}")
                 val dx = touchX!! - lastTouchX
                 lastTouchX = touchX
-//                // 滑动冲突
-//                if (abs(velocityTracker?.yVelocity!!) > scaledMaximumFlingVelocity
-//                        && abs(dx) < scaledTouchSlop) {
-//                    parent.requestDisallowInterceptTouchEvent(false)
-//                    return false
-//                }
+                // 滑动冲突
+                if (abs(velocityTracker?.yVelocity!!) > scaledMaximumFlingVelocity
+                        && abs(dx) < scaledTouchSlop) {
+                    parent.requestDisallowInterceptTouchEvent(false)
+                    return false
+                }
                 val touchArticleIndex = getTouchArticleIndex(touchX, event.y)
                 if (touchArticleIndex != curTouchArticleIndex) {
                     curTouchArticleIndex = touchArticleIndex

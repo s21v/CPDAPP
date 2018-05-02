@@ -105,10 +105,10 @@ class NavigationHomeFragment : BaseFragment() {
                 return HomeLocationFragment()
             }
             CHANNEL_VIDEO_TAG -> {
-                return HomeVideoFragment()
+                return HomeVideoFragment_1()
             }
             CHANNEL_PAPER_TAG -> {
-                return HomePaperFragment1()
+                return HomePaperFragment()
             }
         }
         return null
@@ -156,8 +156,7 @@ class NavigationHomeFragment : BaseFragment() {
         val TAG = NavigationHomeFragment::class.java.simpleName!!
         val CHANNEL_NEWS_TAG = HomeNewsFragment::class.java.simpleName!!
         val CHANNEL_LOCATION_TAG = HomeLocationFragment::class.java.simpleName!!
-        val CHANNEL_VIDEO_TAG = HomeVideoFragment::class.java.simpleName!!
+        val CHANNEL_VIDEO_TAG = HomeVideoFragment_1::class.java.simpleName!!
         val CHANNEL_PAPER_TAG = HomePaperFragment::class.java.simpleName!!
-        const val PAPER_RESUME = 100
     }
 }
