@@ -9,6 +9,7 @@
     <include layout="@layout/fragment_header" />
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
@@ -19,6 +20,24 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </android.support.v4.widget.NestedScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="@dimen/fab_margin_bottom"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/up"
+        app:backgroundTint="@color/colorPrimary"
+        app:borderWidth="0.0dip"
+        app:elevation="6dp"
+        app:fabSize="mini"
+        app:layout_behavior="com.cpd.yuqing.behavior.FabHideBehavior"
+        app:pressedTranslationZ="8dp"
+        app:rippleColor="@color/bezierLine_combat" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottomNavigation"

@@ -49,9 +49,6 @@ class HomeVideoFragment_1 : Fragment() {
             newsList.adapter = VideoHomeRecyclerViewAdapter(context, videoChannels!!)
             newsList.setHasFixedSize(true)
         }
-        fab.setOnClickListener {
-            newsList.smoothScrollToPosition(0)
-        }
         swipeRefresh.setOnRefreshListener {
             refleshChannel({
                 swipeRefresh.isRefreshing = false

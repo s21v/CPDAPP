@@ -88,6 +88,10 @@ class NavigationHomeFragment : BaseFragment() {
             CHANNEL_VIDEO_TAG -> R.id.bottomNavVideo
             else -> 0
         }
+        // 设置fab
+        fab.setOnClickListener {
+            Log.i(TAG, "fab.setOnClickListener, scrollY:${nestedScrollView.scrollY}")
+        }
     }
 
     override fun onResume() {
