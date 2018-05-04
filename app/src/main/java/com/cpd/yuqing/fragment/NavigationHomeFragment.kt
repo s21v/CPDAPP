@@ -1,11 +1,7 @@
 package com.cpd.yuqing.fragment
 
 import android.animation.ObjectAnimator
-import android.app.Activity
-import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.*
@@ -90,7 +86,12 @@ class NavigationHomeFragment : BaseFragment() {
         }
         // 设置fab
         fab.setOnClickListener {
-            Log.i(TAG, "fab.setOnClickListener, scrollY:${nestedScrollView.scrollY}")
+            val currentFragment = fragmentManager.findFragmentByTag(currentFragmentTag)
+            if (currentFragment is HomeNewsFragment)
+                currentFragment.scrollToFirstPosition()
+            else if (currentFragment is HomeVideoFragment)
+                currentFragment.scrollToFirstPosition()
+            fab.visibility = View.INVISIBLE
         }
     }
 
@@ -109,7 +110,7 @@ class NavigationHomeFragment : BaseFragment() {
                 return HomeLocationFragment()
             }
             CHANNEL_VIDEO_TAG -> {
-                return HomeVideoFragment_1()
+                return HomeVideoFragment()
             }
             CHANNEL_PAPER_TAG -> {
                 return HomePaperFragment()
@@ -160,7 +161,7 @@ class NavigationHomeFragment : BaseFragment() {
         val TAG = NavigationHomeFragment::class.java.simpleName!!
         val CHANNEL_NEWS_TAG = HomeNewsFragment::class.java.simpleName!!
         val CHANNEL_LOCATION_TAG = HomeLocationFragment::class.java.simpleName!!
-        val CHANNEL_VIDEO_TAG = HomeVideoFragment_1::class.java.simpleName!!
+        val CHANNEL_VIDEO_TAG = HomeVideoFragment::class.java.simpleName!!
         val CHANNEL_PAPER_TAG = HomePaperFragment::class.java.simpleName!!
     }
 }

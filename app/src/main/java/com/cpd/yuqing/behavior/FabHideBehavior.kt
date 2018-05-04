@@ -59,6 +59,8 @@ class FabHideBehavior(context: Context, attributeSet: AttributeSet) :
     }
 
     private fun show(child: View) {
+        if (child.visibility == View.INVISIBLE)
+            child.visibility = View.VISIBLE
         val animatorSet = AnimatorSet()
         val animator1 = ObjectAnimator.ofFloat(child, "translationX", child.translationX, child.translationX - dx)
         val animator2 = ObjectAnimator.ofFloat(child, "scaleX", 0f, 1f)

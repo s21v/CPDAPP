@@ -19,7 +19,7 @@ import com.cpd.yuqing.util.OkHttpUtils
 import com.cpd.yuqing.view.SampleLineItemDecoration
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.android.synthetic.main.news_channel_layout.*
+import kotlinx.android.synthetic.main.fragment_home_video.*
 import okhttp3.*
 import java.io.IOException
 import kotlin.collections.ArrayList
@@ -56,7 +56,7 @@ class NewsListFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater?.inflate(R.layout.news_channel_layout, container, false)
+            inflater?.inflate(R.layout.fragment_home_video, container, false)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         //下拉刷新
@@ -161,6 +161,11 @@ class NewsListFragment : Fragment() {
                 .build()
         val request = Request.Builder().url(NetUtils.NewsCommonUrl).post(formBody).build()
         OkHttpUtils.getOkHttpUtilInstance(activity)!!.httpConnection(request, callback)
+    }
+
+    // 滑动到第一项
+    fun scrollToFirstPosition() {
+        newsList.scrollToPosition(0)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

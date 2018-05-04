@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
+import android.view.View
 import com.cpd.yuqing.fragment.NewsListFragment
 import com.cpd.yuqing.db.vo.Channel
 

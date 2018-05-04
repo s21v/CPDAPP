@@ -37,7 +37,8 @@
         app:fabSize="mini"
         app:layout_behavior="com.cpd.yuqing.behavior.FabHideBehavior"
         app:pressedTranslationZ="8dp"
-        app:rippleColor="@color/bezierLine_combat" />
+        app:rippleColor="@color/bezierLine_combat"
+        android:visibility="invisible"/>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottomNavigation"

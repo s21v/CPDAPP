@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.*
 import com.cpd.yuqing.R
 import com.cpd.yuqing.activity.CustomChannelActivity
@@ -160,5 +160,10 @@ class HomeNewsFragment : Fragment() {
                 viewPage.adapter = NewsViewPagerAdapter(childFragmentManager, channelList!!)
             }
         }
+    }
+
+    fun scrollToFirstPosition() {
+        val curFragment = viewPage.adapter.instantiateItem(viewPage, viewPage.currentItem) as NewsListFragment
+        curFragment.scrollToFirstPosition()
     }
 }
