@@ -21,60 +21,60 @@
 
             <ImageButton
                 android:id="@+id/favoriteBtn"
-                android:src="@drawable/favorite_unselected"
-                android:background="@null"
-                android:scaleType="fitCenter"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="8dp"
                 android:layout_marginEnd="4dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
                 android:layout_weight="1"
-                android:layout_gravity="center_vertical"
-                android:contentDescription="@string/favorite" />
+                android:background="@null"
+                android:contentDescription="@string/favorite"
+                android:scaleType="fitCenter"
+                android:src="@drawable/favorite_unselected" />
 
             <ImageButton
                 android:id="@+id/thumbUpBtn"
-                android:background="@null"
-                android:src="@drawable/thumbup_unselected"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="8dp"
                 android:layout_marginEnd="4dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
                 android:layout_weight="1"
-                android:layout_gravity="center_vertical"
-                android:contentDescription="@string/thumbUp" />
+                android:background="@null"
+                android:contentDescription="@string/thumbUp"
+                android:src="@drawable/thumbup_unselected" />
 
             <ImageButton
                 android:id="@+id/shareBtn"
-                android:background="@null"
-                android:src="@drawable/share_btn_click"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="8dp"
                 android:layout_marginEnd="4dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
                 android:layout_weight="1"
-                android:layout_gravity="center_vertical"
-                android:contentDescription="@string/share" />
+                android:background="@null"
+                android:contentDescription="@string/share"
+                android:src="@drawable/share_btn_click" />
 
             <ImageButton
                 android:id="@+id/chatBtn"
-                android:background="@null"
-                android:src="@drawable/chat_btn_click"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="8dp"
                 android:layout_marginEnd="4dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
                 android:layout_weight="1"
-                android:layout_gravity="center_vertical"
-                android:contentDescription="@string/chat" />
+                android:background="@null"
+                android:contentDescription="@string/chat"
+                android:src="@drawable/chat_btn_click" />
         </LinearLayout>
 
         <View
@@ -84,19 +84,19 @@
 
         <com.cpd.yuqing.view.FontSizeView
             android:id="@+id/fontSizeView"
-            app:fontSizeNameArray="@array/FontSizeName"
-            app:fontSizeValueArray="@array/FontSizeValue"
-            app:fontTextSize="12sp"
-            app:lineTopSpaceSize="32dp"
-            app:lineHeight="2dp"
-            app:lineColor="@color/dot_checked_stroke"
-            app:sliderBackground="@drawable/radiobutton_dot_checked"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
             android:paddingTop="8dp"
-            android:paddingBottom="8dp"/>
+            app:fontSizeNameArray="@array/FontSizeName"
+            app:fontSizeValueArray="@array/FontSizeValue"
+            app:fontTextSize="12sp"
+            app:lineColor="@color/dot_checked_stroke"
+            app:lineHeight="2dp"
+            app:lineTopSpaceSize="32dp"
+            app:sliderBackground="@drawable/radiobutton_dot_checked" />
 
         <View
             android:layout_width="match_parent"

@@ -13,6 +13,7 @@ import com.cpd.yuqing.db.vo.szb.Article
 import com.cpd.yuqing.db.vo.szb.Paper
 import kotlinx.android.synthetic.main.fragment_home_paper.*
 import org.xmlpull.v1.XmlPullParser
+import java.util.*
 
 /**
  * 数字报页面
@@ -27,8 +28,7 @@ class HomePaperFragment : Fragment() {
         if (savedInstanceState != null) {
             curPaper = savedInstanceState.getParcelable("curPaper")
             curArticleList = savedInstanceState.getParcelableArrayList<Article>("curArticleList")
-        }
-        else {
+        } else {
             curPaper = getPaper()
             curArticleList = arrayListOf()
         }
@@ -75,7 +75,7 @@ class HomePaperFragment : Fragment() {
     }
 
     private fun getPaper(): Paper {
-        return Paper("01", "要闻", "szb", "20180423", "testszb.xml",
+        return Paper("01", "要闻", "szb", Date(), "testszb.xml",
                 "paper_01.jpg", false)
     }
 
@@ -122,8 +122,7 @@ class HomePaperFragment : Fragment() {
                         tmpArticle?.pointList!!.add(point)
                     }
                 }
-            }
-            else if (eventType == XmlPullParser.END_TAG)
+            } else if (eventType == XmlPullParser.END_TAG)
                 if (xpp.name == "Article") {
                     curArticleList.add(tmpArticle!!)
                 }

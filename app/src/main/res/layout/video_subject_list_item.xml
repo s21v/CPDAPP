@@ -26,5 +26,4 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/channel_change_textColor"
         android:textStyle="bold" />
-
 </LinearLayout>

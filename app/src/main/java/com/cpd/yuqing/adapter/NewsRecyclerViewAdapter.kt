@@ -206,18 +206,18 @@ class NewsRecyclerViewAdapter(val context: Context, dataList: ArrayList<News>?) 
 
     class HasPicViewHolder(var viewDataBinding: News1picLayoutBinding) : RecyclerView.ViewHolder(viewDataBinding.root)
 
-    class FootViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        private val progressBar = view.findViewById<ProgressBar>(R.id.refreshProgressBar)
-        private val textView = view.findViewById<TextView>(R.id.refreshText)
-
-        fun init(isNeedLoadShow: Boolean) = if (isNeedLoadShow) {
-            progressBar.visibility = View.VISIBLE
-            textView.text = "正在加载..."
-        } else {
-            progressBar.visibility = View.INVISIBLE
-            textView.text = "上拉加载更多新闻"
-        }
-    }
+//    class FootViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+//        private val progressBar = view.findViewById<ProgressBar>(R.id.refreshProgressBar)
+//        private val textView = view.findViewById<TextView>(R.id.refreshText)
+//
+//        fun init(isNeedLoadShow: Boolean) = if (isNeedLoadShow) {
+//            progressBar.visibility = View.VISIBLE
+//            textView.text = "正在加载..."
+//        } else {
+//            progressBar.visibility = View.INVISIBLE
+//            textView.text = "上拉加载更多新闻"
+//        }
+//    }
 
     class HeaderViewHolder(val view: View) : RecyclerView.ViewHolder(view)
 

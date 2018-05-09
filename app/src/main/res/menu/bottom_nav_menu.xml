@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/bottomNavHome"
+    <item
+        android:id="@+id/bottomNavHome"
         android:icon="@drawable/home"
-        android:title="@string/news"/>
-    <item android:id="@+id/bottomNavLocation"
+        android:title="@string/news" />
+    <item
+        android:id="@+id/bottomNavLocation"
         android:icon="@drawable/pin_map"
-        android:title="@string/location"/>
-    <item android:id="@+id/bottomNavPaper"
+        android:title="@string/location" />
+    <item
+        android:id="@+id/bottomNavPaper"
         android:icon="@drawable/news"
-        android:title="@string/paper"/>
-    <item android:id="@+id/bottomNavVideo"
+        android:title="@string/paper" />
+    <item
+        android:id="@+id/bottomNavVideo"
         android:icon="@drawable/movie"
-        android:title="@string/movie"/>
+        android:title="@string/movie" />
 </menu>

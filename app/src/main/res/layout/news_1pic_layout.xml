@@ -3,44 +3,46 @@
     xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="com.cpd.yuqing.db.vo.News" />
+
         <variable
             name="news"
             type="News" />
     </data>
 
-        <RelativeLayout
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/viewBackground"
+        android:paddingBottom="2dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:paddingTop="2dp">
+
+        <ImageView
+            android:id="@+id/image1"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:scaleType="fitXY" />
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/viewBackground">
+            android:layout_alignBottom="@id/image1"
+            android:background="#88000000"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:text="@{news.homePageTitle}"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/news_title_size"
+            android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/image1"
-                android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:scaleType="fitXY" />
-
-            <TextView
-                android:background="#88000000"
-                android:textColor="@android:color/white"
-                android:paddingBottom="4dp"
-                android:paddingTop="4dp"
-                android:layout_alignBottom="@id/image1"
-                android:textStyle="bold"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{news.homePageTitle}"
-                android:textSize="@dimen/news_title_size" />
-
-            <include
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/image1"
-                layout="@layout/news_baseinfo_layout"
-                bind:news="@{news}" />
-        </RelativeLayout>
+        <include
+            layout="@layout/news_baseinfo_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/image1"
+            bind:news="@{news}" />
+    </RelativeLayout>
 </layout>

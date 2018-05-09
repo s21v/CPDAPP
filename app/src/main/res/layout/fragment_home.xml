@@ -31,14 +31,14 @@
         android:clickable="true"
         android:focusable="true"
         android:src="@drawable/up"
+        android:visibility="invisible"
         app:backgroundTint="@color/colorPrimary"
         app:borderWidth="0.0dip"
         app:elevation="6dp"
         app:fabSize="mini"
         app:layout_behavior="com.cpd.yuqing.behavior.FabHideBehavior"
         app:pressedTranslationZ="8dp"
-        app:rippleColor="@color/bezierLine_combat"
-        android:visibility="invisible"/>
+        app:rippleColor="@color/bezierLine_combat" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottomNavigation"

@@ -19,10 +19,14 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.cpd.yuqing.R;
+import com.cpd.yuqing.db.vo.szb.Paper;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static com.cpd.yuqing.util.NetUtils.PAPERURL;
 
 /**
  * Created by Administrator on 2017/4/20.
@@ -129,10 +133,12 @@ public class Utils {
     }
 
     // databinding 数据转换
-    @BindingAdapter({"imageUrl"})
-    public static void loadImage(ImageView imageView, String imgUrl) {
+    @BindingAdapter("loadImg")
+    public static void loadPaperThumb(ImageView imageView, Paper paper) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        String thumbUrl = PAPERURL+paper.getType()+"/"+simpleDateFormat.format(paper.getDate())+"/"+paper.getThumbPath();
         Glide.with(imageView.getContext().getApplicationContext())
-                .load(imgUrl)
+                .load(thumbUrl)
                 .into(imageView);
     }
 }

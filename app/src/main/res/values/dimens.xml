@@ -8,4 +8,8 @@
     <dimen name="fab_margin_bottom">72dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="news_title_size">15sp</dimen>
+    <dimen name="paper_info_marginLeft">4dp</dimen>
+    <dimen name="paper_date_dot_size">12dp</dimen>
+    <dimen name="paper_info_line_width">4dp</dimen>
+    <dimen name="paper_info_line_marginLeft">8dp</dimen>
 </resources>

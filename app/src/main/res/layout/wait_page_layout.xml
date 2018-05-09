@@ -18,8 +18,8 @@
             android:layout_above="@id/cpdlogo"
             android:layout_alignStart="@id/cpdlogo"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/cpd_logo_1"
-            android:contentDescription="@string/app_name"/>
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/cpd_logo_1" />
 
         <ProgressBar
             android:id="@+id/progressBar1"

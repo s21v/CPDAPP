@@ -18,5 +18,6 @@
     <color name="navView_text_color">@color/Grey200</color>
     <color name="channel_change_textColor">@color/Grey400</color>
     <color name="videohomeback">@color/Grey900</color>
+    <color name="paperhomeback">@color/Grey800</color>
     <color name="szbShadeViewColor">#88616161</color>
 </resources>

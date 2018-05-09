@@ -41,7 +41,7 @@ class HomeVideoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (null == videoChannels)
-            refleshChannel(null, null )
+            refleshChannel(null, null)
         else {
             val llm = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             newsList.layoutManager = llm
@@ -51,7 +51,7 @@ class HomeVideoFragment : Fragment() {
         swipeRefresh.setOnRefreshListener {
             refleshChannel({
                 swipeRefresh.isRefreshing = false
-            }, {swipeRefresh.isRefreshing = false})
+            }, { swipeRefresh.isRefreshing = false })
         }
     }
 
@@ -61,7 +61,7 @@ class HomeVideoFragment : Fragment() {
     }
 
     // 刷新数据
-    private fun refleshChannel(onCompletedFun: (()->Unit)?, onErrorFun: (()->Unit)?) {
+    private fun refleshChannel(onCompletedFun: (() -> Unit)?, onErrorFun: (() -> Unit)?) {
         val videoChannelApi = retrofit.create(IVideoChannelApi::class.java)
         //下载栏目
         videoChannelApi.getVideoChannelOrSubject(GET_ALL_CHANNEL)

@@ -19,9 +19,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:tabGravity="fill"
+            app:tabIndicatorColor="@color/tabIndicatorColor"
             app:tabIndicatorHeight="2dp"
             app:tabMode="scrollable"
-            app:tabIndicatorColor="@color/tabIndicatorColor"
             app:tabSelectedTextColor="@color/tabSelectedTextColor"
             app:tabTextAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             app:tabTextColor="@color/colorPrimaryDark" />

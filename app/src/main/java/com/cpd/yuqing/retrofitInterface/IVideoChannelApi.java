@@ -2,8 +2,6 @@ package com.cpd.yuqing.retrofitInterface;
 
 import com.cpd.yuqing.db.vo.video.Channel;
 import java.util.ArrayList;
-
-import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import rx.Observable;

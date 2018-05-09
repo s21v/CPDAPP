@@ -31,12 +31,12 @@
             app:channel="@{channel}" />
 
         <android.support.v7.widget.GridLayout
+            android:id="@+id/GridLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:columnCount="3"
             app:rowCount="2"
-            app:useDefaultMargins="true"
-            android:id="@+id/GridLayout">
+            app:useDefaultMargins="true">
 
             <LinearLayout
                 android:layout_width="0dp"

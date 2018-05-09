@@ -1,40 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
+
     <data>
-        <import type="com.cpd.yuqing.db.vo.News"/>
-        <variable name="news" type="News"/>
+
+        <import type="com.cpd.yuqing.db.vo.News" />
+
+        <variable
+            name="news"
+            type="News" />
     </data>
+
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
         <TextView
-            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="start"
+            android:layout_weight="1"
             android:drawableStart="@mipmap/news_source"
-            android:text="@{news.source}"
+            android:gravity="start"
             android:singleLine="true"
+            android:text="@{news.source}"
             android:textColor="@color/textColorPrimary"
             android:textSize="12sp" />
+
         <TextView
-            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableStart="@mipmap/publish_time"
             android:gravity="start"
-            android:text="@{news.pub_time}"
-            android:textSize="12sp"
             android:singleLine="true"
+            android:text="@{news.pub_time}"
             android:textColor="@color/textColorPrimary"
-            android:drawableStart="@mipmap/publish_time"/>
+            android:textSize="12sp" />
         <!--<TextView android:drawableLeft="@mipmap/chat_bubble"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_weight="1"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:gravity="left"-->
-            <!--android:singleLine="true"-->
-            <!--android:text="@{news.getFormatCommentCount()}"/>-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:gravity="left"-->
+        <!--android:singleLine="true"-->
+        <!--android:text="@{news.getFormatCommentCount()}"/>-->
     </LinearLayout>
 </layout>
 

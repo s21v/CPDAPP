@@ -22,8 +22,8 @@ data class Article(var introTitle: String? = null, var title: String = "", var s
         title = parcel.readString()
         subTitle = parcel.readString()
         parcel.readList(pointList, Point::class.java.classLoader)
-        val bundle = parcel.readBundle()
-        imgList = bundle.putSerializable("imgList", linkedMapOf<String, String>()) as LinkedHashMap<String, String>
+        val bundle = parcel.readBundle(LinkedHashMap::class.java.classLoader)
+        imgList = bundle.getSerializable("imgList") as LinkedHashMap<String, String>
         Log.i("read Parcel","$imgList")
         content = parcel.readString()
         parcel.readTypedList(rectList, Rect.CREATOR)

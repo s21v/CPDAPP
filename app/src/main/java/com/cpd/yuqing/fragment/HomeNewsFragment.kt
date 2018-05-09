@@ -68,7 +68,7 @@ class HomeNewsFragment : Fragment() {
                                 .apply()
                         ChannelDao.getInstance(activity).insertChannelList(channelList!!)
                         ChannelDao.getInstance(activity).closeDB()
-                        activity.runOnUiThread{
+                        activity.runOnUiThread {
                             viewPage.adapter = NewsViewPagerAdapter(childFragmentManager, channelList!!)
                         }
                     } else {

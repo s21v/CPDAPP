@@ -12,48 +12,48 @@
             type="News" />
     </data>
 
-        <LinearLayout
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/viewBackground"
+        android:orientation="vertical"
+        android:paddingBottom="2dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:paddingTop="2dp">
+
+        <TextView
+            android:id="@+id/news_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/viewBackground"
-            android:orientation="vertical">
+            android:text="@{news.homePageTitle}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="@dimen/news_title_size" />
 
-            <TextView
-                android:textColor="@color/textColorPrimary"
-                android:id="@+id/news_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{news.homePageTitle}"
-                android:textSize="@dimen/news_title_size"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/image1"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:scaleType="fitXY" />
 
-                <ImageView
-                    android:id="@+id/image1"
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:layout_weight="1"
-                    android:scaleType="fitXY" />
-
-                <ImageView
-                    android:id="@+id/image2"
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_weight="1"
-                    android:scaleType="fitXY" />
-            </LinearLayout>
-
-            <include
-                layout="@layout/news_baseinfo_layout"
-                bind:news="@{news}" />
+            <ImageView
+                android:id="@+id/image2"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_marginLeft="4dp"
+                android:layout_weight="1"
+                android:scaleType="fitXY" />
         </LinearLayout>
+
+        <include
+            layout="@layout/news_baseinfo_layout"
+            bind:news="@{news}" />
+    </LinearLayout>
 </layout>

@@ -15,6 +15,7 @@ public class NetUtils {
     public static final String UserCommonURL = BASE_URL + "UserDBServlet";
     public static final String ChannelCommonUrl = BASE_URL + "ChannelDBServlet";
     public static final String NewsCommonUrl = BASE_URL + "NewsDBServlet";
+    public static final String PAPERURL = "http://epaper.cpd.com.cn/";  // 数字报的地址
 
     //判读网络是否连接
     public static boolean isNetConnected(Context context) {

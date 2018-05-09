@@ -82,6 +82,7 @@ class NavigationHomeFragment : BaseFragment() {
             CHANNEL_NEWS_TAG -> R.id.bottomNavHome
             CHANNEL_LOCATION_TAG -> R.id.bottomNavLocation
             CHANNEL_VIDEO_TAG -> R.id.bottomNavVideo
+            CHANNEL_PAPER_TAG -> R.id.bottomNavPaper
             else -> 0
         }
         // 设置fab
@@ -113,7 +114,7 @@ class NavigationHomeFragment : BaseFragment() {
                 return HomeVideoFragment()
             }
             CHANNEL_PAPER_TAG -> {
-                return HomePaperFragment()
+                return HomePaperFragment1()
             }
         }
         return null
@@ -162,6 +163,6 @@ class NavigationHomeFragment : BaseFragment() {
         val CHANNEL_NEWS_TAG = HomeNewsFragment::class.java.simpleName!!
         val CHANNEL_LOCATION_TAG = HomeLocationFragment::class.java.simpleName!!
         val CHANNEL_VIDEO_TAG = HomeVideoFragment::class.java.simpleName!!
-        val CHANNEL_PAPER_TAG = HomePaperFragment::class.java.simpleName!!
+        val CHANNEL_PAPER_TAG = HomePaperFragment1::class.java.simpleName!!
     }
 }
