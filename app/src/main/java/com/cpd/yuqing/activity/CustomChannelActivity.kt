@@ -89,8 +89,13 @@ class CustomChannelActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder: ChannelViewHolder, position: Int) {
             holder.view.text = channelListDate[position].name
             if (position == 0 && isSelected) {  //头条的位置不允许改变
-                holder.view.setBackgroundColor(resources.getColor(android.R.color.darker_gray, null))
-                holder.view.setTextColor(resources.getColor(R.color.sign_in_button_click, null))
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    holder.view.setBackgroundColor(resources.getColor(android.R.color.darker_gray, null))
+                    holder.view.setTextColor(resources.getColor(R.color.sign_in_button_click, null))
+                } else {
+                    holder.view.setBackgroundColor(resources.getColor(android.R.color.darker_gray))
+                    holder.view.setTextColor(resources.getColor(R.color.sign_in_button_click))
+                }
             } else {
                 holder.view.setOnLongClickListener {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -172,7 +177,11 @@ class CustomChannelActivity : AppCompatActivity() {
             view.setLines(1)
             view.gravity = Gravity.CENTER
             view.textSize = 16f
-            view.setBackgroundColor(resources.getColor(R.color.sign_in_button_normal, null))
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                view.setBackgroundColor(resources.getColor(R.color.sign_in_button_normal, null))
+            } else {
+                view.setBackgroundColor(resources.getColor(R.color.sign_in_button_normal))
+            }
             view.setTextColor(Color.WHITE)
             val padding = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4f, resources.displayMetrics)
             view.setPadding(padding.toInt(), padding.toInt(), padding.toInt(), padding.toInt())

@@ -1,13 +1,10 @@
 package com.cpd.yuqing.fragment
 
-import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.*
 import com.cpd.yuqing.R
 import com.cpd.yuqing.view.BottomNavigationViewHelper
-import kotlinx.android.synthetic.main.fragment_header.*
 import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
@@ -70,8 +67,6 @@ class NavigationHomeFragment : BaseFragment() {
                         hideAndShowFragment(currentFragmentTag, CHANNEL_PAPER_TAG)
                         return@setOnNavigationItemSelectedListener true
                     } else {
-                        //隐藏多余组件
-                        hideBar()
                         return@setOnNavigationItemSelectedListener false
                     }
                 }
@@ -96,12 +91,6 @@ class NavigationHomeFragment : BaseFragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        Log.i(TAG, "onResume")
-        appbarlayout.setExpanded(true)
-    }
-
     private fun createFragment(fragmentTag: String): Fragment? {
         when (fragmentTag) {
             CHANNEL_NEWS_TAG -> {
@@ -114,7 +103,7 @@ class NavigationHomeFragment : BaseFragment() {
                 return HomeVideoFragment()
             }
             CHANNEL_PAPER_TAG -> {
-                return HomePaperFragment1()
+                return HomePaperFragment()
             }
         }
         return null
@@ -147,22 +136,11 @@ class NavigationHomeFragment : BaseFragment() {
         outState!!.putString("currentFragmentTag", currentFragmentTag)
     }
 
-    fun hideBar() {
-        //隐藏多余组件
-        appbarlayout.setExpanded(false)
-        bottomNavigation.post {
-            val bottomNavGone = ObjectAnimator.ofFloat(bottomNavigation, "translationY", bottomNavigation.translationY, bottomNavigation.height.toFloat())
-            bottomNavGone.duration = 500
-            bottomNavGone.setAutoCancel(false)
-            bottomNavGone.start()
-        }
-    }
-
     companion object {
         val TAG = NavigationHomeFragment::class.java.simpleName!!
         val CHANNEL_NEWS_TAG = HomeNewsFragment::class.java.simpleName!!
         val CHANNEL_LOCATION_TAG = HomeLocationFragment::class.java.simpleName!!
         val CHANNEL_VIDEO_TAG = HomeVideoFragment::class.java.simpleName!!
-        val CHANNEL_PAPER_TAG = HomePaperFragment1::class.java.simpleName!!
+        val CHANNEL_PAPER_TAG = HomePaperFragment::class.java.simpleName!!
     }
 }

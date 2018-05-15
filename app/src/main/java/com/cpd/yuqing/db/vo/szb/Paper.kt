@@ -1,13 +1,8 @@
 package com.cpd.yuqing.db.vo.szb
 
-import android.databinding.BindingAdapter
 import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
-import android.widget.ImageView
-import com.bumptech.glide.Glide
-import com.cpd.yuqing.util.NetUtils.PAPERURL
-import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -15,7 +10,7 @@ import java.util.*
  * Created by s21v on 2018/4/25.
  */
 data class Paper(var number: String? = null, var name: String? = null, var type: String? = null,
-                 var date: Date? = null, var XmlPath: String? = null, var imgPath: String? = null,
+                 var date: Date? = null, var xmlPath: String? = null, var imgPath: String? = null,
                  var isWide: Boolean = false, var width: Int = 0, var height: Int = 0,
                  var thumbPath: String? = null, var fullImgPath: String? = null) : Parcelable {
     constructor(parcel: Parcel) : this() {
@@ -24,7 +19,7 @@ data class Paper(var number: String? = null, var name: String? = null, var type:
         type = parcel.readString()
         val bundle = parcel.readBundle(Date::class.java.classLoader)
         date = bundle.getSerializable("date") as Date
-        XmlPath = parcel.readString()
+        xmlPath = parcel.readString()
         imgPath = parcel.readString()
         isWide = parcel.readByte() != 0.toByte()
         width = parcel.readInt()
@@ -40,7 +35,7 @@ data class Paper(var number: String? = null, var name: String? = null, var type:
         val bundle = Bundle()
         bundle.putSerializable("date", date)
         parcel.writeBundle(bundle)
-        parcel.writeString(XmlPath)
+        parcel.writeString(xmlPath)
         parcel.writeString(imgPath)
         parcel.writeByte(if (isWide) 1 else 0)
         parcel.writeInt(width)

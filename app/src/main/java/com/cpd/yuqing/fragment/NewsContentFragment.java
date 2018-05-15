@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,7 +16,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -25,7 +23,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
-
 import com.cpd.yuqing.CpdnewsApplication;
 import com.cpd.yuqing.R;
 import com.cpd.yuqing.databinding.FragmentNewsContentBinding;
@@ -248,10 +245,11 @@ public class NewsContentFragment extends Fragment implements FontSizeView.Slider
                     ((ImageView)it).setImageResource(R.drawable.thumbup_unselected);
             }
         });
-        mPopupWindow = new PopupWindow(root, ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT, true);
+        mPopupWindow = new PopupWindow(root, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         //设置背景图后setOutsideTouchable()才有效
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+        //设置可获得焦点
+        mPopupWindow.setFocusable(true);
         //点击popupwindow以外的区域是否可以点击
         mPopupWindow.setOutsideTouchable(true);
 //        //加载动画

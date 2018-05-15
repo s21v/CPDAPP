@@ -121,9 +121,14 @@
             android:enabled="true"
             android:process=":remote" />
 
-        <activity android:name=".activity.TestActivity">
-
+        <activity android:name=".activity.PaperActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
+            android:parentActivityName=".activity.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity" />
         </activity>
+
     </application>
 
 </manifest>

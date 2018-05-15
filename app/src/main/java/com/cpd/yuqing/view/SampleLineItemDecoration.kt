@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
+import android.os.Build
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -15,7 +16,11 @@ class SampleLineItemDecoration(context: Context, colorRes: Int, orientation: Int
     : RecyclerView.ItemDecoration() {
     private val mOrientation:Int = orientation
     private val mLineSize = lineSize
-    private val mFillColor:Int = context.resources.getColor(colorRes, null)
+    private val mFillColor:Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        context.resources.getColor(colorRes, null)
+    } else {
+        context.resources.getColor(colorRes)
+    }
 
     override fun onDrawOver(c: Canvas?, parent: RecyclerView?, state: RecyclerView.State?) {
         when(mOrientation) {

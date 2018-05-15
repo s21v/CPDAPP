@@ -33,7 +33,6 @@ class NewsListFragment : Fragment() {
     private val pageSize = 20
     //当前页面
     private var currentPage = 1
-    private var isLoading = false
 
     companion object {
         val TAG = NewsListFragment::class.java.simpleName!!
@@ -92,9 +91,10 @@ class NewsListFragment : Fragment() {
         newsList.setHasFixedSize(false)
         newsList.addItemDecoration(SampleLineItemDecoration(activity,
                 R.color.line_divider, SampleLineItemDecoration.VERTICAL_LIST, 1, true))
+        // 滑动监听 更新footer样式
         newsList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            private var isLoading = false
             override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
                 val llm = recyclerView!!.layoutManager as LinearLayoutManager
                 val lastCompletelyVisibleItemPosition = llm.findLastCompletelyVisibleItemPosition()
                 val lastVisibleItemPosition = llm.findLastVisibleItemPosition()
@@ -114,7 +114,7 @@ class NewsListFragment : Fragment() {
                             GlideApp.with(context).resumeRequests() //滚动停止后加载图片
                             if (lastVisibleItemPosition == footViewPosition) {
                                 if (lastCompletelyVisibleItemPosition == footViewPosition) {    //底部视图完全显示
-                                    if (!isLoading) {
+                                    if (!isLoading) {   // 防止多次重复下载
                                         isLoading = true
                                         adapter.notifyItemChanged(lastVisibleItemPosition, true)
                                         //加载更多新闻
@@ -123,6 +123,7 @@ class NewsListFragment : Fragment() {
                                                 loading(currentPage + 1, object : Callback {
                                                     override fun onFailure(call: Call?, e: IOException?) {
                                                         Toast.makeText(context, "新闻下载出错", Toast.LENGTH_SHORT).show()
+                                                        isLoading = false
                                                     }
 
                                                     override fun onResponse(call: Call?, response: Response?) {
@@ -133,11 +134,11 @@ class NewsListFragment : Fragment() {
                                                             currentPage++
                                                             activity.runOnUiThread {
                                                                 adapter.addMoreNews(dataList)
-                                                                isLoading = false
                                                             }
                                                         } else {
                                                             Toast.makeText(context, "新闻解析出错", Toast.LENGTH_SHORT).show()
                                                         }
+                                                        isLoading = false
                                                     }
                                                 })
                                             }

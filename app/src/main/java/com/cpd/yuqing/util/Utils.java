@@ -135,10 +135,13 @@ public class Utils {
     // databinding 数据转换
     @BindingAdapter("loadImg")
     public static void loadPaperThumb(ImageView imageView, Paper paper) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
-        String thumbUrl = PAPERURL+paper.getType()+"/"+simpleDateFormat.format(paper.getDate())+"/"+paper.getThumbPath();
-        Glide.with(imageView.getContext().getApplicationContext())
-                .load(thumbUrl)
-                .into(imageView);
+        if (paper != null) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+            String thumbUrl = PAPERURL + paper.getType() + "/" + simpleDateFormat.format(paper.getDate())
+                    + "/" + paper.getThumbPath();
+            Glide.with(imageView.getContext().getApplicationContext())
+                    .load(thumbUrl)
+                    .into(imageView);
+        }
     }
 }

@@ -17,17 +17,16 @@ import kotlin.math.abs
  * Created by s21v on 2018/4/25.
  */
 class ShadeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
+    lateinit var listener:OnArticleSelectedListener
     // 数据
     private lateinit var paper: Paper
     private lateinit var articleList: ArrayList<Article>
     private var curTouchArticleIndex = -1
     // 画笔
     private val paint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
-    // 报纸大小到屏幕大小的缩放值
-    private var scaleByX: Float = 1f
-    private var scaleByY: Float = 1f
     private val scaledMaximumFlingVelocity: Int // Y轴上的最大滑动速度
     private val scaledTouchSlop: Int     // Android滑动阈值(系统认为最低的滑动距离)
+    private var isInitFinish: Boolean = false  // 数据是否解析成功
 
     init {
         paint.style = Paint.Style.FILL
@@ -42,15 +41,13 @@ class ShadeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
     fun setData(paper: Paper, articleList: ArrayList<Article>) {
         this.paper = paper
         this.articleList = articleList
-        // 计算缩放值
-        scaleByX = width.toFloat() / this.paper.width
-        scaleByY = height.toFloat() / this.paper.height
         // 将点集合变成矩形集合，为以后判断是否触摸时使用
         for (article: Article in this.articleList) {
             if (article.rectList == null) {
                 article.rectList = SplitRect.Split2Rect(article.pointList.clone() as LinkedList<Point>?)
             }
         }
+        isInitFinish = true
     }
 
     // 遮罩图片及其画布
@@ -73,6 +70,7 @@ class ShadeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         val touchX = event?.x
+        val touchY = event?.y
         acquireVelocityTracker(event!!)
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
@@ -80,17 +78,22 @@ class ShadeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 Log.i(TAG, "ACTION_DOWN")
                 lastTouchX = touchX!!
                 // 找到触摸点所在的文章
-                val touchArticleIndex = getTouchArticleIndex(touchX, event.y)
-                if (touchArticleIndex != curTouchArticleIndex) {
-                    curTouchArticleIndex = touchArticleIndex
-                    if (touchArticleIndex != -1)
-                        drawShade(touchArticleIndex)
+                if (isInitFinish) {
+                    val touchArticleIndex = getTouchArticleIndex(touchX, touchY!!)
+                    if (touchArticleIndex != curTouchArticleIndex) {
+                        curTouchArticleIndex = touchArticleIndex
+                        if (touchArticleIndex != -1) {
+                            drawShade(touchArticleIndex)
+                            listener.onArticleSelected(articleList[touchArticleIndex])
+                        }
+                    }
                 }
                 return true
             }
             MotionEvent.ACTION_MOVE -> {
+                if (!isInitFinish)
+                    return false
                 velocityTracker?.computeCurrentVelocity(1000)
-                Log.i(TAG, "ACTION_MOVE v:${velocityTracker?.yVelocity!!}")
                 val dx = touchX!! - lastTouchX
                 lastTouchX = touchX
                 // 滑动冲突
@@ -99,11 +102,13 @@ class ShadeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
                     parent.requestDisallowInterceptTouchEvent(false)
                     return false
                 }
-                val touchArticleIndex = getTouchArticleIndex(touchX, event.y)
+                val touchArticleIndex = getTouchArticleIndex(touchX, touchY!!)
                 if (touchArticleIndex != curTouchArticleIndex) {
                     curTouchArticleIndex = touchArticleIndex
-                    if (touchArticleIndex != -1)
+                    if (touchArticleIndex != -1) {
                         drawShade(touchArticleIndex)
+                        listener.onArticleSelected(articleList[touchArticleIndex])
+                    }
                 }
             }
             MotionEvent.ACTION_UP -> {
@@ -143,6 +148,9 @@ class ShadeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private fun drawShade(touchArticleIndex: Int) {
         recycleShadeBitmap()
         initShadeBitmap()
+        // 计算缩放值
+        val scaleByX = width.toFloat() / this.paper.width
+        val scaleByY = height.toFloat() / this.paper.height
         // 绘制轨迹到bitmap上
         val path = Path()
         val article = articleList[touchArticleIndex]
@@ -160,6 +168,9 @@ class ShadeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     // 判断触摸点是否在文章块内, 返回文章在队列中的位置，未找到返回-1
     private fun getTouchArticleIndex(touchX: Float, touchY: Float): Int {
+        // 计算缩放值
+        val scaleByX = width.toFloat() / this.paper.width
+        val scaleByY = height.toFloat() / this.paper.height
         // 将触摸点坐标转换为报纸坐标
         val paperTouchX = touchX / scaleByX
         val paperTouchY = touchY / scaleByY
@@ -191,5 +202,13 @@ class ShadeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     companion object {
         private const val TAG = "ShadeView"
+    }
+
+    interface OnArticleSelectedListener {
+        fun onArticleSelected(article: Article)
+    }
+
+    fun setArticleSelectedListener(onArticleSelectedListener: OnArticleSelectedListener) {
+        listener = onArticleSelectedListener
     }
 }
