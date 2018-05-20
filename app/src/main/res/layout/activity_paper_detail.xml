@@ -7,15 +7,9 @@
 
     <include layout="@layout/fragment_header" />
 
-    <FrameLayout
-        android:id="@+id/paperContainer"
+    <com.cpd.yuqing.view.ShadeView
+        android:id="@+id/shadeView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <com.cpd.yuqing.view.ShadeView
-            android:id="@+id/shadeView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:color="@color/szbShadeViewColor" />
-    </FrameLayout>
+        android:layout_height="match_parent"
+        app:color="@color/szbShadeViewColor" />
 </LinearLayout>

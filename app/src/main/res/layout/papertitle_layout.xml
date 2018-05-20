@@ -6,5 +6,5 @@
     android:background="@color/szbShadeViewColor"
     android:gravity="center"
     android:padding="@dimen/paper_info_line_marginLeft"
-    android:textColor="@color/textColorPrimary"
+    android:textColor="@color/tabSelectedTextColor"
     android:textSize="20sp" />

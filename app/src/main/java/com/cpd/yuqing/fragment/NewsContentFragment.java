@@ -23,6 +23,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+
+import com.cpd.yuqing.BR;
 import com.cpd.yuqing.CpdnewsApplication;
 import com.cpd.yuqing.R;
 import com.cpd.yuqing.databinding.FragmentNewsContentBinding;
@@ -80,7 +82,7 @@ public class NewsContentFragment extends Fragment implements FontSizeView.Slider
         */
         FragmentNewsContentBinding dataBinding = DataBindingUtil.inflate(inflater,
                 R.layout.fragment_news_content, container, false);
-        dataBinding.setNews(news);
+        dataBinding.setVariable(BR.news, news);
         View rootView = dataBinding.getRoot();
         contentWebView = rootView.findViewById(R.id.contentWebView);
         //不显示滚动条

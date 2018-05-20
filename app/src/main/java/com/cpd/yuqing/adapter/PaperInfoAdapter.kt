@@ -28,7 +28,7 @@ class PaperInfoAdapter(private val context: Context, papers: ArrayList<Paper>,
     private val paperInfoList: ArrayList<List<Paper>> = arrayListOf()
 
     init {
-        if (papers.size != 0) {
+        if (papers.size > 0) {
             val map = papers.groupBy { simpleDateFormat.format(it.date) }
             paperDates.addAll(map.keys)
             paperInfoList.addAll(map.values)
@@ -163,7 +163,7 @@ class PaperInfoAdapter(private val context: Context, papers: ArrayList<Paper>,
     }
 
     //获得foot元素的position
-    fun getFootPosition(): Int = itemCount - 1
+    fun getFootPosition(): Int = if (itemCount == 0) 0 else itemCount - 1
 
     inner class PaperItemLineVH(var dataBinding: ViewDataBinding) : RecyclerView.ViewHolder(dataBinding.root)
 

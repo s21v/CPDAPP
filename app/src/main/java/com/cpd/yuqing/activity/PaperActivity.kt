@@ -3,7 +3,9 @@ package com.cpd.yuqing.activity
 import android.graphics.Point
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.util.Xml
 import android.view.*
 import android.widget.PopupWindow
@@ -14,11 +16,12 @@ import com.bumptech.glide.request.transition.Transition
 import com.cpd.yuqing.R
 import com.cpd.yuqing.db.vo.szb.Article
 import com.cpd.yuqing.db.vo.szb.Paper
+import com.cpd.yuqing.fragment.PaperArticleListFragment
 import com.cpd.yuqing.util.NetUtils.PAPERURL
 import com.cpd.yuqing.util.OkHttpUtils
 import com.cpd.yuqing.view.ShadeView
 import kotlinx.android.synthetic.main.fragment_header.*
-import kotlinx.android.synthetic.main.activity_paper_detail.*
+import kotlinx.android.synthetic.main.activity_paper_detail_1.*
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.Request
@@ -34,6 +37,17 @@ import java.util.ArrayList
  * Created by s21v on 2018/5/14.
  */
 class PaperActivity : AppCompatActivity(), ShadeView.OnArticleSelectedListener {
+    override fun onArticleClick(article: Article) {
+        // 转换到文章内容页面
+        Log.i("PaperActivity", "onArticleClick article:$article")
+    }
+
+    override fun onSelectedFinish() {
+        // 隐藏弹出框
+        if (mPopupWindow != null && mPopupWindow!!.isShowing)
+            mPopupWindow!!.dismiss()
+    }
+
     private var mPopupWindow: PopupWindow? = null
 
     override fun onArticleSelected(article: Article) {
@@ -48,7 +62,7 @@ class PaperActivity : AppCompatActivity(), ShadeView.OnArticleSelectedListener {
         val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
         if (resourceId > 0)
             statusBarHeight = resources.getDimensionPixelSize(resourceId)
-        mPopupWindow!!.showAtLocation(paperContainer, Gravity.TOP, 0, statusBarHeight + supportActionBar!!.height)
+        mPopupWindow!!.showAtLocation(shadeView, Gravity.TOP, 0, statusBarHeight + supportActionBar!!.height)
     }
 
     private lateinit var curPaper: Paper
@@ -56,7 +70,7 @@ class PaperActivity : AppCompatActivity(), ShadeView.OnArticleSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_paper_detail)
+        setContentView(R.layout.activity_paper_detail_1)
         if (savedInstanceState != null) {
             curPaper = savedInstanceState.getParcelable("curPaper")
             curArticleList = savedInstanceState.getParcelableArrayList<Article>("curArticleList")
@@ -64,12 +78,13 @@ class PaperActivity : AppCompatActivity(), ShadeView.OnArticleSelectedListener {
             curPaper = intent.getParcelableExtra("paper")
         }
         initToolBar()
-        Glide.with(this).load(getImageUrl()).into(object : SimpleTarget<Drawable>() {
+        Glide.with(applicationContext).load(getImageUrl()).into(object : SimpleTarget<Drawable>() {
             override fun onResourceReady(resource: Drawable?, transition: Transition<in Drawable>?) {
                 shadeView.background = resource
             }
         })
         shadeView.setArticleSelectedListener(this)
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.END)
     }
 
     override fun onStart() {
@@ -78,7 +93,7 @@ class PaperActivity : AppCompatActivity(), ShadeView.OnArticleSelectedListener {
             curArticleList = arrayListOf()
             downLoadPaperXml()
         } else {
-            shadeView.setData(curPaper, curArticleList!!)
+            initData()
         }
     }
 
@@ -124,7 +139,7 @@ class PaperActivity : AppCompatActivity(), ShadeView.OnArticleSelectedListener {
             override fun onResponse(call: Call?, response: Response?) {
                 val xmlInputStream = response?.body()!!.byteStream()
                 parserPaperXml(xmlInputStream)
-                shadeView.setData(curPaper, curArticleList!!)
+                initData()
                 xmlInputStream.close()
             }
         })
@@ -179,5 +194,31 @@ class PaperActivity : AppCompatActivity(), ShadeView.OnArticleSelectedListener {
                 }
             eventType = xpp.next()
         }
+    }
+
+    private fun initData() {
+        shadeView.setData(curPaper, curArticleList!!)
+        val drawerFragment = PaperArticleListFragment.getInstance(curPaper, curArticleList!!)
+        supportFragmentManager.beginTransaction().replace(R.id.drawerFragmentContainer, drawerFragment).commit()
+        drawerLayout.addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
+            override fun onDrawerClosed(drawerView: View?) {
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.END)
+            }
+        })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        super.onCreateOptionsMenu(menu)
+        MenuInflater(this).inflate(R.menu.paper_detail_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if (item?.itemId == R.id.articleList) {
+            // 打开侧边栏
+            drawerLayout.openDrawer(Gravity.END)
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, Gravity.END)
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

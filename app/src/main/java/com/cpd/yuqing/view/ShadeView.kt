@@ -17,7 +17,7 @@ import kotlin.math.abs
  * Created by s21v on 2018/4/25.
  */
 class ShadeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
-    lateinit var listener:OnArticleSelectedListener
+    lateinit var listener: OnArticleSelectedListener
     // 数据
     private lateinit var paper: Paper
     private lateinit var articleList: ArrayList<Article>
@@ -67,6 +67,7 @@ class ShadeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     private var velocityTracker: VelocityTracker? = null
     private var lastTouchX: Float = 0.0f
+    private var isMove: Boolean = false // 用户手指是否滑动
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         val touchX = event?.x
@@ -76,6 +77,7 @@ class ShadeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
             MotionEvent.ACTION_DOWN -> {
                 parent.requestDisallowInterceptTouchEvent(true)
                 Log.i(TAG, "ACTION_DOWN")
+                isMove = false
                 lastTouchX = touchX!!
                 // 找到触摸点所在的文章
                 if (isInitFinish) {
@@ -93,6 +95,7 @@ class ShadeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
             MotionEvent.ACTION_MOVE -> {
                 if (!isInitFinish)
                     return false
+                isMove = true
                 velocityTracker?.computeCurrentVelocity(1000)
                 val dx = touchX!! - lastTouchX
                 lastTouchX = touchX
@@ -118,6 +121,12 @@ class ShadeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 recycleShadeBitmap()
                 postInvalidate()
                 initShadeBitmap()
+                listener.onSelectedFinish()
+                if (isInitFinish) {
+                    if (!isMove) {
+                        listener.onArticleClick(articleList[curTouchArticleIndex])
+                    }
+                }
                 curTouchArticleIndex = -1
             }
             MotionEvent.ACTION_CANCEL -> {
@@ -128,6 +137,7 @@ class ShadeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 postInvalidate()
                 initShadeBitmap()
                 curTouchArticleIndex = -1
+                listener.onSelectedFinish()
             }
         }
         return true
@@ -204,8 +214,11 @@ class ShadeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         private const val TAG = "ShadeView"
     }
 
+    // 定义监听器
     interface OnArticleSelectedListener {
-        fun onArticleSelected(article: Article)
+        fun onArticleSelected(article: Article) // 用户手指选择到了一篇新闻
+        fun onSelectedFinish()  // 用户手指移走
+        fun onArticleClick(article: Article)    // 用户点击了一篇新闻
     }
 
     fun setArticleSelectedListener(onArticleSelectedListener: OnArticleSelectedListener) {

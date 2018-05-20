@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,18 +22,16 @@ class HomePaperFragment : Fragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        tabLayout.setupWithViewPager(viewPage, true)
+        tabLayout.setupWithViewPager(viewPage, false)
         viewPage.adapter = PaperViewPagerAdapter(childFragmentManager)
     }
 
     inner class PaperViewPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
         private val paper = arrayOf("人民公安报", "交通周刊", "消防周刊")
-//        private val type = arrayOf("szb", "jtzk", "xfzk")
-        private val fragments = arrayListOf(PaperListFragment.getInstance("szb"),
-                PaperListFragment.getInstance("jtzk"), PaperListFragment.getInstance("xfzk"))
+        private val type = arrayOf("szb", "jtzk", "xfzk")
 
         override fun getItem(position: Int): Fragment {
-            return fragments[position]
+            return PaperListFragment.getInstance(type[position])
         }
 
         override fun getCount(): Int {

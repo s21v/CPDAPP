@@ -39,7 +39,6 @@ class PaperListFragment : Fragment() {
     private lateinit var papers: ArrayList<Paper>
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.i(TAG,"onCreate")
         super.onCreate(savedInstanceState)
         retrofit = RetrofitUtils.getInstance(context)!!.retrofitInstance
         if (savedInstanceState != null) {
@@ -59,20 +58,17 @@ class PaperListFragment : Fragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.i(TAG,"onViewCreated, papers size：${papers.size}")
         paperInfoRecycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         paperInfoRecycler.setHasFixedSize(false)
+        paperInfoRecycler.adapter = PaperInfoAdapter(context, papers, object : PaperInfoAdapter.PaperClickListener {
+            override fun onPaperClick(view: View, paper: Paper) {
+                gotoPaperDetailActivity(paper)
+            }
+        })
         if (papers.size > 0) {
             // 隐藏loading页面
-            waitingPage.visibility = View.GONE
-            paperInfoRecycler.adapter = PaperInfoAdapter(context, papers, object : PaperInfoAdapter.PaperClickListener {
-                override fun onPaperClick(view: View, paper: Paper) {
-                    gotoPaperDetailActivity(paper)
-                }
-            })
+            emptyPage.visibility = View.GONE
         } else {
-            // 显示loading页面
-            waitingPage.visibility = View.VISIBLE
             firstDownload()
         }
         reloadPage.setOnClickListener {
@@ -98,12 +94,8 @@ class PaperListFragment : Fragment() {
                             // 隐藏loading页面
                             emptyPage.visibility = View.GONE
                             papers.addAll(tmpData!!)
-                            Log.i(TAG, "$papers")
-                            paperInfoRecycler.adapter = PaperInfoAdapter(context, papers, object : PaperInfoAdapter.PaperClickListener {
-                                override fun onPaperClick(view: View, paper: Paper) {
-                                    gotoPaperDetailActivity(paper)
-                                }
-                            })
+                            val adapter = paperInfoRecycler.adapter as PaperInfoAdapter
+                            adapter.addMoreData(papers)
                         } else {
                             // 显示重新加载按钮
                             reloadPage.visibility = View.VISIBLE
@@ -162,7 +154,6 @@ class PaperListFragment : Fragment() {
                                                 override fun onCompleted() {
                                                     // 添加数据
                                                     if (tmpData != null) {
-                                                        Log.i(TAG, "list size:${tmpData!!.size}")
                                                         papers.addAll(tmpData!!)
                                                         adapter.addMoreData(tmpData!!)
                                                     }
@@ -197,6 +188,7 @@ class PaperListFragment : Fragment() {
         outState?.putParcelableArrayList("papers", papers)
     }
 
+    // 页面跳转
     private fun gotoPaperDetailActivity(paper: Paper) {
         val intent = Intent(context, PaperActivity::class.java)
         intent.putExtra("paper", paper)
@@ -208,7 +200,6 @@ class PaperListFragment : Fragment() {
         calendar.time = papers.last().date
         calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) - 1)
         curDate = calendar.time
-        Log.i(TAG, "nextDate:${simpleDateFormat.format(curDate)}")
     }
 
     companion object {

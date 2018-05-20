@@ -12,7 +12,8 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/paperInfoRecycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:nestedScrollingEnabled="true" />
 
     <include
         android:id="@+id/emptyPage"
