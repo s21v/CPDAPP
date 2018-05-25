@@ -9,9 +9,9 @@
     </string-array>
 
     <integer-array name="FontSizeValue">
-        <item>12</item>
         <item>14</item>
         <item>16</item>
+        <item>18</item>
         <item>20</item>
         <item>24</item>
     </integer-array>

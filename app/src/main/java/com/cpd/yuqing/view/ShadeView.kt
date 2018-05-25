@@ -17,7 +17,8 @@ import kotlin.math.abs
  * Created by s21v on 2018/4/25.
  */
 class ShadeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
-    lateinit var listener: OnArticleSelectedListener
+    lateinit var articleSelectedListener: OnArticleSelectedListener
+    lateinit var articleClickedListener: OnArticleClickedListener
     // 数据
     private lateinit var paper: Paper
     private lateinit var articleList: ArrayList<Article>
@@ -43,7 +44,7 @@ class ShadeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         this.articleList = articleList
         // 将点集合变成矩形集合，为以后判断是否触摸时使用
         for (article: Article in this.articleList) {
-            if (article.rectList == null) {
+            if (article.rectList.isEmpty()) {
                 article.rectList = SplitRect.Split2Rect(article.pointList.clone() as LinkedList<Point>?)
             }
         }
@@ -86,7 +87,7 @@ class ShadeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
                         curTouchArticleIndex = touchArticleIndex
                         if (touchArticleIndex != -1) {
                             drawShade(touchArticleIndex)
-                            listener.onArticleSelected(articleList[touchArticleIndex])
+                            articleSelectedListener.onArticleSelected(articleList[touchArticleIndex])
                         }
                     }
                 }
@@ -110,7 +111,7 @@ class ShadeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
                     curTouchArticleIndex = touchArticleIndex
                     if (touchArticleIndex != -1) {
                         drawShade(touchArticleIndex)
-                        listener.onArticleSelected(articleList[touchArticleIndex])
+                        articleSelectedListener.onArticleSelected(articleList[touchArticleIndex])
                     }
                 }
             }
@@ -121,10 +122,10 @@ class ShadeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 recycleShadeBitmap()
                 postInvalidate()
                 initShadeBitmap()
-                listener.onSelectedFinish()
+                articleSelectedListener.onSelectedFinish()
                 if (isInitFinish) {
-                    if (!isMove) {
-                        listener.onArticleClick(articleList[curTouchArticleIndex])
+                    if (!isMove && curTouchArticleIndex != -1) {
+                        articleClickedListener.onArticleClick(articleList[curTouchArticleIndex])
                     }
                 }
                 curTouchArticleIndex = -1
@@ -137,7 +138,7 @@ class ShadeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 postInvalidate()
                 initShadeBitmap()
                 curTouchArticleIndex = -1
-                listener.onSelectedFinish()
+                articleSelectedListener.onSelectedFinish()
             }
         }
         return true
@@ -218,10 +219,10 @@ class ShadeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
     interface OnArticleSelectedListener {
         fun onArticleSelected(article: Article) // 用户手指选择到了一篇新闻
         fun onSelectedFinish()  // 用户手指移走
-        fun onArticleClick(article: Article)    // 用户点击了一篇新闻
+
     }
 
-    fun setArticleSelectedListener(onArticleSelectedListener: OnArticleSelectedListener) {
-        listener = onArticleSelectedListener
+    interface OnArticleClickedListener {
+        fun onArticleClick(article: Article)    // 用户点击了一篇新闻
     }
 }

@@ -46,7 +46,7 @@ class PaperArticleListFragment : Fragment() {
         }
         articleListRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         articleListRv.setHasFixedSize(true)
-        articleListRv.adapter = ArticleListRecyclerAdapter(articleList, context)
+        articleListRv.adapter = ArticleListRecyclerAdapter(articleList, activity)
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {

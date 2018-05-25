@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.cpd.yuqing.R
 import com.cpd.yuqing.db.vo.szb.Article
+import com.cpd.yuqing.view.ShadeView
 
 /**
  * 文章列表适配器
@@ -30,6 +31,7 @@ class ArticleListRecyclerAdapter(private val articleList: ArrayList<Article>, va
 
     override fun onBindViewHolder(holder: ArticleViewHolder?, position: Int) {
         holder?.tv!!.text = "${position + 1}：${articleList[position].title}"
+        holder?.tv!!.setOnClickListener { (context as ShadeView.OnArticleClickedListener).onArticleClick(articleList[position]) }
     }
 
     inner class ArticleViewHolder(val tv: TextView) : RecyclerView.ViewHolder(tv)

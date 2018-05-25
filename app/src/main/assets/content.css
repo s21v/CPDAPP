@@ -6,12 +6,11 @@ body {
 table {
     max-width:100% !important;
     text-align: justify;
-	font-size: 16px;
-	margin-top: 8px;
+	font-size: 18px;
+	margin-top: 9px;
 }
 
 img {
     max-width:100% !important;
     height: auto !important;
-
 }

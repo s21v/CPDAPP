@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,7 +26,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 /**
- * 数字报版面列表页
+ * 数字报版面的列表页
  * Created by s21v on 2018/5/7.
  */
 class PaperListFragment : Fragment() {

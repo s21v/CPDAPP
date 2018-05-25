@@ -15,16 +15,15 @@ import kotlin.collections.LinkedHashMap
  * Created by s21v on 2018/4/24.
  */
 data class Article(var introTitle: String? = null, var title: String = "", var subTitle: String? = null,
-                   var pointList: LinkedList<Point> = LinkedList(), var imgList: LinkedHashMap<String, String> = linkedMapOf(),
-                   var content: String = "", var rectList: ArrayList<Rect>? = null) : Parcelable {
+                   var pointList: LinkedList<Point> = LinkedList(), var imgList: HashMap<String, String> = linkedMapOf(),
+                   var content: String = "", var rectList: ArrayList<Rect> = arrayListOf()) : Parcelable {
     constructor(parcel: Parcel) : this() {
         introTitle = parcel.readString()
         title = parcel.readString()
         subTitle = parcel.readString()
         parcel.readList(pointList, Point::class.java.classLoader)
-        val bundle = parcel.readBundle(LinkedHashMap::class.java.classLoader)
-        imgList = bundle.getSerializable("imgList") as LinkedHashMap<String, String>
-        Log.i("read Parcel","$imgList")
+        imgList = parcel.readHashMap(String::class.java.classLoader) as HashMap<String, String>
+        Log.i("read Parcel", "$imgList")
         content = parcel.readString()
         parcel.readTypedList(rectList, Rect.CREATOR)
     }
@@ -34,9 +33,7 @@ data class Article(var introTitle: String? = null, var title: String = "", var s
         parcel.writeString(title)
         parcel.writeString(subTitle)
         parcel.writeList(pointList)
-        val bundle = Bundle()
-        bundle.putSerializable("imgList", imgList)
-        parcel.writeBundle(bundle)
+        parcel.writeMap(imgList)
         parcel.writeString(content)
         parcel.writeTypedList(rectList)
     }

@@ -1,27 +1,26 @@
 package com.cpd.yuqing.activity
 
 import android.graphics.Point
-import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.support.v4.app.FragmentTransaction
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.util.Xml
 import android.view.*
 import android.widget.PopupWindow
 import android.widget.TextView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.transition.Transition
+import android.widget.Toast
 import com.cpd.yuqing.R
 import com.cpd.yuqing.db.vo.szb.Article
 import com.cpd.yuqing.db.vo.szb.Paper
 import com.cpd.yuqing.fragment.PaperArticleListFragment
+import com.cpd.yuqing.fragment.PaperContentFragment
+import com.cpd.yuqing.fragment.PaperDetailFragment
 import com.cpd.yuqing.util.NetUtils.PAPERURL
 import com.cpd.yuqing.util.OkHttpUtils
 import com.cpd.yuqing.view.ShadeView
 import kotlinx.android.synthetic.main.fragment_header.*
-import kotlinx.android.synthetic.main.activity_paper_detail_1.*
+import kotlinx.android.synthetic.main.activity_paper_detail.*
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.Request
@@ -36,10 +35,18 @@ import java.util.ArrayList
  * 显示报纸版面
  * Created by s21v on 2018/5/14.
  */
-class PaperActivity : AppCompatActivity(), ShadeView.OnArticleSelectedListener {
+class PaperActivity : AppCompatActivity(), ShadeView.OnArticleSelectedListener, ShadeView.OnArticleClickedListener {
     override fun onArticleClick(article: Article) {
-        // 转换到文章内容页面
-        Log.i("PaperActivity", "onArticleClick article:$article")
+        if (currentFragmentTag == TAG_MAIN)
+        // 转到文章内容页面
+            hideAndShowFragment(TAG_MAIN, TAG_CONTENT, article)
+        else {
+            if (drawerLayout.isDrawerOpen(Gravity.END))
+                drawerLayout.closeDrawer(Gravity.END)
+            // 切换新闻
+            val fragment = supportFragmentManager.findFragmentByTag(TAG_CONTENT) as PaperContentFragment
+            fragment.changeArticle(article)
+        }
     }
 
     override fun onSelectedFinish() {
@@ -58,19 +65,51 @@ class PaperActivity : AppCompatActivity(), ShadeView.OnArticleSelectedListener {
         titleTv.text = article.title
         mPopupWindow = PopupWindow(titleTv, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         // 获得状态栏高度
-        var statusBarHeight: Int = 0
+        var statusBarHeight = 0
         val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
         if (resourceId > 0)
             statusBarHeight = resources.getDimensionPixelSize(resourceId)
-        mPopupWindow!!.showAtLocation(shadeView, Gravity.TOP, 0, statusBarHeight + supportActionBar!!.height)
+        mPopupWindow!!.showAtLocation(mainFragmentContainer, Gravity.TOP, 0, statusBarHeight + supportActionBar!!.height)
     }
 
     private lateinit var curPaper: Paper
     private var curArticleList: ArrayList<Article>? = null
+    private var currentFragmentTag = TAG_MAIN
+
+    private fun hideAndShowFragment(hideFragmentTag: String, showFragmentTag: String, article: Article?) {
+        val fragmentManager = supportFragmentManager
+        val hideFragment = fragmentManager.findFragmentByTag(hideFragmentTag)
+        var showFragment = fragmentManager.findFragmentByTag(showFragmentTag)
+        if (showFragment == null) {
+            showFragment = when (showFragmentTag) {
+                TAG_MAIN -> PaperDetailFragment.getInstance(curPaper, curArticleList!!)
+                TAG_CONTENT -> PaperContentFragment.getInstance(article!!)
+                else -> null
+            }
+            if (showFragment != null) {
+                fragmentManager.beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .hide(hideFragment)
+                        .add(R.id.mainFragmentContainer, showFragment, showFragmentTag)
+                        .commit()
+                currentFragmentTag = showFragmentTag
+            }
+        } else {
+            if (showFragment is PaperContentFragment) {
+                showFragment.changeArticle(article!!)
+            }
+            fragmentManager.beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                    .hide(hideFragment)
+                    .show(showFragment)
+                    .commit()
+            currentFragmentTag = showFragmentTag
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_paper_detail_1)
+        setContentView(R.layout.activity_paper_detail)
         if (savedInstanceState != null) {
             curPaper = savedInstanceState.getParcelable("curPaper")
             curArticleList = savedInstanceState.getParcelableArrayList<Article>("curArticleList")
@@ -78,12 +117,6 @@ class PaperActivity : AppCompatActivity(), ShadeView.OnArticleSelectedListener {
             curPaper = intent.getParcelableExtra("paper")
         }
         initToolBar()
-        Glide.with(applicationContext).load(getImageUrl()).into(object : SimpleTarget<Drawable>() {
-            override fun onResourceReady(resource: Drawable?, transition: Transition<in Drawable>?) {
-                shadeView.background = resource
-            }
-        })
-        shadeView.setArticleSelectedListener(this)
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.END)
     }
 
@@ -104,10 +137,10 @@ class PaperActivity : AppCompatActivity(), ShadeView.OnArticleSelectedListener {
             outState?.putParcelableArrayList("curArticleList", curArticleList)
     }
 
-    private fun getImageUrl(): String {
+    private fun getImageUrl(imgPath: String): String {
         val simpleDateFormat = SimpleDateFormat("yyyyMMdd")
         return (PAPERURL + curPaper.type + "/" + simpleDateFormat.format(curPaper.date)
-                + "/" + curPaper.imgPath)
+                + "/" + imgPath)
     }
 
     private fun initToolBar() {
@@ -133,21 +166,19 @@ class PaperActivity : AppCompatActivity(), ShadeView.OnArticleSelectedListener {
         val request = Request.Builder().url(xmlUrl).build()
         OkHttpUtils.getOkHttpUtilInstance(applicationContext)!!.httpConnection(request, object : Callback {
             override fun onFailure(call: Call?, e: IOException?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Toast.makeText(this@PaperActivity, "数据下载出错，请检查网络", Toast.LENGTH_SHORT).show()
             }
 
             override fun onResponse(call: Call?, response: Response?) {
                 val xmlInputStream = response?.body()!!.byteStream()
                 parserPaperXml(xmlInputStream)
-                initData()
-                xmlInputStream.close()
             }
         })
     }
 
-    private fun parserPaperXml(xml: InputStream) {
+    private fun parserPaperXml(inputStream: InputStream) {
         val xpp = Xml.newPullParser()
-        xpp.setInput(xml, "utf-8")
+        xpp.setInput(inputStream, "utf-8")
         var eventType = xpp.eventType
         var tmpArticle: Article? = null
         while (eventType != XmlPullParser.END_DOCUMENT) {
@@ -178,7 +209,7 @@ class PaperActivity : AppCompatActivity(), ShadeView.OnArticleSelectedListener {
                         tmpArticle?.content = content
                     }
                     "Image" -> {
-                        val imgPath = xpp.getAttributeValue(null, "Name")
+                        val imgPath = getImageUrl(xpp.getAttributeValue(null, "Name"))
                         val imgContent = xpp.nextText()
                         tmpArticle?.imgList!![imgPath] = imgContent
                     }
@@ -194,15 +225,36 @@ class PaperActivity : AppCompatActivity(), ShadeView.OnArticleSelectedListener {
                 }
             eventType = xpp.next()
         }
+        initData()
+        inputStream.close()
     }
 
     private fun initData() {
-        shadeView.setData(curPaper, curArticleList!!)
+        // 加载报纸版面fragment
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.mainFragmentContainer, PaperDetailFragment.getInstance(curPaper, curArticleList!!), TAG_MAIN)
+                .commit()
+        currentFragmentTag = TAG_MAIN
+        // 加载抽屉fragment
         val drawerFragment = PaperArticleListFragment.getInstance(curPaper, curArticleList!!)
-        supportFragmentManager.beginTransaction().replace(R.id.drawerFragmentContainer, drawerFragment).commit()
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.drawerFragmentContainer, drawerFragment, TAG_DRAWER).commit()
         drawerLayout.addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
             override fun onDrawerClosed(drawerView: View?) {
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.END)
+                // 抽屉导航关闭时开启底层滑动
+                if (currentFragmentTag == TAG_MAIN) {
+                    val mainFragment = supportFragmentManager.findFragmentByTag(TAG_MAIN) as PaperDetailFragment
+                    mainFragment.openTouch()
+                }
+            }
+
+            override fun onDrawerOpened(drawerView: View?) {
+                // 抽屉导航打开时应禁止底层的滑动
+                if (currentFragmentTag == TAG_MAIN) {
+                    val mainFragment = supportFragmentManager.findFragmentByTag(TAG_MAIN) as PaperDetailFragment
+                    mainFragment.closeTouch()
+                }
             }
         })
     }
@@ -218,7 +270,29 @@ class PaperActivity : AppCompatActivity(), ShadeView.OnArticleSelectedListener {
             // 打开侧边栏
             drawerLayout.openDrawer(Gravity.END)
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, Gravity.END)
+            return true
+        } else if (item?.itemId == android.R.id.home) {
+            onBackPressed()
+            return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        if (drawerLayout.isDrawerOpen(Gravity.END)) {
+            drawerLayout.closeDrawer(Gravity.END)
+            return
+        }
+        if (currentFragmentTag == TAG_CONTENT) {
+            hideAndShowFragment(TAG_CONTENT, TAG_MAIN, null)
+            return
+        }
+        super.onBackPressed()
+    }
+
+    companion object {
+        private const val TAG_DRAWER = "drawerFragment"
+        private const val TAG_MAIN = "mainDetailFragment"
+        private const val TAG_CONTENT = "mainContentFragment"
     }
 }

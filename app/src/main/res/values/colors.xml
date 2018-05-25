@@ -9,8 +9,8 @@
     <color name="tabSelectedTextColor">@android:color/white</color>
     <color name="actionBarTitleColor">@color/colorPrimaryDark</color>
     <color name="textColorPrimary">@color/Grey700</color>
-    <color name="viewBackground">@android:color/white</color>
-    <color name="line_divider">@color/Grey300</color>
+    <color name="viewBackground">@color/Grey50</color>
+    <color name="line_divider">@color/Grey400</color>
     <color name="bezierLine_combat">#99b9f4</color>
     <color name="bezierLine_second">#88bbdefb</color>
     <color name="dot_checked">@color/colorPrimaryDark</color>

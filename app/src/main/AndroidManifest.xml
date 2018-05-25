@@ -129,6 +129,14 @@
                 android:value=".activity.MainActivity" />
         </activity>
 
+        <activity android:name=".activity.PaperContentActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
+            android:parentActivityName=".activity.PaperActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.PaperActivity" />
+        </activity>
+
     </application>
 
 </manifest>
