@@ -93,7 +93,6 @@ class PaperContentFragment : Fragment() {
     }
 
     private fun initView() {
-        Log.i(TAG, "initView()")
         // 设置引题
         if (article.introTitle.isNullOrEmpty())
             introTitleTv.visibility = View.GONE
@@ -216,9 +215,7 @@ class PaperContentFragment : Fragment() {
             }
         }
         // 设置webView内容
-        contentWebView.post {
-            contentWebView.loadDataWithBaseURL(NetUtils.PAPERURL, CSS + article.content, "text/html", "utf-8", null)
-        }
+        contentWebView.loadDataWithBaseURL(NetUtils.PAPERURL, CSS + article.content, "text/html", "utf-8", null)
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -230,11 +227,10 @@ class PaperContentFragment : Fragment() {
     }
 
     fun changeArticle(article: Article) {
-        Log.i(TAG, "changeArticle()")
         if (this.article != article) {
-            this.article = article
             // 清空webview中的内容、否则WebView的loadDataWithBaseURL重复加载的时候会有问题
             contentWebView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null)
+            this.article = article
             initView()
         }
     }
