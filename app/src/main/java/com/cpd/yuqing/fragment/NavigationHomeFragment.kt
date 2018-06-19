@@ -87,6 +87,8 @@ class NavigationHomeFragment : BaseFragment() {
                 currentFragment.scrollToFirstPosition()
             else if (currentFragment is HomeVideoFragment)
                 currentFragment.scrollToFirstPosition()
+            else if (currentFragment is HomePaperFragment)
+                currentFragment.scrollToFirstPosition()
             fab.visibility = View.INVISIBLE
         }
     }

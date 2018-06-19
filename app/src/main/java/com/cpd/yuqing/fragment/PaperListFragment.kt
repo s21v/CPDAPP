@@ -201,6 +201,10 @@ class PaperListFragment : Fragment() {
         curDate = calendar.time
     }
 
+    fun scrollToFirstPosition() {
+        paperInfoRecycler.scrollToPosition(0)
+    }
+
     companion object {
         private val TAG = PaperListFragment::class.java.simpleName!!
         private const val DURATION = 7

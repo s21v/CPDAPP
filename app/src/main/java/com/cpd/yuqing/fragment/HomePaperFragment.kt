@@ -27,6 +27,7 @@ class HomePaperFragment : Fragment() {
     }
 
     inner class PaperViewPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+        lateinit var currentFragment: PaperListFragment
         private val paper = arrayOf("人民公安报", "交通周刊", "消防周刊")
         private val type = arrayOf("szb", "jtzk", "xfzk")
 
@@ -41,5 +42,14 @@ class HomePaperFragment : Fragment() {
         override fun getPageTitle(position: Int): CharSequence {
             return paper[position]
         }
+
+        override fun setPrimaryItem(container: ViewGroup?, position: Int, `object`: Any?) {
+            currentFragment = `object` as PaperListFragment
+            super.setPrimaryItem(container, position, `object`)
+        }
+    }
+
+    fun scrollToFirstPosition() {
+        (viewPage.adapter as PaperViewPagerAdapter).currentFragment.scrollToFirstPosition()
     }
 }
