@@ -1,9 +1,9 @@
 package com.cpd.yuqing.fragment
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.ListFragment
-import android.support.v4.widget.SwipeRefreshLayout
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +13,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import com.cpd.yuqing.R
+import com.cpd.yuqing.activity.VideoContentActivity
 import com.cpd.yuqing.adapter.VideoListAdapter
 import com.cpd.yuqing.db.vo.video.Channel
 import com.cpd.yuqing.db.vo.video.News
@@ -99,6 +100,11 @@ class VideoListFragment : ListFragment() {
 
                         })
                         list.addFooterView(footView, null, false)
+                        list.setOnItemClickListener { parent, view, position, id ->
+                            val intent = Intent(context, VideoContentActivity::class.java)
+                            intent.putExtra("news", (listAdapter as VideoListAdapter).data[id.toInt()])
+                            startActivity(intent)
+                        }
                         listAdapter = VideoListAdapter(context, data)
                         empty.visibility = View.GONE
                         swipeRefresh.visibility = View.VISIBLE
