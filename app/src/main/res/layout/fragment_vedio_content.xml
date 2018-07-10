@@ -19,11 +19,12 @@
             android:layout_height="match_parent"
             android:background="@color/viewBackground"
             android:orientation="vertical">
+
             <!-- 视频组件 -->
             <FrameLayout
                 android:id="@+id/videoContainer"
                 android:layout_width="match_parent"
-                android:layout_height="234dp"
+                android:layout_height="204dp"
                 android:background="@color/viewBackground">
 
                 <io.vov.vitamio.widget.VideoView
@@ -75,68 +76,72 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <!-- 标题 -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="@{news.title}"
-                android:textColor="@color/textColorPrimary"
-                android:textSize="21sp"
-                android:textStyle="bold" />
-            <!-- 详细信息 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:background="@color/viewBackground"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="start"
-                    android:text="@{news.getSourceStr()}"
-                    android:textColor="@color/textColorPrimary"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginStart="4dp"
-                    android:gravity="center"
-                    android:text="@{news.posterMix()}"
-                    android:textColor="@color/textColorPrimary"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="end"
-                    android:maxLines="1"
-                    android:text="@{news.formatPubTime()}"
-                    android:textColor="@color/textColorPrimary"
-                    android:textSize="14sp" />
-            </LinearLayout>
-            <!-- 正文 -->
             <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
                 android:overScrollMode="never">
 
-                <WebView
-                    android:id="@+id/contentWebView"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/viewBackground" />
+                    android:background="@color/viewBackground"
+                    android:orientation="vertical">
 
+                    <!-- 标题 -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{news.title}"
+                        android:textColor="@color/textColorPrimary"
+                        android:textSize="21sp"
+                        android:textStyle="bold" />
+                    <!-- 详细信息 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/viewBackground"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="start"
+                            android:text="@{news.getSourceStr()}"
+                            android:textColor="@color/textColorPrimary"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="4dp"
+                            android:layout_marginStart="4dp"
+                            android:gravity="center"
+                            android:text="@{news.posterMix()}"
+                            android:textColor="@color/textColorPrimary"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:maxLines="1"
+                            android:text="@{news.minPubTime()}"
+                            android:textColor="@color/textColorPrimary"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <!-- 正文 -->
+                    <WebView
+                        android:id="@+id/contentWebView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/viewBackground" />
+                </LinearLayout>
             </android.support.v4.widget.NestedScrollView>
-
         </LinearLayout>
-
     </android.support.design.widget.CoordinatorLayout>
 </layout>

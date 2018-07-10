@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android" android:variablePadding="true">
-    <item android:drawable="@drawable/sign_in_button_click_bg"
+    <item android:drawable="@drawable/save_channel_change_click_bg"
         android:state_pressed="true"/>
-    <item android:drawable="@drawable/sign_in_button_bg"
+    <item android:drawable="@drawable/save_channel_change_button_bg"
         android:state_pressed="false"/>
 </selector>

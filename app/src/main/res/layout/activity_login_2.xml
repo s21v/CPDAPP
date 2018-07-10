@@ -91,7 +91,7 @@
 
         <Button
             android:id="@+id/sign_in_bt"
-            android:background="@drawable/sign_in_bg"
+            android:background="@drawable/save_channel_change_bg"
             android:paddingLeft="60dp"
             android:paddingRight="60dp"
             android:text="@string/action_sign_in"

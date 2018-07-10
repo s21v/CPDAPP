@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:background="@color/line_divider"
         android:orientation="horizontal"
+        android:paddingBottom="4dp"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
         android:paddingTop="4dp">
@@ -37,7 +38,6 @@
             android:layout_width="4dp"
             android:layout_height="@dimen/abc_text_size_small_material"
             android:layout_gravity="center_vertical"
-            android:layout_marginEnd="2dp"
             android:background="@color/colorPrimary" />
 
         <TextView
@@ -67,6 +67,7 @@
         android:layout_height="wrap_content"
         android:background="@color/line_divider"
         android:orientation="horizontal"
+        android:paddingBottom="4dp"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
         android:paddingTop="4dp">
@@ -75,7 +76,6 @@
             android:layout_width="4dp"
             android:layout_height="@dimen/abc_text_size_small_material"
             android:layout_gravity="center_vertical"
-            android:layout_marginEnd="2dp"
             android:background="@color/colorPrimary" />
 
         <TextView
@@ -106,7 +106,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/sign_in_bg"
+        android:background="@drawable/save_channel_change_bg"
         android:gravity="center"
         android:padding="8dp"
         android:text="@string/submit"

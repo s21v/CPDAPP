@@ -178,9 +178,9 @@ class CustomChannelActivity : AppCompatActivity() {
             view.gravity = Gravity.CENTER
             view.textSize = 16f
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                view.setBackgroundColor(resources.getColor(R.color.sign_in_button_normal, null))
+                view.setBackgroundColor(resources.getColor(R.color.colorPrimary, null))
             } else {
-                view.setBackgroundColor(resources.getColor(R.color.sign_in_button_normal))
+                view.setBackgroundColor(resources.getColor(R.color.colorPrimary))
             }
             view.setTextColor(Color.WHITE)
             val padding = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4f, resources.displayMetrics)

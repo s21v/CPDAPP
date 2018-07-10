@@ -40,11 +40,9 @@ data class News(var id: Int = 0, var title: String? = null, var newsUrl: String?
         return 0
     }
 
-    fun getSourceStr() = "视频来源：$source"
+    fun getSourceStr() = "来源:$source"
 
-    fun posterMix(): String = "责任编辑：$author"
-
-    fun formatPubTime(): String = "发布时间：" + publishTime!!.split("\\s+".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[0]
+    fun posterMix(): String = "责编:$author"
 
     fun minPubTime(): String = publishTime!!.split("\\s+".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[0]
 

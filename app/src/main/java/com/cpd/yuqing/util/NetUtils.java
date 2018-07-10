@@ -10,8 +10,8 @@ import android.net.NetworkInfo;
  */
 public class NetUtils {
     private static final String IP4Simulator = "10.0.2.2:8080"; //genymotion模拟机IP:10.0.3.2:8080
-    private static final String IP4Phone = "192.168.5.102:8080";    //远程主机的地址
-    public static final String BASE_URL = "http://" + IP4Simulator + "/CpdNews/";
+    private static final String IP4Phone = "192.168.12.20:8080";    //远程主机的地址
+    public static final String BASE_URL = "http://" + IP4Phone + "/CpdNews/";
     public static final String UserCommonURL = BASE_URL + "UserDBServlet";
     public static final String ChannelCommonUrl = BASE_URL + "ChannelDBServlet";
     public static final String NewsCommonUrl = BASE_URL + "NewsDBServlet";
